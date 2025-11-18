@@ -1,0 +1,64 @@
+@import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 37 82% 89%;
+    --foreground: 39 80% 26%;
+
+    --card: 37 82% 89%;
+    --card-foreground: 39 80% 26%;
+
+    --popover: 37 82% 89%;
+    --popover-foreground: 39 80% 26%;
+
+    --primary: 17 70% 42%;
+    --primary-foreground: 37 82% 89%;
+
+    --secondary: 50 36% 29%;
+    --secondary-foreground: 37 82% 89%;
+
+    --muted: 37 50% 85%;
+    --muted-foreground: 39 80% 26%;
+
+    --accent: 37 60% 80%;
+    --accent-foreground: 39 80% 26%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 37 82% 89%;
+
+    --border: 37 50% 85%;
+    --input: 37 50% 85%;
+    --ring: 17 70% 42%;
+
+    --radius: 0.75rem;
+
+    --wedding-rust: 17 70% 42%;
+    --wedding-olive: 50 36% 29%;
+    --wedding-cream: 37 82% 89%;
+    --wedding-warm-text: 39 80% 26%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Georgia', 'Times New Roman', serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Allura', cursive;
+    font-weight: 400;
+  }
+}
