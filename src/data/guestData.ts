@@ -52,5 +52,11 @@ export const guestDatabase: Record<string, GuestData> = {
         alt: "Dancing at the reception"
       },
     ]
+  },
+  "pdmfam": {
+    id: "pdmfam",
+    name: "PdM Fam",
+    message: "Thank you so much for all the beautiful/funny/cute wishes for our wedding. The support and care you showered us with will never be forgotten. Please accept this Loveable accelerated vibecoded site and photos as a token of our appreciation.",
+    personalPhotos: []
   }
 };

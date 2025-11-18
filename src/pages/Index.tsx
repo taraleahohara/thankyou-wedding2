@@ -52,11 +52,13 @@ const Index = () => {
         categoryIndex={2}
       />
       
-      <PhotoGallery 
-        title="Your Best Moments"
-        photos={guestData.personalPhotos}
-        categoryIndex={3}
-      />
+      {guestData.personalPhotos && guestData.personalPhotos.length > 0 && (
+        <PhotoGallery 
+          title="Your Best Moments"
+          photos={guestData.personalPhotos}
+          categoryIndex={3}
+        />
+      )}
       
       <AlbumLink albumUrl={fullAlbumUrl} />
       
