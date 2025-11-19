@@ -6,7 +6,7 @@ import SiteDescription from "@/components/SiteDescription";
 import PhotoGallery from "@/components/PhotoGallery";
 import AlbumLink from "@/components/AlbumLink";
 import ThankYouSection from "@/components/ThankYouSection";
-import HoneymoonOptIn from "@/components/HoneymoonOptIn";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import { guestDatabase } from "@/data/guestData";
 import { weddingPhotos, fullAlbumUrl } from "@/data/photoData";
 
@@ -64,7 +64,7 @@ const Index = () => {
       
       <ThankYouSection />
       
-      <HoneymoonOptIn guestName={guestData.name} />
+      <NewsletterSignup />
     </div>
   );
 };
