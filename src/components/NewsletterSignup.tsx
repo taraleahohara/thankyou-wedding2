@@ -93,13 +93,13 @@ const NewsletterSignup: React.FC = () => {
           Honeymoon Recap
         </h2>
         <p className="text-lg text-wedding-warm-text">
-          We are headed to Sri Lanka on December 8th for our honeymoon! Share your email address with us and we will send you a Photo Recap of our trip in January 2026.
+          We recently returned back from our amazing honeymoon in Sri Lanka! If you would like to be informed when the album is up please share your email address below.
         </p>
 
         {/* Status Messages */}
         {status === 'success' && (
           <p className="mt-4 p-3 bg-wedding-cream text-wedding-warm-text rounded-lg border border-wedding-rust">
-            Stay Tuned! We will send you a recap of our trip in January 2026.
+            Thank you! We'll notify you when the album is ready.
           </p>
         )}
         {status === 'error' && (

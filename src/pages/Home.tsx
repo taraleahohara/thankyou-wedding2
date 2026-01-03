@@ -1,5 +1,22 @@
 import { lifeEvents } from "@/data/lifeEvents";
 import LifeEventCard from "@/components/LifeEventCard";
+import { getCloudinaryUrlFromLocalPath } from "@/lib/cloudinary";
+
+// Helper function to get image URL (Cloudinary if configured, otherwise local)
+function getImageUrl(localPath: string): string {
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  
+  // If Cloudinary is configured, use it; otherwise use local path
+  if (cloudName) {
+    return getCloudinaryUrlFromLocalPath(localPath, 'wedding-photos', {
+      quality: 'auto',
+      format: 'auto',
+    });
+  }
+  
+  // Fallback to local images
+  return localPath;
+}
 
 const Home = () => {
   return (
@@ -10,7 +27,7 @@ const Home = () => {
           <div className="flex flex-col items-center">
             <div className="mb-2">
               <img 
-                src="/images/homepage/newhpheader.png"
+                src={getImageUrl("/images/homepage/newhpheader.png")}
                 alt="Tara and Daniel"
                 className="max-w-72 md:max-w-96 h-auto mx-auto"
               />

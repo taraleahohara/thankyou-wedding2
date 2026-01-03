@@ -1,3 +1,21 @@
+import { getCloudinaryUrlFromLocalPath } from '@/lib/cloudinary';
+
+// Helper function to get image URL (Cloudinary if configured, otherwise local)
+function getImageUrl(localPath: string): string {
+  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
+  
+  // If Cloudinary is configured, use it; otherwise use local path
+  if (cloudName) {
+    return getCloudinaryUrlFromLocalPath(localPath, 'wedding-photos', {
+      quality: 'auto',
+      format: 'auto',
+    });
+  }
+  
+  // Fallback to local images
+  return localPath;
+}
+
 export interface LifeEvent {
   id: string;
   title: string;
@@ -12,7 +30,7 @@ export const lifeEvents: LifeEvent[] = [
     id: "wedding",
     title: "wedding",
     description: "The best day of our lives.",
-    imageUrl: "/images/during/AMY_6194_ceremony.jpg",
+    imageUrl: getImageUrl("/images/during/AMY_6194_ceremony.jpg"),
     link: "/wedding",
     date: "2025-04-10"
   },
@@ -20,7 +38,7 @@ export const lifeEvents: LifeEvent[] = [
     id: "engagement",
     title: "She said Yes!",
     description: "Photos from our engagement.",
-    imageUrl: "/images/before/AMY_9092_gettingready.jpg",
+    imageUrl: getImageUrl("/images/before/AMY_9092_gettingready.jpg"),
     link: "#",
     date: "2023-08-20"
   },
@@ -28,7 +46,7 @@ export const lifeEvents: LifeEvent[] = [
     id: "honeymoon",
     title: "Honeymoon",
     description: "Our trip to Italy.",
-    imageUrl: "/images/after/AMY_0196_reception1.jpg",
+    imageUrl: getImageUrl("/images/after/AMY_0196_reception1.jpg"),
     link: "#",
     date: "2024-07-01"
   },
@@ -36,7 +54,7 @@ export const lifeEvents: LifeEvent[] = [
     id: "pets",
     title: "pets",
     description: "Our furry family members.",
-    imageUrl: "/images/before/AMY_8989_phoebe.jpg",
+    imageUrl: getImageUrl("/images/before/AMY_8989_phoebe.jpg"),
     link: "#",
     date: "ongoing"
   },
@@ -44,7 +62,7 @@ export const lifeEvents: LifeEvent[] = [
     id: "travel",
     title: "Travel",
     description: "Our adventures around the world.",
-    imageUrl: "/images/after/AMY_6582_reception4.jpg",
+    imageUrl: getImageUrl("/images/after/AMY_6582_reception4.jpg"),
     link: "#",
     date: "2024-09-15"
   }
