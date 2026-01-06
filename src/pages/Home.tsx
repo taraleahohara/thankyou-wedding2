@@ -20,6 +20,11 @@ function getImageUrl(localPath: string): string {
 }
 
 const Home = () => {
+  // Filter to only show wedding, honeymoon, and pets
+  const displayedEvents = lifeEvents.filter(e => 
+    e.id === "wedding" || e.id === "honeymoon" || e.id === "pets"
+  );
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header Section */}
@@ -48,9 +53,13 @@ const Home = () => {
         <div className="flex justify-center">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-fit">
             {(() => {
-              const petsEvent = lifeEvents.find(e => e.id === "pets");
-              const otherEvents = lifeEvents.filter(e => e.id !== "pets")
-                .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+              const petsEvent = displayedEvents.find(e => e.id === "pets");
+              const otherEvents = displayedEvents.filter(e => e.id !== "pets")
+                .sort((a, b) => {
+                  if (a.date === "ongoing") return 1;
+                  if (b.date === "ongoing") return -1;
+                  return new Date(b.date).getTime() - new Date(a.date).getTime();
+                });
               
               // Insert pets at position 2 (third spot)
               const sortedEvents = [

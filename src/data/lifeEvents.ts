@@ -30,25 +30,17 @@ export const lifeEvents: LifeEvent[] = [
     id: "wedding",
     title: "wedding",
     description: "The best day of our lives.",
-    imageUrl: getImageUrl("/images/during/AMY_6194_ceremony.jpg"),
+    imageUrl: "https://res.cloudinary.com/dbr3xp0bx/image/upload/v1767394827/AP1-6.jpg",
     link: "/wedding",
     date: "2025-04-10"
   },
   {
-    id: "engagement",
-    title: "She said Yes!",
-    description: "Photos from our engagement.",
-    imageUrl: getImageUrl("/images/before/AMY_9092_gettingready.jpg"),
-    link: "#",
-    date: "2023-08-20"
-  },
-  {
     id: "honeymoon",
-    title: "Honeymoon",
+    title: "honeymoon",
     description: "Our trip to Italy.",
-    imageUrl: getImageUrl("/images/after/AMY_0196_reception1.jpg"),
-    link: "#",
-    date: "2024-07-01"
+    imageUrl: "https://res.cloudinary.com/dbr3xp0bx/image/upload/v1767633166/IMG_3449_azh1fc.jpg",
+    link: "/honeymoon",
+    date: "2025-08-12"
   },
   {
     id: "pets",
@@ -57,14 +49,6 @@ export const lifeEvents: LifeEvent[] = [
     imageUrl: getImageUrl("/images/before/AMY_8989_phoebe.jpg"),
     link: "#",
     date: "ongoing"
-  },
-  {
-    id: "travel",
-    title: "Travel",
-    description: "Our adventures around the world.",
-    imageUrl: getImageUrl("/images/after/AMY_6582_reception4.jpg"),
-    link: "#",
-    date: "2024-09-15"
   }
 ];
 
