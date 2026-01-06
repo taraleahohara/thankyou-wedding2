@@ -3,6 +3,7 @@ import { Download, Eye } from "lucide-react";
 import PhotoLightbox from "./PhotoLightbox";
 import { weddingPhotos } from "@/data/weddingPhotos";
 import { honeymoonPhotos } from "@/data/honeymoonPhotos";
+import CloudinaryImage from "./CloudinaryImage";
 
 interface Photo {
   id: string;
@@ -257,14 +258,14 @@ const TaggedPhotoGallery = ({
                       onMouseLeave={() => setHoveredPhoto(null)}
                     >
                       {photo.url ? (
-                        <img
+                        <CloudinaryImage
                           src={photo.url}
                           alt={photo.alt}
                           loading="lazy"
-                          decoding="async"
                           className="w-full h-auto rounded-lg object-contain shadow-md transition-all duration-300 group-hover:shadow-xl"
                           width={photo.width}
                           height={photo.height}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           onError={(e) => {
                             console.error('❌ Image failed to load:', {
                               url: photo.url,

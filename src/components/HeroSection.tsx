@@ -1,5 +1,6 @@
 import heroImage from "@/assets/headerimage.jpg";
 import FloralDecoration from "./FloralDecoration";
+import CloudinaryImage from "./CloudinaryImage";
 
 interface HeroSectionProps {
   imageUrl?: string;
@@ -13,10 +14,12 @@ const HeroSection = ({ imageUrl, title = "Tara & Daniel", subtitle = "October 4t
   return (
     <section className="relative h-screen overflow-hidden">
       <FloralDecoration position="top-right" />
-      <img 
+      <CloudinaryImage 
         src={imageSrc} 
         alt={title}
         className="absolute inset-0 w-full h-full object-cover"
+        loading="eager"
+        sizes="100vw"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
       <div className="absolute bottom-0 left-0 z-10 text-left px-6 pb-6 md:pb-8">

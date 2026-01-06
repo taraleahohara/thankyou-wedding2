@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { LifeEvent } from "@/data/lifeEvents";
+import CloudinaryImage from "./CloudinaryImage";
 
 interface LifeEventCardProps {
   event: LifeEvent;
@@ -31,10 +32,11 @@ const LifeEventCard = ({ event, isRectangle = false }: LifeEventCardProps) => {
 
       {/* Image Layer (Foreground) - Slides down to reveal text */}
       <div className="absolute inset-0 z-10 rounded-lg overflow-hidden transition-transform duration-700 ease-out group-hover:translate-y-[12%]">
-        <img
+        <CloudinaryImage
           src={event.imageUrl}
           alt={event.title}
           className="w-full h-full object-cover"
+          sizes="(max-width: 768px) 300px, 612px"
         />
       </div>
 

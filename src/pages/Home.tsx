@@ -1,6 +1,7 @@
 import { lifeEvents } from "@/data/lifeEvents";
 import LifeEventCard from "@/components/LifeEventCard";
 import { getCloudinaryUrlFromLocalPath } from "@/lib/cloudinary";
+import CloudinaryImage from "@/components/CloudinaryImage";
 
 // Helper function to get image URL (Cloudinary if configured, otherwise local)
 function getImageUrl(localPath: string): string {
@@ -26,10 +27,11 @@ const Home = () => {
         <div className="max-w-6xl mx-auto px-6 pt-2 pb-4">
           <div className="flex flex-col items-center">
             <div className="mb-2">
-              <img 
+              <CloudinaryImage 
                 src={getImageUrl("/images/homepage/newhpheader.png")}
                 alt="Tara and Daniel"
                 className="max-w-72 md:max-w-96 h-auto mx-auto"
+                sizes="(max-width: 768px) 288px, 384px"
               />
             </div>
             <div className="text-center max-w-3xl">

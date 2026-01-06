@@ -1,5 +1,6 @@
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect } from "react";
+import CloudinaryImage from "./CloudinaryImage";
 
 interface Photo {
   id: string;
@@ -50,10 +51,12 @@ const PhotoLightbox = ({ photos, currentIndex, onClose, onNavigate }: PhotoLight
       )}
 
       <div className="flex flex-col items-center justify-center max-h-[90vh] max-w-[90vw]">
-        <img
+        <CloudinaryImage
           src={currentPhoto.url}
           alt={currentPhoto.alt}
           className="max-h-[85vh] max-w-[90vw] object-contain"
+          loading="eager"
+          sizes="90vw"
         />
         {currentPhoto.caption && (
           <div className="mt-4 px-4 text-white text-center max-w-2xl">
