@@ -139,7 +139,7 @@ Thank you so much for celebrating our intimate brunch wedding with us. Our goal 
     names: ["Ajanthi and Sendur"],
     tag: "ajanthi-sendur",
     welcomeMessage: `Dear Ajanthi and Sendur,
-Thank you so much for celebrating our intimate brunch wedding with us. Our goal was to fill the day with our closest circle, and it wouldn't have been the same without you. Your generous gift means the world to us and went towards spoiling ourselves during our honeymoon. We feel so lucky to have had you there throughout the day from vows to brunch to afterparty. We love you!`
+Thank you so much for celebrating our intimate brunch wedding with us. Our goal was to fill the day with our closest circle, and it wouldn't have been the same without you. Your generous gift means the world to us and went towards spoiling ourselves during our honeymoon. We feel so lucky to have had you there throughout the day from vows to brunch to afterparty - Sendur we are sorry you had to leave early and hope to enjoy a nice meal together soon. Lots of love to both of you!`
   },
   {
     names: ["Kat"],

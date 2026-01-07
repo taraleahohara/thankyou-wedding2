@@ -5,18 +5,14 @@ import SiteDescription from "@/components/SiteDescription";
 import TaggedPhotoGallery from "@/components/TaggedPhotoGallery";
 import AlbumLink from "@/components/AlbumLink";
 import ThankYouSection from "@/components/ThankYouSection";
-import NewsletterSignup from "@/components/NewsletterSignup";
 import FloatingGalleryNav from "@/components/FloatingGalleryNav";
+import RelatedGalleries from "@/components/RelatedGalleries";
 import { guestList, type GuestConfig } from "@/data/guests";
 import { fullAlbumUrl } from "@/data/photoData";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-
-// #region agent log
-fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:14',message:'Module loaded - checking guestList',data:{guestListLength:guestList.length,jankovicLewisNames:guestList.find(g=>g.tag==='jankovic-lewis')?.names,jankovicLewisNamesLength:guestList.find(g=>g.tag==='jankovic-lewis')?.names.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run3',hypothesisId:'F'})}).catch(()=>{});
-// #endregion
 
 const Wedding = () => {
   // State management
@@ -69,16 +65,8 @@ const Wedding = () => {
     // Normalize input
     const normalizedInput = guestNameInput.trim().toLowerCase();
 
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:48',message:'Starting guest search',data:{normalizedInput,guestNameInput,guestListLength:guestList.length},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
-
     // Search for matching guest - check both exact match and partial match
     const foundGuest = guestList.find(guest => {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:55',message:'Checking guest',data:{guestTag:guest.tag,guestNames:guest.names,namesLength:guest.names.length,allNames:JSON.stringify(guest.names)},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'E'})}).catch(()=>{});
-      // #endregion
-      
       return guest.names.some(name => {
         const normalizedName = name.toLowerCase();
         const exactMatch = normalizedName === normalizedInput;
@@ -86,18 +74,10 @@ const Wedding = () => {
         const inputIncludesName = normalizedInput.includes(normalizedName);
         const matches = exactMatch || nameIncludesInput || inputIncludesName;
         
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:60',message:'Name comparison',data:{name,normalizedName,normalizedInput,exactMatch,nameIncludesInput,inputIncludesName,matches},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-        // #endregion
-        
         // Check if name includes input OR input includes name (for partial matching)
         return matches;
       });
     });
-
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/5e69c25a-120a-44ef-8831-fc1edb8937ac',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'Wedding.tsx:68',message:'Search result',data:{foundGuest:!!foundGuest,foundGuestTag:foundGuest?.tag,foundGuestNames:foundGuest?.names},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'D'})}).catch(()=>{});
-    // #endregion
 
     if (foundGuest) {
       setCurrentGuest(foundGuest);
@@ -183,7 +163,10 @@ const Wedding = () => {
                 <Button
                   type="button"
                   variant="link"
-                  onClick={handleNotAGuest}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNotAGuest();
+                  }}
                   className="w-full text-wedding-olive hover:text-wedding-olive/80"
                 >
                   I was not a guest
@@ -268,9 +251,11 @@ const Wedding = () => {
       
       <AlbumLink albumUrl={fullAlbumUrl} />
       
-      <ThankYouSection />
+      {currentGuest && currentGuest.tag !== "wedding-highlights" && (
+        <ThankYouSection />
+      )}
       
-      <NewsletterSignup />
+      <RelatedGalleries relatedGalleryIds={["honeymoon"]} />
       
       <FloatingGalleryNav hasPersonalizedGallery={currentGuest && currentGuest.tag !== "wedding-highlights"} />
     </div>

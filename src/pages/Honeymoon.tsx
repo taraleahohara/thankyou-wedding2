@@ -125,7 +125,7 @@ const Honeymoon = () => {
         id="cultural-triangle"
         description={
           <>
-            <strong>Sri Lanka's Cultural Triangle</strong> lies in the center of the island and represents its historic and spiritual heart, shaped by ancient kings, monks, and remarkable engineering. Here, centuries-old cities, temples, reservoirs, and rock fortresses still define the landscape today. During our time in the region, we explored the ruined capital of <strong>Polonnaruwa</strong>, climbed the iconic <strong>Sigiriya Lion Rock Fortress</strong>, wandered through the cave shrines of <strong>Dambulla Cave Temple</strong>, and finished in <strong>Kandy</strong> at the sacred <strong>Temple of the Sacred Tooth</strong>
+            <strong>Sri Lanka's Cultural Triangle</strong> lies in the center of the island and represents its historic and spiritual heart, shaped by ancient kings, monks, and remarkable engineering. Here, centuries-old cities, temples, reservoirs, and rock fortresses still define the landscape today. During our time in the region, we explored the ruined capital of <strong>Polonnaruwa</strong>, climbed the iconic <strong>Sigiriya Lion Rock Fortress</strong>, wandered through the cave shrines of <strong>Dambulla Cave Temple</strong>, and finished in <strong>Kandy</strong> at the sacred <strong>Temple of the Sacred Tooth</strong>.
           </>
         }
         allowDownload={false}
@@ -138,7 +138,11 @@ const Honeymoon = () => {
         tag="nature"
         categoryIndex={1}
         id="mountains-nature"
-        description="Sri Lanka's mountains and wild south offered a striking contrast to the ancient cities - cooler air, lush hills, and some of the island's richest wildlife. We slowed down in the tea country around Ella, wandering past waterfalls and the iconic Nine Arch Bridge, before heading south to encounter elephants at the Elephant Transit Home and on safari in Udawalawe National Park. We also visited the quiet stone presence of Buduruwagala Temple and finished deep in the rainforest, birding in Sinharaja Rainforest."
+        description={
+          <>
+            Sri Lanka's mountains and wild south offered a striking contrast to the ancient cities - cooler air, lush hills, and some of the island's richest wildlife. We slowed down in the tea country around <strong>Ella</strong>, wandering past waterfalls and the iconic Nine Arch Bridge, before heading south to encounter elephants at the Elephant Transit Home and on safari in <strong>Udawalawe National Park</strong>. We also visited the quiet stone presence of Buduruwagala Temple and finished deep in the rainforest, birding in <strong>Sinharaja Rainforest</strong>.
+          </>
+        }
         allowDownload={false}
         showCaption={true}
         photosSource="honeymoon"

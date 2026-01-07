@@ -5,7 +5,7 @@ const ThankYouSection = () => {
     <section className="relative py-20 px-6 bg-wedding-olive text-wedding-cream overflow-hidden">
       <FloralDecoration position="bottom-left" />
       <div className="max-w-2xl mx-auto text-center relative z-10">
-        <h3 className="text-5xl md:text-6xl mb-6 text-wedding-cream">
+        <h3 className="text-4xl md:text-5xl mb-6 text-wedding-cream">
           Thank You
         </h3>
         <p className="text-xl md:text-2xl leading-relaxed text-wedding-cream">

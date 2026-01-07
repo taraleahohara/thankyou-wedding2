@@ -250,6 +250,13 @@ const TaggedPhotoGallery = ({
                 {column.map((photo, photoIndex) => {
                   // Calculate the original index in validPhotos for lightbox navigation
                   const originalIndex = validPhotos.findIndex(p => p.id === photo.id);
+                  
+                  // Determine loading strategy: first few images should be eager, especially on mobile
+                  const isFirstColumn = columnIndex === 0;
+                  const isFirstFewImages = photoIndex < 3; // First 3 images in first column
+                  const shouldLoadEager = isFirstColumn && isFirstFewImages;
+                  const loadingStrategy = shouldLoadEager ? 'eager' : 'lazy';
+                  
                   return (
                     <div
                       key={photo.id}
@@ -261,7 +268,7 @@ const TaggedPhotoGallery = ({
                         <CloudinaryImage
                           src={photo.url}
                           alt={photo.alt}
-                          loading="lazy"
+                          loading={loadingStrategy}
                           className="w-full h-auto rounded-lg object-contain shadow-md transition-all duration-300 group-hover:shadow-xl"
                           width={photo.width}
                           height={photo.height}
