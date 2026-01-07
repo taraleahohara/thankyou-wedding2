@@ -51,6 +51,29 @@ const Wedding = () => {
     document.title = `Tara & Daniel's Wedding`;
   }
 
+  // Update Open Graph image for social sharing
+  useEffect(() => {
+    const weddingHeaderImage = "https://res.cloudinary.com/dbr3xp0bx/image/upload/v1767394827/AP1-6.jpg";
+    
+    // Update or create og:image meta tag
+    let ogImage = document.querySelector('meta[property="og:image"]');
+    if (!ogImage) {
+      ogImage = document.createElement('meta');
+      ogImage.setAttribute('property', 'og:image');
+      document.head.appendChild(ogImage);
+    }
+    ogImage.setAttribute('content', weddingHeaderImage);
+    
+    // Update or create twitter:image meta tag
+    let twitterImage = document.querySelector('meta[name="twitter:image"]');
+    if (!twitterImage) {
+      twitterImage = document.createElement('meta');
+      twitterImage.setAttribute('name', 'twitter:image');
+      document.head.appendChild(twitterImage);
+    }
+    twitterImage.setAttribute('content', weddingHeaderImage);
+  }, []);
+
   // Login handler
   const handleLogin = (e?: React.FormEvent) => {
     e?.preventDefault();

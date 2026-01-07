@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { lifeEvents } from "@/data/lifeEvents";
 import LifeEventCard from "@/components/LifeEventCard";
 import { getCloudinaryUrlFromLocalPath } from "@/lib/cloudinary";
@@ -20,6 +21,11 @@ function getImageUrl(localPath: string): string {
 }
 
 const Home = () => {
+  // Set page title dynamically
+  useEffect(() => {
+    document.title = "Tara and Daniel's Life";
+  }, []);
+
   // Filter to only show wedding, honeymoon, and pets
   const displayedEvents = lifeEvents.filter(e => 
     e.id === "wedding" || e.id === "honeymoon" || e.id === "pets"

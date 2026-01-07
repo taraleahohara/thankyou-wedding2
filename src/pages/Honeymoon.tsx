@@ -43,6 +43,29 @@ const Honeymoon = () => {
     };
   }, []);
 
+  // Update Open Graph image for social sharing
+  useEffect(() => {
+    const honeymoonHeaderImage = "https://res.cloudinary.com/dbr3xp0bx/image/upload/v1767633211/IMG_3498_bsco2c.jpg";
+    
+    // Update or create og:image meta tag
+    let ogImage = document.querySelector('meta[property="og:image"]');
+    if (!ogImage) {
+      ogImage = document.createElement('meta');
+      ogImage.setAttribute('property', 'og:image');
+      document.head.appendChild(ogImage);
+    }
+    ogImage.setAttribute('content', honeymoonHeaderImage);
+    
+    // Update or create twitter:image meta tag
+    let twitterImage = document.querySelector('meta[name="twitter:image"]');
+    if (!twitterImage) {
+      twitterImage = document.createElement('meta');
+      twitterImage.setAttribute('name', 'twitter:image');
+      document.head.appendChild(twitterImage);
+    }
+    twitterImage.setAttribute('content', honeymoonHeaderImage);
+  }, []);
+
   // Login handler
   const handleLogin = (e?: React.FormEvent) => {
     e?.preventDefault();
