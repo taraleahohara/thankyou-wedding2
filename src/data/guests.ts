@@ -27,7 +27,16 @@ We are so grateful for your friendship, your love, and everything you do for us,
   {
     names: ["Calgeron", "Rachael", "Bailey", "Felix"],
     tag: "Calgeron",
-    welcomeMessage: "Dear Rachael, Bailey and Felix,\nLoremIpsum"
+    welcomeMessage: `Dear Rachael, Bailey and Felix,
+Rachael, thank you so much for everything you did to make our wedding day so special. Having you, Bailey and Felix there meant the world to us, and we truly can't imagine the day without you.
+
+Your speech was incredibly meaningful and deeply appreciated. It struck exactly the right balance of heartfelt and thoughtful, and it's something we'll always remember from the day.
+
+Having Felix in our flower monster party and enjoying his presence in the celebration afterward was such a delight. We love our little nephew so much and having him there made the day even more special.
+
+Thank you as well for your very generous gift. Knowing it allowed us to spoil ourselves on our honeymoon in Sri Lanka made it especially meaningful, and we carried your love with us on our travels.
+
+We are so grateful for your love, and everything you do for us, not just on our wedding day, but always.`
   },
   {
     names: ["Maralyn and Bruce"],
@@ -72,7 +81,8 @@ We are so grateful for your friendship, your love, and everything you do for us,
   {
     names: ["Beth and Jim"],
     tag: "beth-jim",
-    welcomeMessage: "Dear Beth and Jim,\nLoremIpsum"
+    welcomeMessage: `Dear Beth and Jim,
+Thank you so much for celebrating our intimate brunch wedding with us. Our goal was to fill the day with our closest circle, and it wouldn't have been the same without you. We feel so lucky to have had you there throughout the day from vows to brunch to a glorious Jays win. We love you!`
   },
   {
     names: ["Christine and Paul"],
@@ -102,7 +112,14 @@ We are so grateful for your friendship, your love, and everything you do for us,
   {
     names: ["Pyper-Dean", "Laura", "Don", "Robin", "Max"],
     tag: "pyper-dean",
-    welcomeMessage: "Dear Laura, Don, Robin and Max,\nLoremIpsum"
+    welcomeMessage: `Dear Laura, Don, Robin and Max,
+Thank you so much for everything you did to make our wedding day so special. Having all of you there meant the world to us, and we truly can't imagine the day without you.
+
+Having Robin and Max in our flower monster party and watching them share in the celebration afterward was such a delight. Their joy, energy, and sweet presence brought so much warmth to the day and made it even more memorable for us.
+
+Thank you as well for your very generous gift. Knowing it allowed us to spoil ourselves on our honeymoon in Sri Lanka made it especially meaningful, and we carried your love with us on our travels.
+
+We are so grateful for your friendship, your love, and everything you do for us, not just on our wedding day, but always.`
   },
   {
     names: ["Sergey"],
@@ -121,7 +138,14 @@ We are so grateful for your friendship, your support, and everything you do for 
   {
     names: ["Katherine"],
     tag: "katherine",
-    welcomeMessage: "Dear Katherine,\nLoremIpsum"
+    welcomeMessage: `Dear Katherine,
+Thank you so much for everything you did to make our wedding day so special. Having you there meant the world to us, and we truly can't imagine the day without you.
+
+Your help at the venue was invaluable. Knowing that we had someone there that we could trust fully, allowed us to be fully present with each other and our families while we got ready.
+
+Thank you as well for your very generous gift. Knowing it allowed us to spoil ourselves on our honeymoon in Sri Lanka made it especially meaningful, and we carried your love with us on our travels.
+
+We are so grateful for your friendship, and everything you did to make our wedding day happen.`
   },
   {
     names: ["Marta and Bryan"],
