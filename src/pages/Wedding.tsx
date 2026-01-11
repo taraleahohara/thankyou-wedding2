@@ -300,7 +300,7 @@ const Wedding = () => {
       {currentGuest && currentGuest.tag !== "wedding-highlights" && (
         <TaggedPhotoGallery 
           title="Moments Curated for You"
-          tag={currentGuest.tag}
+          tag={currentGuest.tag === "Calegeron" ? "Calgeron" : currentGuest.tag}
           categoryIndex={4}
           id="curated-for-you"
         />

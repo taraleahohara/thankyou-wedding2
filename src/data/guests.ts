@@ -25,8 +25,8 @@ We are so grateful for your friendship, your love, and everything you do for us,
     welcomeMessage: "Dear Graham and Mickey,\nLoremIpsum"
   },
   {
-    names: ["Calgeron", "Rachael", "Bailey", "Felix"],
-    tag: "Calgeron",
+    names: ["Calegeron", "Rachael", "Bailey", "Felix"],
+    tag: "Calegeron",
     welcomeMessage: `Dear Rachael, Bailey and Felix,
 Rachael, thank you so much for everything you did to make our wedding day so special. Having you, Bailey and Felix there meant the world to us, and we truly can't imagine the day without you.
 
