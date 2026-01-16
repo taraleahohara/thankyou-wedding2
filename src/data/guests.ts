@@ -87,7 +87,14 @@ Thank you so much for celebrating our intimate brunch wedding with us. Our goal 
   {
     names: ["Christine and Paul"],
     tag: "cene-paul",
-    welcomeMessage: "Dear Christine and Paul,\nLoremIpsum"
+    welcomeMessage: `Dear Cene and Paul,
+Thank you so much for celebrating our wedding with us. Having you both there meant so much to us.
+
+Cene, when we decided that we wanted to include a reading in our ceremony, we both knew immediately that we wanted you to perform it. Your voice, presence, and the warmth you brought to the reading were everything we were hoping for. It was deeply moving for us to share that moment with you, and it's something we'll always remember.
+
+Thank you both as well for your generous gift, which helped send us off on our honeymoon to Sri Lanka and allowed us to treat ourselves to some extra treats.
+
+We're so grateful for your love and for the meaningful role you played in our day. Thank you for making that moment feel so personal and heartfelt.`
   },
   {
     names: ["Paul and Trish"],
