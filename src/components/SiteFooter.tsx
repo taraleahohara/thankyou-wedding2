@@ -28,8 +28,12 @@ const SiteFooter = () => {
 
         <p className="u-label text-muted-foreground mb-2">the tara &amp; daniel family archive</p>
 
-        <p className="u-label text-muted-foreground/80 leading-relaxed">
-          made at the kitchen table · est. 2025 · no cookies, no trackers, just us
+        <p className="u-label text-muted-foreground/80 leading-relaxed mb-1.5">
+          built on the living room floor, where tara is learning to vibe-code
+        </p>
+
+        <p className="u-label text-muted-foreground/70 leading-relaxed">
+          part experiment, part creative expression · est. 2025
         </p>
       </div>
     </footer>

@@ -35,7 +35,7 @@ const Home = () => {
             our life.
           </h1>
           <p className="u-label text-muted-foreground max-w-md leading-relaxed">
-            weddings, honeymoons &amp; one very good dog
+            milestones, adventures, and our adorable creatures
           </p>
         </div>
       </section>
