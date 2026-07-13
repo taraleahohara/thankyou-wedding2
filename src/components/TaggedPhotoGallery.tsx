@@ -34,6 +34,8 @@ interface TaggedPhotoGalleryProps {
   allowDownload?: boolean; // Whether to show download button (default: true)
   showCaption?: boolean; // Whether to show captions (default: false)
   photos: SourcePhoto[]; // The photo manifest to filter by tag
+  eyebrow?: string; // Optional tracked-lowercase overline above the title (archive language)
+  frame?: "shadow" | "hairline"; // Thumbnail frame: drop-shadow (default) or hairline border
 }
 
 // Utility to distribute photos into columns using "Shortest Column First" algorithm
@@ -105,8 +107,14 @@ const TaggedPhotoGallery = ({
   description,
   allowDownload = true,
   showCaption = false,
-  photos: allCloudinaryPhotos
+  photos: allCloudinaryPhotos,
+  eyebrow,
+  frame = "shadow",
 }: TaggedPhotoGalleryProps) => {
+  const frameClasses =
+    frame === "hairline"
+      ? "border border-ink/10 transition-colors duration-[var(--dur-2)] ease-[var(--ease-paper)] group-hover:border-ink/30"
+      : "shadow-md transition-all duration-300 group-hover:shadow-xl";
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
@@ -200,6 +208,9 @@ const TaggedPhotoGallery = ({
     <>
       <section id={id} className="py-16 px-6 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
+          {eyebrow && (
+            <p className="u-label text-brand text-center mb-3">{eyebrow}</p>
+          )}
           <h3 className="text-4xl md:text-5xl text-center mb-8 text-brand-alt">
             {title}
           </h3>
@@ -234,7 +245,7 @@ const TaggedPhotoGallery = ({
                           src={photo.url}
                           alt={photo.alt}
                           loading={loadingStrategy}
-                          className="w-full h-auto rounded-lg object-contain shadow-md transition-all duration-300 group-hover:shadow-xl"
+                          className={`w-full h-auto rounded-lg object-contain ${frameClasses}`}
                           width={photo.width}
                           height={photo.height}
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

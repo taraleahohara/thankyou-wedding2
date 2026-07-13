@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import HeroSection from "@/components/HeroSection";
 import SiteDescription from "@/components/SiteDescription";
 import TaggedPhotoGallery from "@/components/TaggedPhotoGallery";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -78,38 +80,37 @@ const Honeymoon = () => {
   if (!isAuthenticated) {
     return (
       <div data-chapter={chapter.theme} className="min-h-screen bg-paper flex items-center justify-center px-6">
-        <Card className="max-w-md w-full bg-paper border-brand-alt/20 shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-3xl text-center text-ink">
-              Welcome to Our Honeymoon Gallery
+        <Card className="max-w-md w-full bg-paper border-ink/10 shadow-none">
+          <CardHeader className="text-center">
+            <p className="u-label text-brand mb-3">chapter 02 · sri lanka</p>
+            <CardTitle className="font-display italic lowercase text-4xl text-ink">
+              the honeymoon gallery
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-ink">
-                  Password
+                <Label htmlFor="password" className="u-label text-muted-foreground">
+                  password
                 </Label>
                 <Input
                   id="password"
                   type="password"
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
-                  placeholder="Enter password"
-                  className="bg-background"
+                  placeholder="the one from your invite"
+                  className="bg-background border-ink/15"
                 />
               </div>
               {error && (
-                <p className="text-sm text-destructive text-center">{error}</p>
+                <p className="text-sm text-destructive text-center lowercase">{error}</p>
               )}
-              <div className="space-y-2">
-                <Button
-                  type="submit"
-                  className="w-full bg-brand text-paper hover:bg-brand/90"
-                >
-                  Enter
-                </Button>
-              </div>
+              <Button
+                type="submit"
+                className="w-full bg-brand text-paper hover:bg-brand-alt lowercase tracking-wide transition-colors duration-[var(--dur-2)] ease-[var(--ease-paper)]"
+              >
+                come along
+              </Button>
             </form>
           </CardContent>
         </Card>
@@ -119,28 +120,38 @@ const Honeymoon = () => {
 
   // Render authenticated view
   return (
-    <div data-chapter={chapter.theme} className="min-h-screen">
+    <div data-chapter={chapter.theme} className="min-h-screen bg-paper flex flex-col">
+      <SiteHeader />
+
       <HeroSection
+        variant="archive"
+        eyebrow="chapter 02 · august 2025"
         imageUrl={chapter.hero!.image}
-        title={chapter.hero!.title}
-        subtitle={chapter.hero!.subtitle}
+        title={chapter.title}
+        subtitle="sri lanka"
       />
 
-      <SiteDescription text={chapter.siteDescription!} />
+      <SiteDescription text={chapter.siteDescription!} variant="plain" />
 
-      {chapter.sections!.map((section, index) => (
-        <TaggedPhotoGallery
-          key={section.id}
-          title={section.title}
-          tag={section.tag}
-          categoryIndex={index}
-          id={section.id}
-          description={section.description}
-          allowDownload={section.allowDownload}
-          showCaption={section.showCaption}
-          photos={honeymoonPhotos}
-        />
-      ))}
+      <div className="flex-1">
+        {chapter.sections!.map((section, index) => (
+          <TaggedPhotoGallery
+            key={section.id}
+            title={section.title}
+            tag={section.tag}
+            categoryIndex={index}
+            eyebrow={`0${index + 1}`}
+            frame="hairline"
+            id={section.id}
+            description={section.description}
+            allowDownload={section.allowDownload}
+            showCaption={section.showCaption}
+            photos={honeymoonPhotos}
+          />
+        ))}
+      </div>
+
+      <SiteFooter />
     </div>
   );
 };

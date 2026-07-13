@@ -7,16 +7,19 @@ interface RelatedGalleriesProps {
   relatedGalleryIds: string[];
 }
 
-// Format date as "DD.MM.YY" or "ongoing"
+// "2025-10-04" -> "october 4, 2025"; "ongoing" -> "ongoing"
 const formatDate = (date: string): string => {
   if (date === "ongoing") {
     return "ongoing";
   }
 
-  // Parse date string as local date to avoid timezone issues
-  // Format: "YYYY-MM-DD"
+  // Parse date string as local date to avoid timezone issues ("YYYY-MM-DD")
   const [year, month, day] = date.split('-').map(Number);
-  return `${String(day).padStart(2, '0')}.${String(month).padStart(2, '0')}.${String(year).slice(-2)}`;
+  const months = [
+    "january", "february", "march", "april", "may", "june",
+    "july", "august", "september", "october", "november", "december",
+  ];
+  return `${months[month - 1]} ${day}, ${year}`;
 };
 
 const RelatedGalleries = ({ relatedGalleryIds }: RelatedGalleriesProps) => {
@@ -27,10 +30,10 @@ const RelatedGalleries = ({ relatedGalleryIds }: RelatedGalleriesProps) => {
     return null;
   }
 
-  // Get title based on count
+  // Get title based on count (lowercase archive voice)
   const title = galleriesToShow.length === 1
-    ? "Check out another life moment"
-    : "Check out other life moments";
+    ? "another life moment"
+    : "more life moments";
 
   // Get chapter data for each gallery
   const galleryData = galleriesToShow
@@ -60,27 +63,24 @@ const RelatedGalleries = ({ relatedGalleryIds }: RelatedGalleriesProps) => {
             return (
               <div
                 key={chapter.id}
-                className={`group relative aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-brand/20 ${galleryData.length === 1 ? 'w-[300px]' : ''}`}
+                className={`group relative aspect-square overflow-hidden rounded-lg border border-ink/10 transition-colors duration-[var(--dur-2)] ease-[var(--ease-paper)] hover:border-ink/30 ${galleryData.length === 1 ? 'w-[300px]' : ''}`}
               >
-                {/* Desktop: Entire card is clickable */}
+                {/* Desktop: entire card is clickable */}
                 <Link
                   to={link}
                   className="hidden md:block absolute inset-0 z-30"
-                  aria-label={`Go to ${chapter.title}`}
+                  aria-label={`go to ${chapter.title}`}
                 />
 
-                {/* Content Layer (Background) - Title and Date */}
-                <div className="absolute top-0 left-0 right-0 h-[18%] z-0 flex flex-row items-center justify-center gap-3 pt-1 pb-3 px-3 bg-paper">
-                  <span className="text-sm text-muted-foreground">
-                    {chapter.title}
-                  </span>
-                  <span className="text-sm text-muted-foreground">
-                    {formattedDate}
+                {/* Label layer (background) — revealed as the image slides on hover */}
+                <div className="absolute top-0 left-0 right-0 h-[18%] z-0 flex items-center justify-center px-3 pb-3 bg-paper">
+                  <span className="u-label text-ink tracking-[0.14em] text-[0.8rem]">
+                    {chapter.title} · {formattedDate}
                   </span>
                 </div>
 
-                {/* Image Layer (Foreground) - Slides down to reveal text */}
-                <div className="absolute inset-0 z-10 rounded-lg overflow-hidden transition-transform duration-700 ease-out group-hover:translate-y-[12%]">
+                {/* Image layer (foreground) — slides down to reveal the label */}
+                <div className="absolute inset-0 z-10 rounded-lg overflow-hidden transition-transform duration-[var(--dur-3)] ease-[var(--ease-paper)] group-hover:translate-y-[12%]">
                   {headerImage && (
                     <CloudinaryImage
                       src={headerImage}
@@ -91,11 +91,11 @@ const RelatedGalleries = ({ relatedGalleryIds }: RelatedGalleriesProps) => {
                   )}
                 </div>
 
-                {/* Go Icon - Bottom Left - Visible on mobile, visible on hover on desktop */}
+                {/* Go pill — visible on mobile, revealed on hover on desktop */}
                 <Link
                   to={link}
-                  className="absolute bottom-4 left-4 z-20 bg-brand text-paper p-2 rounded-full hover:bg-brand/90 transition-all duration-700 ease-out shadow-lg opacity-100 md:opacity-0 md:group-hover:opacity-100"
-                  aria-label={`Go to ${chapter.title}`}
+                  className="absolute bottom-4 left-4 z-20 bg-brand text-paper p-2 rounded-full hover:bg-ink transition-all duration-[var(--dur-2)] ease-[var(--ease-paper)] opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                  aria-label={`go to ${chapter.title}`}
                 >
                   <ArrowRight size={20} />
                 </Link>

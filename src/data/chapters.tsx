@@ -132,7 +132,7 @@ export const chapters: Chapter[] = [
     sections: [
       {
         id: "cultural-triangle",
-        title: "The Cultural Triangle",
+        title: "the cultural triangle",
         tag: "culture",
         description: (
           <>
@@ -144,7 +144,7 @@ export const chapters: Chapter[] = [
       },
       {
         id: "mountains-nature",
-        title: "Mountains & Nature",
+        title: "mountains & nature",
         tag: "nature",
         description: (
           <>
@@ -156,7 +156,7 @@ export const chapters: Chapter[] = [
       },
       {
         id: "southern-coast",
-        title: "Southern Coast",
+        title: "southern coast",
         tag: "beach",
         description: (
           <>
@@ -168,7 +168,7 @@ export const chapters: Chapter[] = [
       },
       {
         id: "hotels",
-        title: "Our Hotels",
+        title: "our hotels",
         tag: "hotels",
         description: (
           <>

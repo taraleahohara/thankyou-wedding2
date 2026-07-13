@@ -1,67 +1,117 @@
-@import url('https://fonts.googleapis.com/css2?family=Allura&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
 All colors MUST be HSL.
 */
 
 @layer base {
   :root {
-    --background: 37 82% 89%;
-    --foreground: 39 80% 26%;
+    /* ---- Shell identity: neutral ink-on-ivory (the "family archive") ---- */
+    /* The homepage and site shell use a restrained, warm monochrome palette.
+       Chapter pages re-declare every token they need inside their own
+       [data-chapter="..."] scope below, so their palettes are fully
+       self-contained — wedding's cream/rust/olive never leak into the shell. */
+    --background: 39 48% 94%;
+    --foreground: 24 22% 16%;
 
-    --card: 37 82% 89%;
-    --card-foreground: 39 80% 26%;
+    --card: 39 48% 94%;
+    --card-foreground: 24 22% 16%;
 
-    --popover: 37 82% 89%;
-    --popover-foreground: 39 80% 26%;
+    --popover: 39 48% 94%;
+    --popover-foreground: 24 22% 16%;
 
-    --primary: 17 70% 42%;
-    --primary-foreground: 37 82% 89%;
+    --primary: 24 22% 16%;
+    --primary-foreground: 39 48% 94%;
 
-    --secondary: 50 36% 29%;
-    --secondary-foreground: 37 82% 89%;
+    --secondary: 28 20% 42%;
+    --secondary-foreground: 39 48% 94%;
 
-    --muted: 37 50% 85%;
-    --muted-foreground: 39 80% 26%;
+    --muted: 38 40% 90%;
+    --muted-foreground: 26 20% 40%;
 
-    --accent: 37 60% 80%;
-    --accent-foreground: 39 80% 26%;
+    --accent: 36 42% 87%;
+    --accent-foreground: 24 22% 16%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 37 82% 89%;
+    --destructive-foreground: 39 48% 94%;
 
-    --border: 37 50% 85%;
-    --input: 37 50% 85%;
-    --ring: 17 70% 42%;
+    --border: 34 30% 85%;
+    --input: 34 30% 85%;
+    --ring: 24 22% 16%;
 
     --radius: 0.75rem;
 
-    /* Semantic chapter tokens. The default shell (homepage) currently uses the
-       wedding palette; a later phase can restyle the shell without touching the
-       scoped chapter themes below. */
-    --paper: 37 82% 89%;
-    --ink: 39 80% 26%;
-    --brand: 17 70% 42%;
-    --brand-alt: 50 36% 29%;
+    /* Semantic chapter tokens — the shell resolves these to warm ink-on-ivory. */
+    --paper: 39 48% 94%;
+    --ink: 24 22% 16%;
+    --brand: 24 22% 16%;
+    --brand-alt: 28 20% 42%;
+
+    /* ---- Type system ---- */
+    --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-body: Georgia, 'Times New Roman', serif;
+    --font-label: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+    /* ---- Motion (Waypoints "paper" scale) ---- */
+    --ease-paper: cubic-bezier(0.32, 0.72, 0.24, 1);
+    --dur-1: 140ms;
+    --dur-2: 240ms;
+    --dur-3: 360ms;
   }
 
-  /* Wedding chapter theme — today's exact wedding palette. */
+  /* Wedding chapter theme — today's exact wedding palette, fully self-contained. */
   [data-chapter="wedding"] {
+    --background: 37 82% 89%;
+    --foreground: 39 80% 26%;
+    --card: 37 82% 89%;
+    --card-foreground: 39 80% 26%;
+    --popover: 37 82% 89%;
+    --popover-foreground: 39 80% 26%;
+    --primary: 17 70% 42%;
+    --primary-foreground: 37 82% 89%;
+    --secondary: 50 36% 29%;
+    --secondary-foreground: 37 82% 89%;
+    --muted: 37 50% 85%;
+    --muted-foreground: 39 80% 26%;
+    --accent: 37 60% 80%;
+    --accent-foreground: 39 80% 26%;
+    --border: 37 50% 85%;
+    --input: 37 50% 85%;
+    --ring: 17 70% 42%;
     --paper: 37 82% 89%;
     --ink: 39 80% 26%;
     --brand: 17 70% 42%;
     --brand-alt: 50 36% 29%;
   }
 
-  /* Honeymoon chapter theme — terracotta overrides (ink inherits default). */
+  /* Honeymoon chapter theme — the neutral archive shell with terracotta as
+     its spine colour ("neutral page, one coloured spine per chapter"). */
   [data-chapter="honeymoon"] {
-    --paper: 37 79% 89%;
+    --background: 39 48% 94%;
+    --foreground: 24 22% 16%;
+    --card: 39 48% 94%;
+    --card-foreground: 24 22% 16%;
+    --popover: 39 48% 94%;
+    --popover-foreground: 24 22% 16%;
+    --primary: 14 57% 51%;
+    --primary-foreground: 39 48% 94%;
+    --secondary: 14 34% 42%;
+    --secondary-foreground: 39 48% 94%;
+    --muted: 38 40% 90%;
+    --muted-foreground: 26 20% 40%;
+    --accent: 36 42% 87%;
+    --accent-foreground: 24 22% 16%;
+    --border: 34 30% 85%;
+    --input: 34 30% 85%;
+    --ring: 14 57% 51%;
+    --paper: 39 48% 94%;
+    --ink: 24 22% 16%;
     --brand: 14 57% 51%;
-    --brand-alt: 14 57% 51%;
+    --brand-alt: 14 45% 45%;
   }
 }
 
@@ -72,11 +122,37 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
-    font-family: 'Georgia', 'Times New Roman', serif;
+    font-family: var(--font-body);
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Allura', cursive;
+    font-family: var(--font-display);
     font-weight: 400;
+  }
+
+  /* Allura is the wedding chapter's signature only. Everywhere else —
+     the shell and the honeymoon chapter — uses the Fraunces display face. */
+  [data-chapter="wedding"] h1,
+  [data-chapter="wedding"] h2,
+  [data-chapter="wedding"] h3,
+  [data-chapter="wedding"] h4,
+  [data-chapter="wedding"] h5,
+  [data-chapter="wedding"] h6 {
+    font-family: 'Allura', cursive;
+  }
+}
+
+@layer components {
+  /* Tracked lowercase sans label — "chapter 01 · october 4, 2025" */
+  .u-label {
+    font-family: var(--font-label);
+    text-transform: lowercase;
+    letter-spacing: 0.22em;
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
   }
 }
