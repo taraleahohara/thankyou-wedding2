@@ -63,6 +63,10 @@ All colors MUST be HSL.
     --copper-bright: 26 63% 47%;  /* ornament only, never text (#C26F2E) */
     --marigold: 36 88% 59%;       /* the pop: one loud CTA per page (#F2A93B) */
     --wash: 38 40% 90%;           /* plate wash fallback; chapters set their own */
+    /* Ornament colour (footer squiggle etc.) — full colour value, not HSL
+       channels, so it can carry alpha. Shell default = today's quiet ink;
+       chapters may re-brand it (honeymoon: polished copper). */
+    --ornament: hsl(24 22% 16% / 0.4);
 
     /* ---- Type system ---- */
     --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
@@ -129,6 +133,8 @@ All colors MUST be HSL.
        (#F3DCCE). Spine (--brand) is display-size only on ivory; small text
        on the wash always uses ink. */
     --wash: 23 61% 88%;
+    /* The footer squiggle wears polished copper here (ornament tier). */
+    --ornament: hsl(26 63% 47%);
   }
 }
 

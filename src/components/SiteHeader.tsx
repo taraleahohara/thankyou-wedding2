@@ -9,7 +9,9 @@ import { Link } from "react-router-dom";
  */
 const SiteHeader = () => {
   return (
-    <header className="sticky top-0 z-40 bg-paper/90 backdrop-blur-sm border-b border-ink/10">
+    // In-flow (not sticky): the masthead reads once at the top and then gets
+    // out of the photography's way — a floating bar added no value (Tara).
+    <header className="bg-paper border-b border-ink/10">
       <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-center">
         <Link
           to="/"

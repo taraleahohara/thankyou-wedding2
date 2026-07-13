@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import HeroSection from "@/components/HeroSection";
 import SiteDescription from "@/components/SiteDescription";
 import TaggedPhotoGallery from "@/components/TaggedPhotoGallery";
 import SiteHeader from "@/components/SiteHeader";
@@ -12,7 +11,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { getChapter } from "@/data/chapters";
 import { honeymoonPhotos } from "@/data/honeymoonPhotos";
 import PlateHero from "@/components/pilot/PlateHero";
-import TapeStripe from "@/components/pilot/TapeStripe";
+import GestureDivider from "@/components/pilot/GestureDivider";
 import PilotControls from "@/components/pilot/PilotControls";
 import { usePilotOptions } from "@/components/pilot/pilotOptions";
 
@@ -129,23 +128,14 @@ const Honeymoon = () => {
     <div data-chapter={chapter.theme} className="min-h-screen bg-paper flex flex-col">
       <SiteHeader />
 
-      {pilot.hero === "photo" ? (
-        <HeroSection
-          variant="archive"
-          eyebrow="chapter 02 · august 2025"
-          imageUrl={chapter.hero!.image}
-          title={chapter.title}
-          subtitle="sri lanka"
-        />
-      ) : (
-        <PlateHero
-          mode={pilot.hero}
-          eyebrow="chapter 02 · august 2025"
-          imageUrl={chapter.hero!.image}
-          title={chapter.title}
-          subtitle="sri lanka"
-        />
-      )}
+      {/* Locked by Tara: wash hero + scatter galleries */}
+      <PlateHero
+        mode="wash"
+        eyebrow="chapter 02 · august 2025"
+        imageUrl={chapter.hero!.image}
+        title={chapter.title}
+        subtitle="sri lanka"
+      />
 
       <SiteDescription text={chapter.siteDescription!} variant="plain" />
 
@@ -158,7 +148,9 @@ const Honeymoon = () => {
             categoryIndex={index}
             eyebrow={`0${index + 1}`}
             frame="hairline"
-            layout={pilot.gallery}
+            layout="scatter"
+            scatterScale={pilot.scale}
+            corners={pilot.corners}
             emphasizeTitle
             id={section.id}
             description={section.description}
@@ -169,7 +161,9 @@ const Honeymoon = () => {
         ))}
       </div>
 
-      {pilot.gesture === "tape" && <TapeStripe />}
+      {pilot.gesture !== "none" && (
+        <GestureDivider gesture={pilot.gesture} stampLabel="02" />
+      )}
 
       <SiteFooter />
 

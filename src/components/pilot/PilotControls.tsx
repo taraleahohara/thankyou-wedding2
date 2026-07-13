@@ -7,6 +7,7 @@ interface PilotControlsProps {
 }
 
 /** Floating switcher so Tara can flip design variants live in her browser.
+ *  Hero (wash) and gallery (scatter) are locked; these are the open calls.
  *  Pilot-only tooling: delete with the pilot folder once the direction is locked. */
 const PilotControls = ({ options, onChange }: PilotControlsProps) => {
   const [open, setOpen] = useState(true);
@@ -18,7 +19,7 @@ const PilotControls = ({ options, onChange }: PilotControlsProps) => {
   ) => (
     <div className="mb-3 last:mb-0">
       <p className="u-label text-copper mb-1.5">{label}</p>
-      <div className="flex gap-1.5">
+      <div className="flex flex-wrap gap-1.5">
         {choices.map((choice) => {
           const active = options[key] === choice.value;
           return (
@@ -64,18 +65,20 @@ const PilotControls = ({ options, onChange }: PilotControlsProps) => {
           hide
         </button>
       </div>
-      {group("hero", "hero", [
-        { value: "photo", label: "photo" },
-        { value: "wash", label: "wash" },
-        { value: "band", label: "band" },
-      ])}
-      {group("galleries", "gallery", [
-        { value: "columns", label: "columns" },
-        { value: "scatter", label: "scatter" },
-      ])}
       {group("gesture", "gesture", [
         { value: "none", label: "none" },
-        { value: "tape", label: "tape stripe" },
+        { value: "squiggle", label: "squiggle" },
+        { value: "stitch", label: "stitch" },
+        { value: "stamp", label: "stamp" },
+      ])}
+      {group("scatter scale", "scale", [
+        { value: "gentle", label: "gentle" },
+        { value: "varied", label: "varied" },
+        { value: "bold", label: "bold" },
+      ])}
+      {group("corners", "corners", [
+        { value: "soft", label: "round" },
+        { value: "square", label: "square" },
       ])}
     </div>
   );

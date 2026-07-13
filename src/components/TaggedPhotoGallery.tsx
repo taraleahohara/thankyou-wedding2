@@ -38,19 +38,42 @@ interface TaggedPhotoGalleryProps {
   frame?: "shadow" | "hairline"; // Thumbnail frame: drop-shadow (default) or hairline border
   layout?: "columns" | "scatter"; // columns (default) = masonry; scatter = staggered editorial layout
   emphasizeTitle?: boolean; // Italicize the last word of the title ("mountains & nature")
+  scatterScale?: "gentle" | "varied" | "bold"; // How dramatic the scatter's size rhythm is
+  corners?: "soft" | "square"; // Image corners: rounded (default) or sharp
 }
 
-// Scatter layout: deterministic placement cycle on a 12-column grid —
+// Scatter layouts: deterministic placement cycles on a 12-column grid —
 // varied widths, offsets and stagger, like a magazine spread. Index-based,
-// so the layout is stable across renders.
-const SCATTER_PATTERN = [
-  { start: 1, span: 5, top: 0 },
-  { start: 8, span: 4, top: 4 },
-  { start: 3, span: 4, top: 3 },
-  { start: 8, span: 5, top: 5 },
-  { start: 2, span: 3, top: 3.5 },
-  { start: 6, span: 6, top: 4.5 },
-] as const;
+// so the layout is stable across renders. Three scales of drama:
+const SCATTER_PATTERNS = {
+  // gentle: near-uniform sizes, calm offsets — the quiet album read
+  gentle: [
+    { start: 1, span: 5, top: 0 },
+    { start: 7, span: 5, top: 3 },
+    { start: 2, span: 5, top: 3 },
+    { start: 8, span: 5, top: 4 },
+    { start: 3, span: 5, top: 3.5 },
+    { start: 7, span: 5, top: 4 },
+  ],
+  // varied: mixed sizes — the magazine read
+  varied: [
+    { start: 1, span: 5, top: 0 },
+    { start: 8, span: 4, top: 4 },
+    { start: 3, span: 4, top: 3 },
+    { start: 8, span: 5, top: 5 },
+    { start: 2, span: 3, top: 3.5 },
+    { start: 6, span: 6, top: 4.5 },
+  ],
+  // bold: big statements against small asides — the exhibition read
+  bold: [
+    { start: 1, span: 7, top: 0 },
+    { start: 9, span: 3, top: 6 },
+    { start: 3, span: 8, top: 5 },
+    { start: 1, span: 4, top: 3 },
+    { start: 8, span: 4, top: 4 },
+    { start: 2, span: 10, top: 6 },
+  ],
+} as const;
 
 // Mobile scatter: stacked, with alternating width and alignment for a
 // gentler version of the same rhythm.
@@ -135,21 +158,18 @@ const TaggedPhotoGallery = ({
   frame = "shadow",
   layout = "columns",
   emphasizeTitle = false,
+  scatterScale = "varied",
+  corners = "soft",
 }: TaggedPhotoGalleryProps) => {
+  // Archive pages (hairline frame) drop the dark hover overlay entirely:
+  // the photo itself is the lightbox trigger. The default (wedding) keeps
+  // its existing overlay with View/Download buttons.
+  const isArchive = frame === "hairline";
+  const cornerClass = isArchive && corners === "square" ? "rounded-none" : "rounded-lg";
   const frameClasses =
     frame === "hairline"
-      ? "border border-ink/10 transition-colors duration-2 ease-paper group-hover:border-ink/30"
-      : "shadow-md transition-all duration-300 group-hover:shadow-xl";
-  // Archive pages (hairline frame) use Homestead structure colours on the
-  // overlay actions: olive to view, copper to download, pill-shaped.
-  // The default (wedding) keeps its existing brand/rounded-lg styling.
-  const isArchive = frame === "hairline";
-  const viewBtnClasses = isArchive
-    ? "bg-olive text-paper rounded-full hover:bg-olive/90"
-    : "bg-brand text-white rounded-lg hover:bg-brand/90";
-  const downloadBtnClasses = isArchive
-    ? "bg-copper text-paper rounded-full hover:bg-copper/90"
-    : "bg-brand-alt text-white rounded-lg hover:bg-brand-alt/90";
+      ? `${cornerClass} border border-ink/10 transition-all duration-2 ease-paper group-hover:border-ink/40 group-hover:brightness-[1.03]`
+      : "rounded-lg shadow-md transition-all duration-300 group-hover:shadow-xl";
 
   // "mountains & nature" → "mountains & <em>nature</em>"
   const displayTitle = (() => {
@@ -260,32 +280,63 @@ const TaggedPhotoGallery = ({
   ) => {
     const originalIndex = photoIndexById.get(photo.id) ?? 0;
 
+    const image = photo.url ? (
+      <CloudinaryImage
+        src={photo.url}
+        alt={photo.alt}
+        loading={loadingStrategy}
+        className={`w-full h-auto object-contain ${frameClasses}`}
+        width={photo.width}
+        height={photo.height}
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        onError={(e) => {
+          // Try to reload with download URL first
+          if (e.currentTarget.src !== photo.downloadUrl) {
+            e.currentTarget.src = photo.downloadUrl;
+          } else {
+            // If download URL also fails, remove from grid
+            setFailedImages(prev => new Set(prev).add(photo.id));
+          }
+        }}
+      />
+    ) : (
+      <div className="w-full h-64 flex items-center justify-center bg-gray-200 text-gray-500 rounded-lg">
+        Invalid image URL
+      </div>
+    );
+
+    const caption = showCaption && photo.caption && (
+      <div
+        className={
+          captionAlign === "left"
+            ? "mt-2 text-sm italic text-ink/70 text-left"
+            : "mt-2 text-sm text-ink text-center"
+        }
+      >
+        {photo.caption}
+      </div>
+    );
+
+    if (isArchive) {
+      // Archive interaction: no overlay — the photograph is the button.
+      return (
+        <>
+          <button
+            type="button"
+            onClick={() => setSelectedPhotoIndex(originalIndex)}
+            className="block w-full cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
+            aria-label={`View enlarged ${photo.alt}`}
+          >
+            {image}
+          </button>
+          {caption}
+        </>
+      );
+    }
+
     return (
       <>
-        {photo.url ? (
-          <CloudinaryImage
-            src={photo.url}
-            alt={photo.alt}
-            loading={loadingStrategy}
-            className={`w-full h-auto rounded-lg object-contain ${frameClasses}`}
-            width={photo.width}
-            height={photo.height}
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            onError={(e) => {
-              // Try to reload with download URL first
-              if (e.currentTarget.src !== photo.downloadUrl) {
-                e.currentTarget.src = photo.downloadUrl;
-              } else {
-                // If download URL also fails, remove from grid
-                setFailedImages(prev => new Set(prev).add(photo.id));
-              }
-            }}
-          />
-        ) : (
-          <div className="w-full h-64 flex items-center justify-center bg-gray-200 text-gray-500 rounded-lg">
-            Invalid image URL
-          </div>
-        )}
+        {image}
         {/* Hover/focus overlay: pure CSS (no React state), so
             hovering never re-renders the gallery. Revealed on
             hover (incl. touch-tap :hover emulation) and via
@@ -293,7 +344,7 @@ const TaggedPhotoGallery = ({
         <div className="absolute inset-0 bg-black/60 rounded-lg flex items-center justify-center gap-2 sm:gap-4 z-10 opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto focus-within:opacity-100 focus-within:pointer-events-auto">
           <button
             onClick={() => setSelectedPhotoIndex(originalIndex)}
-            className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 transition-colors text-sm sm:text-base ${viewBtnClasses}`}
+            className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand text-white rounded-lg hover:bg-brand/90 transition-colors text-sm sm:text-base"
             aria-label={`View enlarged ${photo.alt}`}
           >
             <Eye size={18} className="sm:w-5 sm:h-5" />
@@ -303,7 +354,7 @@ const TaggedPhotoGallery = ({
             <a
               href={getDownloadUrl(photo.downloadUrl)}
               download
-              className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 transition-colors text-sm sm:text-base ${downloadBtnClasses}`}
+              className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand-alt text-white rounded-lg hover:bg-brand-alt/90 transition-colors text-sm sm:text-base"
               aria-label={`Download ${photo.alt}`}
             >
               <Download size={18} className="sm:w-5 sm:h-5" />
@@ -311,17 +362,7 @@ const TaggedPhotoGallery = ({
             </a>
           )}
         </div>
-        {showCaption && photo.caption && (
-          <div
-            className={
-              captionAlign === "left"
-                ? "mt-2 text-sm italic text-ink/70 text-left"
-                : "mt-2 text-sm text-ink text-center"
-            }
-          >
-            {photo.caption}
-          </div>
-        )}
+        {caption}
       </>
     );
   };
@@ -364,7 +405,8 @@ const TaggedPhotoGallery = ({
               // Desktop scatter: 12-column grid, staggered magazine placement
               <div className="grid grid-cols-12 gap-x-4">
                 {validPhotos.map((photo, index) => {
-                  const slot = SCATTER_PATTERN[index % SCATTER_PATTERN.length];
+                  const pattern = SCATTER_PATTERNS[scatterScale];
+                  const slot = pattern[index % pattern.length];
                   return (
                     <div
                       key={photo.id}
