@@ -6,6 +6,8 @@ import TaggedPhotoGallery from "@/components/TaggedPhotoGallery";
 import ThankYouSection from "@/components/ThankYouSection";
 import FloatingGalleryNav from "@/components/FloatingGalleryNav";
 import RelatedGalleries from "@/components/RelatedGalleries";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import { guestList, type GuestConfig } from "@/data/guests";
 import { getChapter } from "@/data/chapters";
 import { weddingPhotos } from "@/data/weddingPhotos";
@@ -205,6 +207,8 @@ const Wedding = () => {
   // Render authenticated view
   return (
     <div data-chapter={chapter.theme} className="min-h-screen bg-paper">
+      <SiteHeader />
+
       <HeroSection
         imageUrl={chapter.hero!.image}
         title={chapter.hero!.title}
@@ -270,6 +274,8 @@ const Wedding = () => {
       )}
 
       <RelatedGalleries relatedGalleryIds={chapter.relatedChapterIds!} />
+
+      <SiteFooter />
 
       <FloatingGalleryNav hasPersonalizedGallery={currentGuest && currentGuest.tag !== "wedding-highlights"} />
     </div>
