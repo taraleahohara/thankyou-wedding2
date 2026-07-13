@@ -131,7 +131,7 @@ const Honeymoon = () => {
         subtitle="sri lanka"
       />
 
-      <SiteDescription text={chapter.siteDescription!} />
+      <SiteDescription text={chapter.siteDescription!} variant="plain" />
 
       <div className="flex-1">
         {chapter.sections!.map((section, index) => (
