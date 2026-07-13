@@ -107,7 +107,7 @@ const Honeymoon = () => {
               )}
               <Button
                 type="submit"
-                className="w-full bg-brand text-paper hover:bg-brand-alt lowercase tracking-wide transition-colors duration-[var(--dur-2)] ease-[var(--ease-paper)]"
+                className="w-full bg-brand text-paper hover:bg-brand-alt lowercase tracking-wide transition-colors duration-2 ease-paper"
               >
                 come along
               </Button>

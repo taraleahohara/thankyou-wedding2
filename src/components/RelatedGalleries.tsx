@@ -63,7 +63,7 @@ const RelatedGalleries = ({ relatedGalleryIds }: RelatedGalleriesProps) => {
             return (
               <div
                 key={chapter.id}
-                className={`group relative aspect-square overflow-hidden rounded-lg border border-ink/10 transition-colors duration-[var(--dur-2)] ease-[var(--ease-paper)] hover:border-ink/30 ${galleryData.length === 1 ? 'w-[300px]' : ''}`}
+                className={`group relative aspect-square overflow-hidden rounded-lg border border-ink/10 transition-colors duration-2 ease-paper hover:border-ink/30 ${galleryData.length === 1 ? 'w-[300px]' : ''}`}
               >
                 {/* Desktop: entire card is clickable */}
                 <Link
@@ -80,7 +80,7 @@ const RelatedGalleries = ({ relatedGalleryIds }: RelatedGalleriesProps) => {
                 </div>
 
                 {/* Image layer (foreground) — slides down to reveal the label */}
-                <div className="absolute inset-0 z-10 rounded-lg overflow-hidden transition-transform duration-[var(--dur-3)] ease-[var(--ease-paper)] group-hover:translate-y-[12%]">
+                <div className="absolute inset-0 z-10 rounded-lg overflow-hidden transition-transform duration-3 ease-paper group-hover:translate-y-[12%]">
                   {headerImage && (
                     <CloudinaryImage
                       src={headerImage}
@@ -94,7 +94,7 @@ const RelatedGalleries = ({ relatedGalleryIds }: RelatedGalleriesProps) => {
                 {/* Go pill — visible on mobile, revealed on hover on desktop */}
                 <Link
                   to={link}
-                  className="absolute bottom-4 left-4 z-20 bg-brand text-paper p-2 rounded-full hover:bg-ink transition-all duration-[var(--dur-2)] ease-[var(--ease-paper)] opacity-100 md:opacity-0 md:group-hover:opacity-100"
+                  className="absolute bottom-4 left-4 z-20 bg-brand text-paper p-2 rounded-full hover:bg-ink transition-all duration-2 ease-paper opacity-100 md:opacity-0 md:group-hover:opacity-100"
                   aria-label={`go to ${chapter.title}`}
                 >
                   <ArrowRight size={20} />

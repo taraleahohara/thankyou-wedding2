@@ -113,7 +113,7 @@ const TaggedPhotoGallery = ({
 }: TaggedPhotoGalleryProps) => {
   const frameClasses =
     frame === "hairline"
-      ? "border border-ink/10 transition-colors duration-[var(--dur-2)] ease-[var(--ease-paper)] group-hover:border-ink/30"
+      ? "border border-ink/10 transition-colors duration-2 ease-paper group-hover:border-ink/30"
       : "shadow-md transition-all duration-300 group-hover:shadow-xl";
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());

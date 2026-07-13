@@ -58,6 +58,16 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      transitionTimingFunction: {
+        // Waypoints "paper" easing
+        paper: "var(--ease-paper)",
+      },
+      transitionDuration: {
+        // Waypoints motion scale (140 / 240 / 360ms)
+        1: "var(--dur-1)",
+        2: "var(--dur-2)",
+        3: "var(--dur-3)",
+      },
       keyframes: {
         "accordion-down": {
           from: {

@@ -28,7 +28,7 @@ const NotFound = () => {
 
         <Link
           to="/"
-          className="u-label text-brand hover:opacity-70 transition-opacity duration-[var(--dur-1)] ease-[var(--ease-paper)]"
+          className="u-label text-brand hover:opacity-70 transition-opacity duration-1 ease-paper"
         >
           ← back to our life
         </Link>
