@@ -51,6 +51,19 @@ All colors MUST be HSL.
     --brand: 24 22% 16%;
     --brand-alt: 28 20% 42%;
 
+    /* ---- The Homestead: house tiers (Phase 3.5 pilot) ----
+       Tier-1 signature primaries + tier-0 parchment live at :root because
+       they are house colours — fixed sitewide, never rotated per chapter.
+       Chapter scopes only re-declare their own plate (spine + wash).
+       Contrast notes (vs ivory paper): olive 5.1 AA, copper 5.0 AA,
+       marigold takes ink type at 7.1 AAA. Copper-bright is ornament only. */
+    --parchment: 42 76% 97%;      /* cards, wells (#FDF9F0) */
+    --olive: 74 36% 31%;          /* structure: buttons, nav, active (#5E6B33) */
+    --copper: 24 60% 38%;         /* voice: links, eyebrows, small rules (#9C5527) */
+    --copper-bright: 26 63% 47%;  /* ornament only, never text (#C26F2E) */
+    --marigold: 36 88% 59%;       /* the pop: one loud CTA per page (#F2A93B) */
+    --wash: 38 40% 90%;           /* plate wash fallback; chapters set their own */
+
     /* ---- Type system ---- */
     --font-display: 'Fraunces', Georgia, 'Times New Roman', serif;
     --font-body: Georgia, 'Times New Roman', serif;
@@ -112,6 +125,10 @@ All colors MUST be HSL.
     --ink: 24 22% 16%;
     --brand: 14 57% 51%;
     --brand-alt: 14 45% 45%;
+    /* Homestead plate wash — the pale terracotta the chapter's plates sit on
+       (#F3DCCE). Spine (--brand) is display-size only on ivory; small text
+       on the wash always uses ink. */
+    --wash: 23 61% 88%;
   }
 }
 

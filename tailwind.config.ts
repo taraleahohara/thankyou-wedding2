@@ -52,6 +52,13 @@ export default {
         ink: "hsl(var(--ink))",
         brand: "hsl(var(--brand))",
         "brand-alt": "hsl(var(--brand-alt))",
+        // Homestead house tiers (fixed sitewide) + per-chapter plate wash
+        parchment: "hsl(var(--parchment))",
+        olive: "hsl(var(--olive))",
+        copper: "hsl(var(--copper))",
+        "copper-bright": "hsl(var(--copper-bright))",
+        marigold: "hsl(var(--marigold))",
+        wash: "hsl(var(--wash))",
       },
       borderRadius: {
         lg: "var(--radius)",
