@@ -1,22 +1,6 @@
 import type { ReactNode } from "react";
-import { getCloudinaryUrlFromLocalPath } from "@/lib/cloudinary";
+import { getImageUrl } from "@/lib/cloudinary";
 import weddingHeaderImage from "@/assets/headerimage.jpg";
-
-// Helper function to get image URL (Cloudinary if configured, otherwise local)
-function getImageUrl(localPath: string): string {
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-
-  // If Cloudinary is configured, use it; otherwise use local path
-  if (cloudName) {
-    return getCloudinaryUrlFromLocalPath(localPath, 'wedding-photos', {
-      quality: 'auto',
-      format: 'auto',
-    });
-  }
-
-  // Fallback to local images
-  return localPath;
-}
 
 /** One gallery section within a chapter page. */
 export interface GallerySectionConfig {

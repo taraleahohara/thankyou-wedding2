@@ -1,24 +1,8 @@
 import { useEffect } from "react";
 import { chapters } from "@/data/chapters";
 import LifeEventCard from "@/components/LifeEventCard";
-import { getCloudinaryUrlFromLocalPath } from "@/lib/cloudinary";
+import { getImageUrl } from "@/lib/cloudinary";
 import CloudinaryImage from "@/components/CloudinaryImage";
-
-// Helper function to get image URL (Cloudinary if configured, otherwise local)
-function getImageUrl(localPath: string): string {
-  const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-
-  // If Cloudinary is configured, use it; otherwise use local path
-  if (cloudName) {
-    return getCloudinaryUrlFromLocalPath(localPath, 'wedding-photos', {
-      quality: 'auto',
-      format: 'auto',
-    });
-  }
-
-  // Fallback to local images
-  return localPath;
-}
 
 const Home = () => {
   // Set page title dynamically

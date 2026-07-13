@@ -2,6 +2,7 @@ import { useState, useMemo, useEffect } from "react";
 import { Download, Eye } from "lucide-react";
 import PhotoLightbox from "./PhotoLightbox";
 import CloudinaryImage from "./CloudinaryImage";
+import { getDownloadUrl } from "@/lib/cloudinary";
 
 // Shape of entries in the auto-generated photo manifests (weddingPhotos / honeymoonPhotos)
 export interface SourcePhoto {
@@ -23,9 +24,6 @@ interface Photo {
   caption?: string | null;
 }
 
-// URL transformation functions removed - using original Cloudinary URLs directly
-// The weddingPhotos.ts file needs to be regenerated with correct URLs from Cloudinary
-
 interface TaggedPhotoGalleryProps {
   title: string;
   tag: string;
@@ -38,54 +36,25 @@ interface TaggedPhotoGalleryProps {
   photos: SourcePhoto[]; // The photo manifest to filter by tag
 }
 
-// Utility to construct a Cloudinary download URL with fl_attachment flag
-// This forces the browser to download the file instead of opening it
-// URL structure: .../upload/{version}/{public_id}.{format}
-// Result: .../upload/fl_attachment/{version}/{public_id}.{format}
-const getDownloadUrl = (imageUrl: string): string => {
-  // Return as-is if not a Cloudinary URL
-  if (!imageUrl || !imageUrl.includes('res.cloudinary.com')) {
-    return imageUrl;
-  }
-  
-  // Check if fl_attachment is already present
-  if (imageUrl.includes('fl_attachment')) {
-    return imageUrl;
-  }
-  
-  // Find the position after /upload/
-  const uploadIndex = imageUrl.indexOf('/upload/');
-  if (uploadIndex === -1) {
-    return imageUrl; // Not a valid Cloudinary URL structure
-  }
-  
-  // Insert fl_attachment right after /upload/
-  // Example: .../upload/v1767374391/BC1-1.jpg -> .../upload/fl_attachment/v1767374391/BC1-1.jpg
-  const beforeUpload = imageUrl.substring(0, uploadIndex + '/upload/'.length);
-  const afterUpload = imageUrl.substring(uploadIndex + '/upload/'.length);
-  
-  return `${beforeUpload}fl_attachment/${afterUpload}`;
-};
-
 // Utility to distribute photos into columns using "Shortest Column First" algorithm
 // This minimizes gaps at the bottom by placing each photo in the column with the least current height
 const distributePhotosIntoColumns = (photos: Photo[], columnCount: number): Photo[][] => {
   // Initialize columns array
   const columns: Photo[][] = Array.from({ length: columnCount }, () => []);
-  
+
   // Track the current height of each column
   // Heights are relative based on aspect ratio (assuming all images have same width in column)
   const columnHeights: number[] = Array.from({ length: columnCount }, () => 0);
-  
+
   // Standard column width (relative unit for height calculation)
   // Since images use w-full, they'll all be same width, so we can use aspect ratio
   const standardWidth = 1; // Relative unit
-  
+
   photos.forEach((photo) => {
     // Calculate the aspect ratio height for this photo
     // If width/height not available, use default aspect ratio of 4:3
     let aspectRatioHeight: number;
-    
+
     if (photo.width && photo.height && photo.width > 0 && photo.height > 0) {
       // Calculate height based on aspect ratio (height = width / aspect_ratio)
       // Since all images have same width in column, height is proportional to aspect ratio
@@ -94,33 +63,42 @@ const distributePhotosIntoColumns = (photos: Photo[], columnCount: number): Phot
       // Default to 4:3 aspect ratio if dimensions not available
       aspectRatioHeight = (3 / 4) * standardWidth;
     }
-    
+
     // Find the column with the minimum current height
     let shortestColumnIndex = 0;
     let minHeight = columnHeights[0];
-    
+
     for (let i = 1; i < columnCount; i++) {
       if (columnHeights[i] < minHeight) {
         minHeight = columnHeights[i];
         shortestColumnIndex = i;
       }
     }
-    
+
     // Add the photo to the shortest column
     columns[shortestColumnIndex].push(photo);
-    
+
     // Update the column's total height (add photo height + gap)
     // Assuming gap-4 (1rem = 16px) between items, convert to relative units
     const gapHeight = 0.25; // Relative gap height (approximate)
     columnHeights[shortestColumnIndex] += aspectRatioHeight + gapHeight;
   });
-  
+
   return columns;
 };
 
-const TaggedPhotoGallery = ({ 
-  title, 
-  tag, 
+// Column count for the current viewport (1 mobile / 2 md / 3 lg)
+const getColumnCount = (): number => {
+  if (typeof window === "undefined") return 1;
+  const width = window.innerWidth;
+  if (width >= 1024) return 3;
+  if (width >= 768) return 2;
+  return 1;
+};
+
+const TaggedPhotoGallery = ({
+  title,
+  tag,
   categoryIndex,
   altPrefix,
   id,
@@ -130,22 +108,21 @@ const TaggedPhotoGallery = ({
   photos: allCloudinaryPhotos
 }: TaggedPhotoGalleryProps) => {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
-  const [hoveredPhoto, setHoveredPhoto] = useState<string | null>(null);
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
   // Filter and map photos from Cloudinary based on the tag
   const photos = useMemo(() => {
     const filtered = (allCloudinaryPhotos || [])
-      .filter(photo => 
-        photo && 
-        photo.tags && 
-        Array.isArray(photo.tags) && 
+      .filter(photo =>
+        photo &&
+        photo.tags &&
+        Array.isArray(photo.tags) &&
         photo.tags.includes(tag)
       )
       .map((photo, index) => {
         // Use original Cloudinary URL directly - ensure it's a valid URL
         let imageUrl = photo.url;
-        
+
         // Validate URL format
         if (!imageUrl || !imageUrl.startsWith('http')) {
           imageUrl = ''; // Will trigger error handling
@@ -154,10 +131,9 @@ const TaggedPhotoGallery = ({
         return {
           id: `${tag}-${index + 1}`,
           url: imageUrl, // Original Cloudinary URL
-          srcSet: '', // Disable srcset for now
           downloadUrl: photo.url, // Full resolution for download
-          alt: altPrefix 
-            ? `${altPrefix} ${index + 1}` 
+          alt: altPrefix
+            ? `${altPrefix} ${index + 1}`
             : `${title} ${index + 1}`,
           width: photo.width,
           height: photo.height,
@@ -171,26 +147,35 @@ const TaggedPhotoGallery = ({
   }, [tag, title, altPrefix, allCloudinaryPhotos]);
 
   // Filter out failed images from the display
-  const validPhotos = photos.filter(photo => !failedImages.has(photo.id));
+  const validPhotos = useMemo(
+    () => photos.filter(photo => !failedImages.has(photo.id)),
+    [photos, failedImages]
+  );
 
-  // Hook to determine column count based on screen size
-  const [columnCount, setColumnCount] = useState(1);
-  
+  // Precomputed id -> index map for lightbox navigation (avoids
+  // an O(n) findIndex per photo inside the render loop)
+  const photoIndexById = useMemo(() => {
+    const map = new Map<string, number>();
+    validPhotos.forEach((photo, index) => map.set(photo.id, index));
+    return map;
+  }, [validPhotos]);
+
+  // Column count driven by matchMedia: fires only when a breakpoint is
+  // crossed, instead of a setState on every window resize event.
+  const [columnCount, setColumnCount] = useState(getColumnCount);
+
   useEffect(() => {
-    const updateColumnCount = () => {
-      const width = window.innerWidth;
-      if (width >= 1024) {
-        setColumnCount(3); // lg: 3 columns
-      } else if (width >= 768) {
-        setColumnCount(2); // md: 2 columns
-      } else {
-        setColumnCount(1); // mobile: 1 column
-      }
-    };
+    const mediaQueries = [
+      window.matchMedia("(min-width: 1024px)"),
+      window.matchMedia("(min-width: 768px)"),
+    ];
+    const updateColumnCount = () => setColumnCount(getColumnCount());
 
     updateColumnCount();
-    window.addEventListener('resize', updateColumnCount);
-    return () => window.removeEventListener('resize', updateColumnCount);
+    mediaQueries.forEach(mq => mq.addEventListener("change", updateColumnCount));
+    return () => {
+      mediaQueries.forEach(mq => mq.removeEventListener("change", updateColumnCount));
+    };
   }, []);
 
   // Distribute photos into columns
@@ -230,21 +215,19 @@ const TaggedPhotoGallery = ({
             {photoColumns.map((column, columnIndex) => (
               <div key={columnIndex} className="flex-1 flex flex-col gap-4">
                 {column.map((photo, photoIndex) => {
-                  // Calculate the original index in validPhotos for lightbox navigation
-                  const originalIndex = validPhotos.findIndex(p => p.id === photo.id);
-                  
+                  // Original index in validPhotos for lightbox navigation
+                  const originalIndex = photoIndexById.get(photo.id) ?? 0;
+
                   // Determine loading strategy: first few images should be eager, especially on mobile
                   const isFirstColumn = columnIndex === 0;
                   const isFirstFewImages = photoIndex < 3; // First 3 images in first column
                   const shouldLoadEager = isFirstColumn && isFirstFewImages;
                   const loadingStrategy = shouldLoadEager ? 'eager' : 'lazy';
-                  
+
                   return (
                     <div
                       key={photo.id}
                       className="relative group"
-                      onMouseEnter={() => setHoveredPhoto(photo.id)}
-                      onMouseLeave={() => setHoveredPhoto(null)}
                     >
                       {photo.url ? (
                         <CloudinaryImage
@@ -270,29 +253,31 @@ const TaggedPhotoGallery = ({
                           Invalid image URL
                         </div>
                       )}
-                      {hoveredPhoto === photo.id && (
-                        <div className="absolute inset-0 bg-black/60 rounded-lg flex items-center justify-center gap-2 sm:gap-4 transition-opacity duration-300 z-10">
-                          <button
-                            onClick={() => setSelectedPhotoIndex(originalIndex)}
-                            className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand text-white rounded-lg hover:bg-brand/90 transition-colors text-sm sm:text-base"
-                            aria-label={`View enlarged ${photo.alt}`}
+                      {/* Hover/focus overlay: pure CSS (no React state), so
+                          hovering never re-renders the gallery. Revealed on
+                          hover (incl. touch-tap :hover emulation) and via
+                          keyboard focus (focus-within). */}
+                      <div className="absolute inset-0 bg-black/60 rounded-lg flex items-center justify-center gap-2 sm:gap-4 z-10 opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto focus-within:opacity-100 focus-within:pointer-events-auto">
+                        <button
+                          onClick={() => setSelectedPhotoIndex(originalIndex)}
+                          className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand text-white rounded-lg hover:bg-brand/90 transition-colors text-sm sm:text-base"
+                          aria-label={`View enlarged ${photo.alt}`}
+                        >
+                          <Eye size={18} className="sm:w-5 sm:h-5" />
+                          <span className="hidden sm:inline">View</span>
+                        </button>
+                        {allowDownload && (
+                          <a
+                            href={getDownloadUrl(photo.downloadUrl)}
+                            download
+                            className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand-alt text-white rounded-lg hover:bg-brand-alt/90 transition-colors text-sm sm:text-base"
+                            aria-label={`Download ${photo.alt}`}
                           >
-                            <Eye size={18} className="sm:w-5 sm:h-5" />
-                            <span className="hidden sm:inline">View</span>
-                          </button>
-                          {allowDownload && (
-                            <a
-                              href={getDownloadUrl(photo.downloadUrl)}
-                              download
-                              className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand-alt text-white rounded-lg hover:bg-brand-alt/90 transition-colors text-sm sm:text-base"
-                              aria-label={`Download ${photo.alt}`}
-                            >
-                              <Download size={18} className="sm:w-5 sm:h-5" />
-                              <span className="hidden sm:inline">Download</span>
-                            </a>
-                          )}
-                        </div>
-                      )}
+                            <Download size={18} className="sm:w-5 sm:h-5" />
+                            <span className="hidden sm:inline">Download</span>
+                          </a>
+                        )}
+                      </div>
                       {showCaption && photo.caption && (
                         <div className="mt-2 text-sm text-ink text-center">
                           {photo.caption}
@@ -320,4 +305,3 @@ const TaggedPhotoGallery = ({
 };
 
 export default TaggedPhotoGallery;
-

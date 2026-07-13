@@ -1,44 +1,15 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
+import { getLqipUrl, isCloudinaryUrl, optimizeCloudinaryUrl } from '@/lib/cloudinary';
 
-/**
- * Optimizes a Cloudinary URL by injecting transformation parameters
- * @param url - The Cloudinary URL
- * @param width - The desired width for the image
- * @returns The optimized URL with f_auto,q_auto,w_{width} transformations
- */
-function optimizeCloudinaryUrl(url: string, width: number): string {
-  // Return as-is if not a Cloudinary URL
-  if (!url || !url.includes('res.cloudinary.com')) {
-    return url;
-  }
+// Responsive widths offered to the browser. Capped at 1600 because the
+// gallery sources max out at 1600px (c_limit also prevents upscaling).
+const SRCSET_WIDTHS = [640, 750, 828, 1080, 1200, 1600];
 
-  // Find the position after /upload/
-  const uploadIndex = url.indexOf('/upload/');
-  if (uploadIndex === -1) {
-    return url; // Not a valid Cloudinary URL structure
-  }
-
-  // Check if transformations already exist (look for common transformation patterns)
-  const afterUpload = url.substring(uploadIndex + '/upload/'.length);
-  // If it starts with a transformation (like f_auto, w_, c_, etc.), we might need to handle it differently
-  // For now, we'll inject our transformations before any existing version or path
-  // Cloudinary format: /upload/{transformations}/{version}/{public_id}
-  
-  // Check if there's already a version (starts with 'v' followed by numbers)
-  const versionMatch = afterUpload.match(/^v\d+/);
-  
-  if (versionMatch) {
-    // Insert transformations before version
-    const beforeVersion = url.substring(0, uploadIndex + '/upload/'.length);
-    const afterVersion = url.substring(uploadIndex + '/upload/'.length + versionMatch[0].length);
-    return `${beforeVersion}f_auto,q_auto,w_${width}/${versionMatch[0]}${afterVersion}`;
-  } else {
-    // No version found, insert transformations directly after /upload/
-    const beforeUpload = url.substring(0, uploadIndex + '/upload/'.length);
-    const afterUpload = url.substring(uploadIndex + '/upload/'.length);
-    return `${beforeUpload}f_auto,q_auto,w_${width}/${afterUpload}`;
-  }
-}
+// Respect prefers-reduced-motion: skip the animated blur-up transition
+// (the LQIP -> sharp swap itself still happens, just without animation).
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 interface CloudinaryImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageElement>, 'src' | 'srcSet'> {
   src: string;
@@ -47,11 +18,17 @@ interface CloudinaryImageProps extends Omit<React.ImgHTMLAttributes<HTMLImageEle
   sizes?: string;
   loading?: 'lazy' | 'eager';
   width?: number; // Fallback width for src (defaults to 1000)
+  /** Resource loading priority hint (e.g. "high" for hero images). */
+  fetchpriority?: 'high' | 'low' | 'auto';
 }
 
 /**
- * CloudinaryImage component that automatically optimizes Cloudinary URLs
- * with responsive images using srcSet and Cloudinary transformation parameters
+ * CloudinaryImage renders an optimized responsive image for Cloudinary URLs
+ * (f_auto/q_auto/c_limit srcSet) with an LQIP blur-up: a tiny blurred
+ * placeholder is shown as the img background while the full image loads,
+ * then the sharp image blurs in over ~300ms.
+ *
+ * Non-Cloudinary URLs render as a plain <img> with no LQIP.
  */
 const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
   src,
@@ -60,13 +37,42 @@ const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
   sizes,
   loading = 'lazy',
   width = 1000,
+  fetchpriority,
+  style,
+  onLoad,
   ...otherProps
 }) => {
-  // Check if this is a Cloudinary URL
-  const isCloudinaryUrl = src && src.includes('res.cloudinary.com');
+  const isCloudinary = isCloudinaryUrl(src);
 
-  if (!isCloudinaryUrl) {
-    // For non-Cloudinary URLs, render a regular img tag
+  // Non-Cloudinary images skip LQIP entirely and start "loaded".
+  const [loaded, setLoaded] = useState(!isCloudinary);
+
+  // Reset the blur-up when src changes on a mounted instance
+  // (e.g. lightbox navigation reuses the same component).
+  const [prevSrc, setPrevSrc] = useState(src);
+  if (prevSrc !== src) {
+    setPrevSrc(src);
+    setLoaded(!isCloudinary);
+  }
+
+  // Cached images can be complete before onLoad is attached; the ref
+  // callback catches that case so we never get stuck blurred.
+  const imgRef = useCallback((img: HTMLImageElement | null) => {
+    if (img && img.complete && img.naturalWidth > 0) {
+      setLoaded(true);
+    }
+  }, []);
+
+  const handleLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
+    setLoaded(true);
+    onLoad?.(event);
+  };
+
+  const fetchPriorityAttr = fetchpriority ? { fetchpriority } : {};
+
+  if (!isCloudinary) {
+    // For non-Cloudinary URLs (including local /images fallbacks),
+    // render a regular img tag untouched.
     return (
       <img
         src={src}
@@ -74,25 +80,42 @@ const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
         className={className}
         loading={loading}
         decoding="async"
+        style={style}
+        onLoad={onLoad}
+        {...fetchPriorityAttr}
         {...otherProps}
       />
     );
   }
 
-  // Generate srcSet with multiple widths
-  const widths = [640, 750, 828, 1080, 1200, 1920, 2048];
-  const srcSet = widths
-    .map((w) => {
-      const optimizedUrl = optimizeCloudinaryUrl(src, w);
-      return `${optimizedUrl} ${w}w`;
-    })
+  // Generate srcSet with multiple widths (c_limit prevents upscaling)
+  const srcSet = SRCSET_WIDTHS
+    .map((w) => `${optimizeCloudinaryUrl(src, w)} ${w}w`)
     .join(', ');
 
   // Generate default src with fallback width
   const defaultSrc = optimizeCloudinaryUrl(src, width);
 
+  // LQIP blur-up: the tiny placeholder is painted as the img element's
+  // background (visible through the transparent content area while the
+  // real image loads). Once loaded, the sharp image transitions from
+  // blurred to sharp. No wrapper element, so layout is unchanged.
+  const lqipStyle: React.CSSProperties = {
+    ...(loaded
+      ? {}
+      : {
+          backgroundImage: `url(${getLqipUrl(src)})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }),
+    filter: loaded ? 'none' : 'blur(12px)',
+    ...(prefersReducedMotion() ? {} : { transition: 'filter 300ms ease-out' }),
+    ...style,
+  };
+
   return (
     <img
+      ref={imgRef}
       src={defaultSrc}
       srcSet={srcSet}
       alt={alt}
@@ -100,10 +123,12 @@ const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
       sizes={sizes}
       loading={loading}
       decoding="async"
+      style={lqipStyle}
+      onLoad={handleLoad}
+      {...fetchPriorityAttr}
       {...otherProps}
     />
   );
 };
 
 export default CloudinaryImage;
-

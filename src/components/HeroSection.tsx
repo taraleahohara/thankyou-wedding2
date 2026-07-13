@@ -16,6 +16,7 @@ const HeroSection = ({ imageUrl, title, subtitle }: HeroSectionProps) => {
         alt={title}
         className="absolute inset-0 w-full h-full object-cover"
         loading="eager"
+        fetchpriority="high"
         sizes="100vw"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50" />
