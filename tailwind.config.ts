@@ -48,12 +48,10 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        wedding: {
-          rust: "hsl(var(--wedding-rust))",
-          olive: "hsl(var(--wedding-olive))",
-          cream: "hsl(var(--wedding-cream))",
-          "warm-text": "hsl(var(--wedding-warm-text))",
-        },
+        paper: "hsl(var(--paper))",
+        ink: "hsl(var(--ink))",
+        brand: "hsl(var(--brand))",
+        "brand-alt": "hsl(var(--brand-alt))",
       },
       borderRadius: {
         lg: "var(--radius)",

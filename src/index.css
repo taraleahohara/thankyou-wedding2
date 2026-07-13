@@ -40,17 +40,28 @@ All colors MUST be HSL.
 
     --radius: 0.75rem;
 
-    --wedding-rust: 17 70% 42%;
-    --wedding-olive: 50 36% 29%;
-    --wedding-cream: 37 82% 89%;
-    --wedding-warm-text: 39 80% 26%;
+    /* Semantic chapter tokens. The default shell (homepage) currently uses the
+       wedding palette; a later phase can restyle the shell without touching the
+       scoped chapter themes below. */
+    --paper: 37 82% 89%;
+    --ink: 39 80% 26%;
+    --brand: 17 70% 42%;
+    --brand-alt: 50 36% 29%;
   }
 
-  /* Honeymoon page color overrides */
-  body.honeymoon-page {
-    --wedding-cream: 37 79% 89%;
-    --wedding-rust: 14 57% 51%;
-    --wedding-olive: 14 57% 51%;
+  /* Wedding chapter theme — today's exact wedding palette. */
+  [data-chapter="wedding"] {
+    --paper: 37 82% 89%;
+    --ink: 39 80% 26%;
+    --brand: 17 70% 42%;
+    --brand-alt: 50 36% 29%;
+  }
+
+  /* Honeymoon chapter theme — terracotta overrides (ink inherits default). */
+  [data-chapter="honeymoon"] {
+    --paper: 37 79% 89%;
+    --brand: 14 57% 51%;
+    --brand-alt: 14 57% 51%;
   }
 }
 

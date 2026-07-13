@@ -69,22 +69,22 @@ const FloatingGalleryNav = ({ hasPersonalizedGallery = false }: FloatingGalleryN
           <button
             className={cn(
               "flex items-center gap-2 px-4 py-2.5 rounded-full",
-              "bg-wedding-cream/95 backdrop-blur-md",
-              "border border-wedding-olive/20",
-              "text-wedding-warm-text",
-              "shadow-lg shadow-wedding-olive/10",
-              "hover:bg-wedding-cream hover:shadow-xl hover:shadow-wedding-olive/20",
+              "bg-paper/95 backdrop-blur-md",
+              "border border-brand-alt/20",
+              "text-ink",
+              "shadow-lg shadow-brand-alt/10",
+              "hover:bg-paper hover:shadow-xl hover:shadow-brand-alt/20",
               "transition-all duration-300",
               "font-medium text-sm"
             )}
             aria-label="Jump to section"
           >
-            <List size={18} className="text-wedding-olive" />
+            <List size={18} className="text-brand-alt" />
             <span className="hidden sm:inline">Jump to Section</span>
             <ChevronDown 
               size={16} 
               className={cn(
-                "text-wedding-olive transition-transform duration-200",
+                "text-brand-alt transition-transform duration-200",
                 isOpen && "rotate-180"
               )} 
             />
@@ -96,9 +96,9 @@ const FloatingGalleryNav = ({ hasPersonalizedGallery = false }: FloatingGalleryN
           sideOffset={12}
           className={cn(
             "w-56 p-2",
-            "bg-wedding-cream/95 backdrop-blur-md",
-            "border-wedding-olive/20",
-            "shadow-xl shadow-wedding-olive/20"
+            "bg-paper/95 backdrop-blur-md",
+            "border-brand-alt/20",
+            "shadow-xl shadow-brand-alt/20"
           )}
         >
           <div className="flex flex-col gap-1">
@@ -108,8 +108,8 @@ const FloatingGalleryNav = ({ hasPersonalizedGallery = false }: FloatingGalleryN
                 onClick={() => scrollToSection(section.id)}
                 className={cn(
                   "w-full text-left px-4 py-2.5 rounded-lg",
-                  "text-wedding-warm-text text-sm",
-                  "hover:bg-wedding-olive/10 hover:text-wedding-olive",
+                  "text-ink text-sm",
+                  "hover:bg-brand-alt/10 hover:text-brand-alt",
                   "transition-colors duration-200",
                   "font-medium"
                 )}

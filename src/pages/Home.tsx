@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { lifeEvents } from "@/data/lifeEvents";
+import { chapters } from "@/data/chapters";
 import LifeEventCard from "@/components/LifeEventCard";
 import { getCloudinaryUrlFromLocalPath } from "@/lib/cloudinary";
 import CloudinaryImage from "@/components/CloudinaryImage";
@@ -7,7 +7,7 @@ import CloudinaryImage from "@/components/CloudinaryImage";
 // Helper function to get image URL (Cloudinary if configured, otherwise local)
 function getImageUrl(localPath: string): string {
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
-  
+
   // If Cloudinary is configured, use it; otherwise use local path
   if (cloudName) {
     return getCloudinaryUrlFromLocalPath(localPath, 'wedding-photos', {
@@ -15,7 +15,7 @@ function getImageUrl(localPath: string): string {
       format: 'auto',
     });
   }
-  
+
   // Fallback to local images
   return localPath;
 }
@@ -27,18 +27,18 @@ const Home = () => {
   }, []);
 
   // Filter to only show wedding, honeymoon, and pets
-  const displayedEvents = lifeEvents.filter(e => 
+  const displayedEvents = chapters.filter(e =>
     e.id === "wedding" || e.id === "honeymoon" || e.id === "pets"
   );
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header Section */}
-      <header className="bg-wedding-cream shadow-sm border-b border-wedding-rust/20">
+      <header className="bg-paper shadow-sm border-b border-brand/20">
         <div className="max-w-6xl mx-auto px-6 pt-2 pb-4">
           <div className="flex flex-col items-center">
             <div className="mb-2">
-              <CloudinaryImage 
+              <CloudinaryImage
                 src={getImageUrl("/images/homepage/newhpheader.png")}
                 alt="Tara and Daniel"
                 className="max-w-72 md:max-w-96 h-auto mx-auto"
@@ -46,7 +46,7 @@ const Home = () => {
               />
             </div>
             <div className="text-center max-w-3xl">
-              <h1 className="text-4xl md:text-5xl mb-4 text-wedding-warm-text">
+              <h1 className="text-4xl md:text-5xl mb-4 text-ink">
                 our life.
               </h1>
             </div>
@@ -66,23 +66,23 @@ const Home = () => {
                   if (b.date === "ongoing") return -1;
                   return new Date(b.date).getTime() - new Date(a.date).getTime();
                 });
-              
+
               // Insert pets at position 2 (third spot)
               const sortedEvents = [
                 ...otherEvents.slice(0, 2),
                 ...(petsEvent ? [petsEvent] : []),
                 ...otherEvents.slice(2)
               ];
-              
+
               const isOddCount = sortedEvents.length % 2 !== 0;
-              
+
               return sortedEvents.map((event) => {
                 const isPets = event.id === "pets";
                 const shouldBeRectangle = isOddCount && isPets;
-                
+
                 return (
-                  <div 
-                    key={event.id} 
+                  <div
+                    key={event.id}
                     className={shouldBeRectangle ? "w-[300px] md:w-[612px] md:col-span-2" : "w-[300px]"}
                   >
                     <LifeEventCard event={event} isRectangle={shouldBeRectangle} />
@@ -98,4 +98,3 @@ const Home = () => {
 };
 
 export default Home;
-

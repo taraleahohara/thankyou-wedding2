@@ -7,10 +7,15 @@ import ThankYouSection from "@/components/ThankYouSection";
 import FloatingGalleryNav from "@/components/FloatingGalleryNav";
 import RelatedGalleries from "@/components/RelatedGalleries";
 import { guestList, type GuestConfig } from "@/data/guests";
+import { getChapter } from "@/data/chapters";
+import { weddingPhotos } from "@/data/weddingPhotos";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+
+const chapter = getChapter("wedding")!;
+const chapterPassword = chapter.auth!.password;
 
 const Wedding = () => {
   // State management
@@ -23,7 +28,7 @@ const Wedding = () => {
 
   // Magic Links - Check for guest parameter in URL on mount
   useEffect(() => {
-    const guestTag = searchParams.get('guest');
+    const guestTag = searchParams.get(chapter.auth!.magicLinkParam);
 
     if (guestTag) {
       // Search for guest by tag
@@ -40,16 +45,16 @@ const Wedding = () => {
   // Update page title when authenticated
   useEffect(() => {
     if (isAuthenticated && currentGuest && currentGuest.tag !== "wedding-highlights") {
-      document.title = `Tara & Daniel's Wedding - ${currentGuest.names[0]}`;
+      document.title = `${chapter.pageTitle} - ${currentGuest.names[0]}`;
     } else {
-      document.title = `Tara & Daniel's Wedding`;
+      document.title = chapter.pageTitle!;
     }
   }, [isAuthenticated, currentGuest]);
 
   // Update Open Graph image for social sharing
   useEffect(() => {
-    const weddingHeaderImage = "https://res.cloudinary.com/dbr3xp0bx/image/upload/v1767394827/AP1-6.jpg";
-    
+    const weddingHeaderImage = chapter.ogImage!;
+
     // Update or create og:image meta tag
     let ogImage = document.querySelector('meta[property="og:image"]');
     if (!ogImage) {
@@ -58,7 +63,7 @@ const Wedding = () => {
       document.head.appendChild(ogImage);
     }
     ogImage.setAttribute('content', weddingHeaderImage);
-    
+
     // Update or create twitter:image meta tag
     let twitterImage = document.querySelector('meta[name="twitter:image"]');
     if (!twitterImage) {
@@ -75,7 +80,7 @@ const Wedding = () => {
     setError("");
 
     // Check password
-    if (passwordInput !== "taradan#1004") {
+    if (passwordInput !== chapterPassword) {
       setError("Incorrect password");
       return;
     }
@@ -91,7 +96,7 @@ const Wedding = () => {
         const nameIncludesInput = normalizedName.includes(normalizedInput);
         const inputIncludesName = normalizedInput.includes(normalizedName);
         const matches = exactMatch || nameIncludesInput || inputIncludesName;
-        
+
         // Check if name includes input OR input includes name (for partial matching)
         return matches;
       });
@@ -113,14 +118,14 @@ const Wedding = () => {
     setError("");
 
     // Check password
-    if (passwordInput !== "taradan#1004") {
+    if (passwordInput !== chapterPassword) {
       setError("Incorrect password");
       return;
     }
 
     // Find wedding-highlights guest
     const highlightsGuest = guestList.find(guest => guest.tag === "wedding-highlights");
-    
+
     if (highlightsGuest) {
       setCurrentGuest(highlightsGuest);
       setIsAuthenticated(true);
@@ -133,17 +138,17 @@ const Wedding = () => {
   // Render login form if not authenticated
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-wedding-cream flex items-center justify-center px-6">
-        <Card className="max-w-md w-full bg-wedding-cream border-wedding-olive/20 shadow-lg">
+      <div data-chapter={chapter.theme} className="min-h-screen bg-paper flex items-center justify-center px-6">
+        <Card className="max-w-md w-full bg-paper border-brand-alt/20 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-3xl text-center text-wedding-warm-text">
+            <CardTitle className="text-3xl text-center text-ink">
               Welcome to Our Wedding Gallery
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-wedding-warm-text">
+                <Label htmlFor="name" className="text-ink">
                   Name
                 </Label>
                 <Input
@@ -156,7 +161,7 @@ const Wedding = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-wedding-warm-text">
+                <Label htmlFor="password" className="text-ink">
                   Password
                 </Label>
                 <Input
@@ -174,7 +179,7 @@ const Wedding = () => {
               <div className="space-y-2">
                 <Button
                   type="submit"
-                  className="w-full bg-wedding-rust text-wedding-cream hover:bg-wedding-rust/90"
+                  className="w-full bg-brand text-paper hover:bg-brand/90"
                 >
                   Enter
                 </Button>
@@ -185,7 +190,7 @@ const Wedding = () => {
                     e.preventDefault();
                     handleNotAGuest();
                   }}
-                  className="w-full text-wedding-olive hover:text-wedding-olive/80"
+                  className="w-full text-brand-alt hover:text-brand-alt/80"
                 >
                   I was not a guest
                 </Button>
@@ -199,86 +204,76 @@ const Wedding = () => {
 
   // Render authenticated view
   return (
-    <div className="min-h-screen">
-      <HeroSection />
-      
+    <div data-chapter={chapter.theme} className="min-h-screen">
+      <HeroSection
+        imageUrl={chapter.hero!.image}
+        title={chapter.hero!.title}
+        subtitle={chapter.hero!.subtitle}
+      />
+
       {/* Display welcome message */}
       {currentGuest && (() => {
         const message = currentGuest.welcomeMessage;
         const lines = message.split('\n');
         const dearLine = lines[0]; // First line contains "Dear Name"
         const restOfMessage = lines.slice(1).join('\n');
-        
+
         return (
-          <section className="relative py-24 px-6 bg-wedding-cream">
+          <section className="relative py-24 px-6 bg-paper">
             <div className="max-w-3xl mx-auto text-center">
-              <h1 className="text-4xl md:text-5xl mb-6 text-wedding-rust">
+              <h1 className="text-4xl md:text-5xl mb-6 text-brand">
                 {dearLine}
               </h1>
               {restOfMessage && (
-                <p className="text-xl md:text-2xl leading-relaxed text-wedding-warm-text whitespace-pre-line mb-6">
+                <p className="text-xl md:text-2xl leading-relaxed text-ink whitespace-pre-line mb-6">
                   {restOfMessage}
                 </p>
               )}
-              <h2 className="text-2xl md:text-3xl text-wedding-rust mt-8">
+              <h2 className="text-2xl md:text-3xl text-brand mt-8">
                 Love, Tara & Dan
               </h2>
             </div>
           </section>
         );
       })()}
-      
-      <SiteDescription />
-      
-      <TaggedPhotoGallery 
-        title="Before the Ceremony"
-        tag="before-ceremony"
-        categoryIndex={0}
-        id="before-ceremony"
-      />
-      
-      <TaggedPhotoGallery 
-        title="The Ceremony"
-        tag="ceremony"
-        categoryIndex={1}
-        id="ceremony"
-      />
-      
-      <TaggedPhotoGallery 
-        title="Brunch"
-        tag="brunch"
-        categoryIndex={2}
-        id="brunch"
-      />
-      
-      <TaggedPhotoGallery 
-        title="After Party"
-        tag="after-party"
-        categoryIndex={3}
-        id="after-party"
-      />
-      
+
+      <SiteDescription text={chapter.siteDescription!} />
+
+      {chapter.sections!.map((section, index) => (
+        <TaggedPhotoGallery
+          key={section.id}
+          title={section.title}
+          tag={section.tag}
+          categoryIndex={index}
+          id={section.id}
+          description={section.description}
+          allowDownload={section.allowDownload}
+          showCaption={section.showCaption}
+          photos={weddingPhotos}
+        />
+      ))}
+
       {currentGuest && currentGuest.tag !== "wedding-highlights" && (
         <TaggedPhotoGallery
           title="Moments Curated for You"
           // TODO: The underlying Cloudinary tag is misspelled ("Calgeron" instead of
           // "Calegeron"). Fix the tag at the source in Cloudinary, then remove this remap.
           tag={currentGuest.tag === "Calegeron" ? "Calgeron" : currentGuest.tag}
-          categoryIndex={4}
+          categoryIndex={chapter.sections!.length}
           id="curated-for-you"
+          photos={weddingPhotos}
         />
       )}
 
       {currentGuest && currentGuest.tag !== "wedding-highlights" && (
         <ThankYouSection />
       )}
-      
-      <RelatedGalleries relatedGalleryIds={["honeymoon"]} />
-      
+
+      <RelatedGalleries relatedGalleryIds={chapter.relatedChapterIds!} />
+
       <FloatingGalleryNav hasPersonalizedGallery={currentGuest && currentGuest.tag !== "wedding-highlights"} />
     </div>
   );
 };
 
 export default Wedding;
-

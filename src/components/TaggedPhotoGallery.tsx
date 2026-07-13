@@ -1,9 +1,17 @@
 import { useState, useMemo, useEffect } from "react";
 import { Download, Eye } from "lucide-react";
 import PhotoLightbox from "./PhotoLightbox";
-import { weddingPhotos } from "@/data/weddingPhotos";
-import { honeymoonPhotos } from "@/data/honeymoonPhotos";
 import CloudinaryImage from "./CloudinaryImage";
+
+// Shape of entries in the auto-generated photo manifests (weddingPhotos / honeymoonPhotos)
+export interface SourcePhoto {
+  id: string;
+  url: string;
+  width?: number;
+  height?: number;
+  tags?: string[];
+  caption?: string;
+}
 
 interface Photo {
   id: string;
@@ -27,7 +35,7 @@ interface TaggedPhotoGalleryProps {
   description?: string | React.ReactNode; // Optional description text to display after gallery title
   allowDownload?: boolean; // Whether to show download button (default: true)
   showCaption?: boolean; // Whether to show captions (default: false)
-  photosSource?: 'wedding' | 'honeymoon'; // Which photo source to use (default: 'wedding')
+  photos: SourcePhoto[]; // The photo manifest to filter by tag
 }
 
 // Utility to construct a Cloudinary download URL with fl_attachment flag
@@ -119,14 +127,11 @@ const TaggedPhotoGallery = ({
   description,
   allowDownload = true,
   showCaption = false,
-  photosSource = 'wedding'
+  photos: allCloudinaryPhotos
 }: TaggedPhotoGalleryProps) => {
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
   const [hoveredPhoto, setHoveredPhoto] = useState<string | null>(null);
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
-
-  // Get the appropriate photo source
-  const allCloudinaryPhotos = photosSource === 'honeymoon' ? honeymoonPhotos : weddingPhotos;
 
   // Filter and map photos from Cloudinary based on the tag
   const photos = useMemo(() => {
@@ -197,7 +202,7 @@ const TaggedPhotoGallery = ({
     return (
       <section className="py-16 px-6">
         <div className="max-w-7xl mx-auto">
-          <h3 className="text-4xl md:text-5xl text-center mb-12 text-wedding-olive">
+          <h3 className="text-4xl md:text-5xl text-center mb-12 text-brand-alt">
             {title}
           </h3>
           <p className="text-center text-muted-foreground">No photos available</p>
@@ -210,12 +215,12 @@ const TaggedPhotoGallery = ({
     <>
       <section id={id} className="py-16 px-6 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
-          <h3 className="text-4xl md:text-5xl text-center mb-8 text-wedding-olive">
+          <h3 className="text-4xl md:text-5xl text-center mb-8 text-brand-alt">
             {title}
           </h3>
           {description && (
             <div className="max-w-3xl mx-auto mb-12">
-              <p className="text-lg md:text-xl leading-relaxed text-wedding-warm-text text-center">
+              <p className="text-lg md:text-xl leading-relaxed text-ink text-center">
                 {description}
               </p>
             </div>
@@ -269,7 +274,7 @@ const TaggedPhotoGallery = ({
                         <div className="absolute inset-0 bg-black/60 rounded-lg flex items-center justify-center gap-2 sm:gap-4 transition-opacity duration-300 z-10">
                           <button
                             onClick={() => setSelectedPhotoIndex(originalIndex)}
-                            className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-wedding-rust text-white rounded-lg hover:bg-wedding-rust/90 transition-colors text-sm sm:text-base"
+                            className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand text-white rounded-lg hover:bg-brand/90 transition-colors text-sm sm:text-base"
                             aria-label={`View enlarged ${photo.alt}`}
                           >
                             <Eye size={18} className="sm:w-5 sm:h-5" />
@@ -279,7 +284,7 @@ const TaggedPhotoGallery = ({
                             <a
                               href={getDownloadUrl(photo.downloadUrl)}
                               download
-                              className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-wedding-olive text-white rounded-lg hover:bg-wedding-olive/90 transition-colors text-sm sm:text-base"
+                              className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand-alt text-white rounded-lg hover:bg-brand-alt/90 transition-colors text-sm sm:text-base"
                               aria-label={`Download ${photo.alt}`}
                             >
                               <Download size={18} className="sm:w-5 sm:h-5" />
@@ -289,7 +294,7 @@ const TaggedPhotoGallery = ({
                         </div>
                       )}
                       {showCaption && photo.caption && (
-                        <div className="mt-2 text-sm text-wedding-warm-text text-center">
+                        <div className="mt-2 text-sm text-ink text-center">
                           {photo.caption}
                         </div>
                       )}
