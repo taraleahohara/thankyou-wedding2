@@ -15,7 +15,7 @@ const SiteHeader = () => {
       <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-center">
         <Link
           to="/"
-          className="font-display italic text-lg text-ink lowercase whitespace-nowrap transition-opacity duration-1 ease-paper hover:opacity-70"
+          className="font-display italic text-lg text-ink lowercase whitespace-nowrap transition-colors duration-1 ease-paper hover:text-copper"
           aria-label="home"
         >
           tara &amp; daniel

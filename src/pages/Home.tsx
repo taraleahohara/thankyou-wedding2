@@ -24,7 +24,7 @@ const Home = () => {
       {/* Hero — the illustrated family portrait as the archive's cover plate */}
       <section className="max-w-6xl mx-auto w-full px-6 pt-10 pb-6 md:pt-16 md:pb-10">
         <div className="flex flex-col items-center text-center">
-          <p className="u-label text-muted-foreground mb-6">the family archive</p>
+          <p className="u-label text-copper mb-6">the family archive</p>
           <CloudinaryImage
             src={getImageUrl("/images/homepage/newhpheader.png")}
             alt="Tara, Daniel, their dog and cat — an illustrated family portrait"

@@ -59,11 +59,15 @@ const RelatedGalleries = ({ relatedGalleryIds }: RelatedGalleriesProps) => {
             const headerImage = chapter.relatedCardImage || chapter.card.image;
             const link = chapter.magicLink || chapter.path;
             const formattedDate = formatDate(chapter.date);
+            // Cross-chapter hint: the card's hover border wears the TARGET
+            // chapter's spine colour (Homestead shelf rule).
+            const spine = chapter.spine ? `hsl(${chapter.spine})` : undefined;
 
             return (
               <div
                 key={chapter.id}
-                className={`group relative aspect-square overflow-hidden rounded-lg border border-ink/10 transition-colors duration-2 ease-paper hover:border-ink/30 ${galleryData.length === 1 ? 'w-[300px]' : ''}`}
+                className={`group relative aspect-square overflow-hidden rounded-lg border border-ink/10 transition-colors duration-2 ease-paper ${spine ? "hover:border-[color:var(--spine)]" : "hover:border-ink/30"} ${galleryData.length === 1 ? 'w-[300px]' : ''}`}
+                style={spine ? ({ "--spine": spine } as React.CSSProperties) : undefined}
               >
                 {/* Desktop: entire card is clickable */}
                 <Link
