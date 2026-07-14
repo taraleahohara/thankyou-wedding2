@@ -7,14 +7,17 @@ const SiteFooter = () => {
   return (
     <footer className="border-t border-ink/10 bg-paper">
       <div className="max-w-6xl mx-auto px-6 py-14 flex flex-col items-center text-center">
-        {/* Hand-drawn divider glyph */}
+        {/* Hand-drawn divider glyph — colour comes from --ornament, so
+            chapters can brand it (honeymoon: polished copper) while the
+            shell default stays today's quiet ink. */}
         <svg
           width="72"
           height="16"
           viewBox="0 0 72 16"
           fill="none"
           aria-hidden
-          className="text-ink/40 mb-6"
+          className="mb-6"
+          style={{ color: "var(--ornament)" }}
         >
           <path
             d="M2 8c6-5 10 5 16 0S28 3 34 8s10 5 16 0 8-6 20-2"

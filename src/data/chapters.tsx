@@ -59,6 +59,10 @@ export interface Chapter {
   ogImage?: string;
   /** Theme key applied as data-chapter on the page root */
   theme?: "wedding" | "honeymoon";
+  /** Homestead spine colour (HSL channels) — the chapter's book-spine hue,
+   *  worn on homepage/related cards as the label rule + hover border.
+   *  Wedding keeps its own rust; pets (the living chapter) wears house olive. */
+  spine?: string;
   auth?: ChapterAuth;
   /** Auth-bypass link used by RelatedGalleries (falls back to path) */
   magicLink?: string;
@@ -88,6 +92,7 @@ export const chapters: Chapter[] = [
       "Tara built this website and personalized it just for you (her talents go far beyond spreadsheets!). Below you will find our favourite moments from the day, including photos that feature you! This site was lovingly built to share our joy with each guest who made our celebration unforgettable.",
     ogImage: "https://res.cloudinary.com/dbr3xp0bx/image/upload/v1767394827/AP1-6.jpg",
     theme: "wedding",
+    spine: "17 70% 42%",
     auth: {
       mode: "guest-name",
       password: "taradan#1004",
@@ -122,6 +127,7 @@ export const chapters: Chapter[] = [
       "This gallery is a glimpse into our honeymoon in Sri Lanka — a journey shaped by history, nature, wildlife, and moments of quiet rest. We moved slowly through ancient cities, misty mountains, and sunlit coastlines, letting each place set its own rhythm. These photos capture the places we explored, the spaces we stayed, and the feeling of beginning this next chapter together.",
     ogImage: "https://res.cloudinary.com/dbr3xp0bx/image/upload/v1767633211/IMG_3498_bsco2c.jpg",
     theme: "honeymoon",
+    spine: "14 57% 51%",
     auth: {
       mode: "password",
       password: "taradan#0530",
@@ -185,6 +191,7 @@ export const chapters: Chapter[] = [
     path: "#",
     title: "pets",
     date: "ongoing",
+    spine: "74 36% 31%",
     card: {
       description: "Our furry family members.",
       image: getImageUrl("/images/before/AMY_8989_phoebe.jpg"),

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import HeroSection from "@/components/HeroSection";
+import PlateHero from "@/components/PlateHero";
 import SiteDescription from "@/components/SiteDescription";
 import TaggedPhotoGallery from "@/components/TaggedPhotoGallery";
 import ThankYouSection from "@/components/ThankYouSection";
@@ -209,7 +209,12 @@ const Wedding = () => {
     <div data-chapter={chapter.theme} className="min-h-screen bg-paper">
       <SiteHeader />
 
-      <HeroSection
+      {/* Homestead language in wedding colours: rust-cream wash plate,
+          Allura title (script mode), the photograph below the curve. */}
+      <PlateHero
+        mode="wash"
+        script
+        eyebrow="chapter 01 · the wedding"
         imageUrl={chapter.hero!.image}
         title={chapter.hero!.title}
         subtitle={chapter.hero!.subtitle}
@@ -223,7 +228,7 @@ const Wedding = () => {
         const restOfMessage = lines.slice(1).join('\n');
 
         return (
-          <section className="relative py-24 px-6 bg-paper">
+          <section className="relative py-12 md:py-16 px-6 bg-paper">
             <div className="max-w-3xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl mb-6 text-brand">
                 {dearLine}
@@ -241,7 +246,7 @@ const Wedding = () => {
         );
       })()}
 
-      <SiteDescription text={chapter.siteDescription!} />
+      <SiteDescription text={chapter.siteDescription!} variant="plain" />
 
       {chapter.sections!.map((section, index) => (
         <TaggedPhotoGallery
@@ -249,6 +254,10 @@ const Wedding = () => {
           title={section.title}
           tag={section.tag}
           categoryIndex={index}
+          eyebrow={`0${index + 1}`}
+          frame="hairline"
+          layout="scatter"
+          scatterScale="weave"
           id={section.id}
           description={section.description}
           allowDownload={section.allowDownload}
@@ -264,6 +273,10 @@ const Wedding = () => {
           // "Calegeron"). Fix the tag at the source in Cloudinary, then remove this remap.
           tag={currentGuest.tag === "Calegeron" ? "Calgeron" : currentGuest.tag}
           categoryIndex={chapter.sections!.length}
+          eyebrow={`0${chapter.sections!.length + 1}`}
+          frame="hairline"
+          layout="scatter"
+          scatterScale="weave"
           id="curated-for-you"
           photos={weddingPhotos}
         />

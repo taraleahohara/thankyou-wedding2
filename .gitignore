@@ -31,3 +31,4 @@ supabase/.temp
 
 # Cursor debug artifacts
 .cursor/
+*.tsbuildinfo

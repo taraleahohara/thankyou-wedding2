@@ -36,7 +36,84 @@ interface TaggedPhotoGalleryProps {
   photos: SourcePhoto[]; // The photo manifest to filter by tag
   eyebrow?: string; // Optional tracked-lowercase overline above the title (archive language)
   frame?: "shadow" | "hairline"; // Thumbnail frame: drop-shadow (default) or hairline border
+  layout?: "columns" | "scatter"; // columns (default) = masonry; scatter = staggered editorial layout
+  emphasizeTitle?: boolean; // Italicize the last word of the title ("mountains & nature")
+  scatterScale?: ScatterScale; // Which scatter recipe (columns + size rhythm)
+  corners?: "soft" | "square"; // Image corners: rounded (default) or sharp
 }
+
+export type ScatterScale = "gentle" | "varied" | "bold" | "cols2" | "cols3" | "weave";
+
+// Scatter recipes: deterministic placement cycles on a 12-column grid —
+// varied widths, offsets and stagger, like a magazine spread. Index-based,
+// so the layout is stable across renders.
+// gentle/varied/bold = sparse (1–2 per row) at increasing size drama;
+// cols2/cols3 = denser column rhythms; weave = 3 columns with stretches.
+const SCATTER_PATTERNS: Record<ScatterScale, readonly { start: number; span: number; top: number }[]> = {
+  // gentle: near-uniform sizes, calm offsets — the quiet album read
+  gentle: [
+    { start: 1, span: 5, top: 0 },
+    { start: 7, span: 5, top: 3 },
+    { start: 2, span: 5, top: 3 },
+    { start: 8, span: 5, top: 4 },
+    { start: 3, span: 5, top: 3.5 },
+    { start: 7, span: 5, top: 4 },
+  ],
+  // varied: mixed sizes — the magazine read
+  varied: [
+    { start: 1, span: 5, top: 0 },
+    { start: 8, span: 4, top: 4 },
+    { start: 3, span: 4, top: 3 },
+    { start: 8, span: 5, top: 5 },
+    { start: 2, span: 3, top: 3.5 },
+    { start: 6, span: 6, top: 4.5 },
+  ],
+  // bold: big statements against small asides — the exhibition read
+  bold: [
+    { start: 1, span: 7, top: 0 },
+    { start: 9, span: 3, top: 6 },
+    { start: 3, span: 8, top: 5 },
+    { start: 1, span: 4, top: 3 },
+    { start: 8, span: 4, top: 4 },
+    { start: 2, span: 10, top: 6 },
+  ],
+  // cols2: a staggered two-column rhythm — denser, still breathing
+  cols2: [
+    { start: 1, span: 5, top: 0 },
+    { start: 7, span: 6, top: 2 },
+    { start: 2, span: 6, top: 2.5 },
+    { start: 9, span: 4, top: 1.5 },
+    { start: 1, span: 6, top: 2 },
+    { start: 8, span: 5, top: 2.5 },
+  ],
+  // cols3: a three-column trio rhythm with a gentle vertical stagger
+  cols3: [
+    { start: 1, span: 4, top: 0 },
+    { start: 5, span: 4, top: 1.5 },
+    { start: 9, span: 4, top: 0.5 },
+    { start: 2, span: 4, top: 1 },
+    { start: 6, span: 4, top: 0 },
+    { start: 9, span: 4, top: 1.5 },
+  ],
+  // weave: three columns where some images stretch across two of them
+  weave: [
+    { start: 1, span: 8, top: 0 },
+    { start: 9, span: 4, top: 2 },
+    { start: 1, span: 4, top: 1.5 },
+    { start: 5, span: 8, top: 1 },
+    { start: 2, span: 5, top: 2 },
+    { start: 7, span: 6, top: 1.5 },
+  ],
+} as const;
+
+// Mobile scatter: stacked, with alternating width and alignment for a
+// gentler version of the same rhythm.
+const SCATTER_PATTERN_MOBILE = [
+  { width: "100%", align: "flex-start" },
+  { width: "78%", align: "flex-end" },
+  { width: "88%", align: "flex-start" },
+  { width: "70%", align: "flex-end" },
+] as const;
 
 // Utility to distribute photos into columns using "Shortest Column First" algorithm
 // This minimizes gaps at the bottom by placing each photo in the column with the least current height
@@ -110,11 +187,33 @@ const TaggedPhotoGallery = ({
   photos: allCloudinaryPhotos,
   eyebrow,
   frame = "shadow",
+  layout = "columns",
+  emphasizeTitle = false,
+  scatterScale = "varied",
+  corners = "soft",
 }: TaggedPhotoGalleryProps) => {
+  // Archive pages (hairline frame) drop the dark hover overlay entirely:
+  // the photo itself is the lightbox trigger. The default (wedding) keeps
+  // its existing overlay with View/Download buttons.
+  const isArchive = frame === "hairline";
+  const cornerClass = isArchive && corners === "square" ? "rounded-none" : "rounded-lg";
   const frameClasses =
     frame === "hairline"
-      ? "border border-ink/10 transition-colors duration-2 ease-paper group-hover:border-ink/30"
-      : "shadow-md transition-all duration-300 group-hover:shadow-xl";
+      ? `${cornerClass} border border-ink/10 transition-all duration-2 ease-paper group-hover:border-ink/40 group-hover:brightness-[1.03]`
+      : "rounded-lg shadow-md transition-all duration-300 group-hover:shadow-xl";
+
+  // "mountains & nature" → "mountains & <em>nature</em>"
+  const displayTitle = (() => {
+    if (!emphasizeTitle) return title;
+    const lastSpace = title.lastIndexOf(" ");
+    if (lastSpace === -1) return <em>{title}</em>;
+    return (
+      <>
+        {title.slice(0, lastSpace + 1)}
+        <em>{title.slice(lastSpace + 1)}</em>
+      </>
+    );
+  })();
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState<number | null>(null);
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
 
@@ -193,7 +292,7 @@ const TaggedPhotoGallery = ({
 
   if (!validPhotos || validPhotos.length === 0) {
     return (
-      <section className="py-16 px-6">
+      <section className="py-10 md:py-12 px-6">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-4xl md:text-5xl text-center mb-12 text-brand-alt">
             {title}
@@ -204,102 +303,176 @@ const TaggedPhotoGallery = ({
     );
   }
 
+  // One photo cell — image, hover overlay, caption — shared by both layouts.
+  const renderPhoto = (
+    photo: Photo,
+    loadingStrategy: "eager" | "lazy",
+    captionAlign: "center" | "left",
+  ) => {
+    const originalIndex = photoIndexById.get(photo.id) ?? 0;
+
+    const image = photo.url ? (
+      <CloudinaryImage
+        src={photo.url}
+        alt={photo.alt}
+        loading={loadingStrategy}
+        className={`w-full h-auto object-contain ${frameClasses}`}
+        width={photo.width}
+        height={photo.height}
+        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        onError={(e) => {
+          // Try to reload with download URL first
+          if (e.currentTarget.src !== photo.downloadUrl) {
+            e.currentTarget.src = photo.downloadUrl;
+          } else {
+            // If download URL also fails, remove from grid
+            setFailedImages(prev => new Set(prev).add(photo.id));
+          }
+        }}
+      />
+    ) : (
+      <div className="w-full h-64 flex items-center justify-center bg-gray-200 text-gray-500 rounded-lg">
+        Invalid image URL
+      </div>
+    );
+
+    const caption = showCaption && photo.caption && (
+      <div
+        className={
+          captionAlign === "left"
+            ? "mt-2 text-sm italic text-ink/70 text-left"
+            : "mt-2 text-sm text-ink text-center"
+        }
+      >
+        {photo.caption}
+      </div>
+    );
+
+    if (isArchive) {
+      // Archive interaction: no overlay — the photograph is the button.
+      return (
+        <>
+          <button
+            type="button"
+            onClick={() => setSelectedPhotoIndex(originalIndex)}
+            className="block w-full cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
+            aria-label={`View enlarged ${photo.alt}`}
+          >
+            {image}
+          </button>
+          {caption}
+        </>
+      );
+    }
+
+    return (
+      <>
+        {image}
+        {/* Hover/focus overlay: pure CSS (no React state), so
+            hovering never re-renders the gallery. Revealed on
+            hover (incl. touch-tap :hover emulation) and via
+            keyboard focus (focus-within). */}
+        <div className="absolute inset-0 bg-black/60 rounded-lg flex items-center justify-center gap-2 sm:gap-4 z-10 opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto focus-within:opacity-100 focus-within:pointer-events-auto">
+          <button
+            onClick={() => setSelectedPhotoIndex(originalIndex)}
+            className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand text-white rounded-lg hover:bg-brand/90 transition-colors text-sm sm:text-base"
+            aria-label={`View enlarged ${photo.alt}`}
+          >
+            <Eye size={18} className="sm:w-5 sm:h-5" />
+            <span className="hidden sm:inline">View</span>
+          </button>
+          {allowDownload && (
+            <a
+              href={getDownloadUrl(photo.downloadUrl)}
+              download
+              className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand-alt text-white rounded-lg hover:bg-brand-alt/90 transition-colors text-sm sm:text-base"
+              aria-label={`Download ${photo.alt}`}
+            >
+              <Download size={18} className="sm:w-5 sm:h-5" />
+              <span className="hidden sm:inline">Download</span>
+            </a>
+          )}
+        </div>
+        {caption}
+      </>
+    );
+  };
+
   return (
     <>
-      <section id={id} className="py-16 px-6 scroll-mt-20">
+      <section id={id} className="py-10 md:py-12 px-6 scroll-mt-20">
         <div className="max-w-7xl mx-auto">
           {eyebrow && (
-            <p className="u-label text-brand text-center mb-3">{eyebrow}</p>
+            <p className="u-label text-copper text-center mb-3">{eyebrow}</p>
           )}
           <h3 className="text-4xl md:text-5xl text-center mb-8 text-brand-alt">
-            {title}
+            {displayTitle}
           </h3>
           {description && (
-            <div className="max-w-3xl mx-auto mb-12">
+            <div className="max-w-3xl mx-auto mb-10">
               <p className="text-lg md:text-xl leading-relaxed text-ink text-center">
                 {description}
               </p>
             </div>
           )}
-          {/* Masonry layout: flex container with columns */}
-          <div className="flex gap-4">
-            {photoColumns.map((column, columnIndex) => (
-              <div key={columnIndex} className="flex-1 flex flex-col gap-4">
-                {column.map((photo, photoIndex) => {
-                  // Original index in validPhotos for lightbox navigation
-                  const originalIndex = photoIndexById.get(photo.id) ?? 0;
-
-                  // Determine loading strategy: first few images should be eager, especially on mobile
-                  const isFirstColumn = columnIndex === 0;
-                  const isFirstFewImages = photoIndex < 3; // First 3 images in first column
-                  const shouldLoadEager = isFirstColumn && isFirstFewImages;
-                  const loadingStrategy = shouldLoadEager ? 'eager' : 'lazy';
-
+          {layout === "scatter" ? (
+            columnCount === 1 ? (
+              // Mobile scatter: stacked with alternating width + alignment
+              <div className="flex flex-col gap-10">
+                {validPhotos.map((photo, index) => {
+                  const slot = SCATTER_PATTERN_MOBILE[index % SCATTER_PATTERN_MOBILE.length];
                   return (
                     <div
                       key={photo.id}
                       className="relative group"
+                      style={{ width: slot.width, alignSelf: slot.align }}
                     >
-                      {photo.url ? (
-                        <CloudinaryImage
-                          src={photo.url}
-                          alt={photo.alt}
-                          loading={loadingStrategy}
-                          className={`w-full h-auto rounded-lg object-contain ${frameClasses}`}
-                          width={photo.width}
-                          height={photo.height}
-                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          onError={(e) => {
-                            // Try to reload with download URL first
-                            if (e.currentTarget.src !== photo.downloadUrl) {
-                              e.currentTarget.src = photo.downloadUrl;
-                            } else {
-                              // If download URL also fails, remove from grid
-                              setFailedImages(prev => new Set(prev).add(photo.id));
-                            }
-                          }}
-                        />
-                      ) : (
-                        <div className="w-full h-64 flex items-center justify-center bg-gray-200 text-gray-500 rounded-lg">
-                          Invalid image URL
-                        </div>
-                      )}
-                      {/* Hover/focus overlay: pure CSS (no React state), so
-                          hovering never re-renders the gallery. Revealed on
-                          hover (incl. touch-tap :hover emulation) and via
-                          keyboard focus (focus-within). */}
-                      <div className="absolute inset-0 bg-black/60 rounded-lg flex items-center justify-center gap-2 sm:gap-4 z-10 opacity-0 pointer-events-none transition-opacity duration-300 group-hover:opacity-100 group-hover:pointer-events-auto focus-within:opacity-100 focus-within:pointer-events-auto">
-                        <button
-                          onClick={() => setSelectedPhotoIndex(originalIndex)}
-                          className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand text-white rounded-lg hover:bg-brand/90 transition-colors text-sm sm:text-base"
-                          aria-label={`View enlarged ${photo.alt}`}
-                        >
-                          <Eye size={18} className="sm:w-5 sm:h-5" />
-                          <span className="hidden sm:inline">View</span>
-                        </button>
-                        {allowDownload && (
-                          <a
-                            href={getDownloadUrl(photo.downloadUrl)}
-                            download
-                            className="flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 bg-brand-alt text-white rounded-lg hover:bg-brand-alt/90 transition-colors text-sm sm:text-base"
-                            aria-label={`Download ${photo.alt}`}
-                          >
-                            <Download size={18} className="sm:w-5 sm:h-5" />
-                            <span className="hidden sm:inline">Download</span>
-                          </a>
-                        )}
-                      </div>
-                      {showCaption && photo.caption && (
-                        <div className="mt-2 text-sm text-ink text-center">
-                          {photo.caption}
-                        </div>
-                      )}
+                      {renderPhoto(photo, index < 2 ? "eager" : "lazy", "left")}
                     </div>
                   );
                 })}
               </div>
-            ))}
-          </div>
+            ) : (
+              // Desktop scatter: 12-column grid, staggered magazine placement.
+              // gap-y keeps rows apart in the denser recipes whose stagger
+              // offsets are small.
+              <div className="grid grid-cols-12 gap-x-4 gap-y-6">
+                {validPhotos.map((photo, index) => {
+                  const pattern = SCATTER_PATTERNS[scatterScale];
+                  const slot = pattern[index % pattern.length];
+                  return (
+                    <div
+                      key={photo.id}
+                      className="relative group"
+                      style={{
+                        gridColumn: `${slot.start} / span ${slot.span}`,
+                        marginTop: `${slot.top}rem`,
+                      }}
+                    >
+                      {renderPhoto(photo, index < 2 ? "eager" : "lazy", "left")}
+                    </div>
+                  );
+                })}
+              </div>
+            )
+          ) : (
+            /* Masonry layout: flex container with columns */
+            <div className="flex gap-4">
+              {photoColumns.map((column, columnIndex) => (
+                <div key={columnIndex} className="flex-1 flex flex-col gap-4">
+                  {column.map((photo, photoIndex) => {
+                    // First few images in the first column load eagerly
+                    const shouldLoadEager = columnIndex === 0 && photoIndex < 3;
+                    return (
+                      <div key={photo.id} className="relative group">
+                        {renderPhoto(photo, shouldLoadEager ? "eager" : "lazy", "center")}
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -309,6 +482,8 @@ const TaggedPhotoGallery = ({
           currentIndex={selectedPhotoIndex}
           onClose={() => setSelectedPhotoIndex(null)}
           onNavigate={setSelectedPhotoIndex}
+          variant={isArchive ? "archive" : "dark"}
+          allowDownload={allowDownload}
         />
       )}
     </>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import HeroSection from "@/components/HeroSection";
 import SiteDescription from "@/components/SiteDescription";
 import TaggedPhotoGallery from "@/components/TaggedPhotoGallery";
 import SiteHeader from "@/components/SiteHeader";
@@ -11,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { getChapter } from "@/data/chapters";
 import { honeymoonPhotos } from "@/data/honeymoonPhotos";
+import PlateHero from "@/components/PlateHero";
 
 const chapter = getChapter("honeymoon")!;
 const auth = chapter.auth! as Extract<NonNullable<typeof chapter.auth>, { mode: "password" }>;
@@ -80,9 +80,9 @@ const Honeymoon = () => {
   if (!isAuthenticated) {
     return (
       <div data-chapter={chapter.theme} className="min-h-screen bg-paper flex items-center justify-center px-6">
-        <Card className="max-w-md w-full bg-paper border-ink/10 shadow-none">
+        <Card className="max-w-md w-full bg-parchment border-ink/10 shadow-none rounded-none">
           <CardHeader className="text-center">
-            <p className="u-label text-brand mb-3">chapter 02 · sri lanka</p>
+            <p className="u-label text-copper mb-3">chapter 02 · sri lanka</p>
             <CardTitle className="font-display italic lowercase text-4xl text-ink">
               the honeymoon gallery
             </CardTitle>
@@ -107,9 +107,9 @@ const Honeymoon = () => {
               )}
               <Button
                 type="submit"
-                className="w-full bg-brand text-paper hover:bg-brand-alt lowercase tracking-wide transition-colors duration-2 ease-paper"
+                className="w-full bg-marigold text-ink hover:bg-marigold/90 rounded-full lowercase tracking-wide transition-colors duration-2 ease-paper"
               >
-                come along
+                come along →
               </Button>
             </form>
           </CardContent>
@@ -123,8 +123,10 @@ const Honeymoon = () => {
     <div data-chapter={chapter.theme} className="min-h-screen bg-paper flex flex-col">
       <SiteHeader />
 
-      <HeroSection
-        variant="archive"
+      {/* The Homestead language, locked in the Phase 3.5 pilot:
+          wash hero · weave scatter · round corners · no gesture divider */}
+      <PlateHero
+        mode="wash"
         eyebrow="chapter 02 · august 2025"
         imageUrl={chapter.hero!.image}
         title={chapter.title}
@@ -142,6 +144,9 @@ const Honeymoon = () => {
             categoryIndex={index}
             eyebrow={`0${index + 1}`}
             frame="hairline"
+            layout="scatter"
+            scatterScale="weave"
+            emphasizeTitle
             id={section.id}
             description={section.description}
             allowDownload={section.allowDownload}

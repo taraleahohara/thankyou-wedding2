@@ -15,7 +15,7 @@ const NotFound = () => {
       <SiteHeader />
 
       <main className="flex-1 flex flex-col items-center justify-center text-center px-6 py-20">
-        <p className="u-label text-muted-foreground mb-6">error 404</p>
+        <p className="u-label text-copper mb-6">error 404</p>
 
         <h1 className="font-display italic lowercase text-6xl md:text-8xl text-ink leading-none mb-6">
           lost.
@@ -26,9 +26,10 @@ const NotFound = () => {
           went.
         </p>
 
+        {/* The lost page earns the site's one marigold moment */}
         <Link
           to="/"
-          className="u-label text-brand hover:opacity-70 transition-opacity duration-1 ease-paper"
+          className="u-label bg-marigold text-ink rounded-full px-5 py-2.5 hover:bg-marigold/90 transition-colors duration-2 ease-paper"
         >
           ← back to our life
         </Link>

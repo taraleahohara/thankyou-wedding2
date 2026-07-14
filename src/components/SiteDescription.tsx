@@ -8,10 +8,10 @@ interface SiteDescriptionProps {
 const SiteDescription = ({ text, variant = "band" }: SiteDescriptionProps) => {
   if (variant === "plain") {
     return (
-      <section className="py-16 px-6 bg-paper">
+      <section className="py-10 md:py-12 px-6 bg-paper">
         <div className="max-w-2xl mx-auto text-center">
           {/* Short spine-colour rule — the chapter's colour, quietly */}
-          <div className="mx-auto mb-8 h-px w-10 bg-brand" />
+          <div className="mx-auto mb-6 h-px w-10 bg-brand" />
           <p className="text-lg md:text-xl leading-relaxed text-ink/80">
             {text}
           </p>
