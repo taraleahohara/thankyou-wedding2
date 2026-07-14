@@ -11,7 +11,6 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { getChapter } from "@/data/chapters";
 import { honeymoonPhotos } from "@/data/honeymoonPhotos";
 import PlateHero from "@/components/pilot/PlateHero";
-import GestureDivider from "@/components/pilot/GestureDivider";
 import PilotControls from "@/components/pilot/PilotControls";
 import { usePilotOptions } from "@/components/pilot/pilotOptions";
 
@@ -150,7 +149,6 @@ const Honeymoon = () => {
             frame="hairline"
             layout="scatter"
             scatterScale={pilot.scale}
-            corners={pilot.corners}
             emphasizeTitle
             id={section.id}
             description={section.description}
@@ -160,10 +158,6 @@ const Honeymoon = () => {
           />
         ))}
       </div>
-
-      {pilot.gesture !== "none" && (
-        <GestureDivider gesture={pilot.gesture} stampLabel="02" />
-      )}
 
       <SiteFooter />
 

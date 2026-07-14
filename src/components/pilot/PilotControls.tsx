@@ -7,39 +7,19 @@ interface PilotControlsProps {
 }
 
 /** Floating switcher so Tara can flip design variants live in her browser.
- *  Hero (wash) and gallery (scatter) are locked; these are the open calls.
+ *  Everything else is locked; the scatter recipe is the one open call.
  *  Pilot-only tooling: delete with the pilot folder once the direction is locked. */
 const PilotControls = ({ options, onChange }: PilotControlsProps) => {
   const [open, setOpen] = useState(true);
 
-  const group = <K extends keyof PilotOptions>(
-    label: string,
-    key: K,
-    choices: { value: PilotOptions[K]; label: string }[],
-  ) => (
-    <div className="mb-3 last:mb-0">
-      <p className="u-label text-copper mb-1.5">{label}</p>
-      <div className="flex flex-wrap gap-1.5">
-        {choices.map((choice) => {
-          const active = options[key] === choice.value;
-          return (
-            <button
-              key={String(choice.value)}
-              type="button"
-              onClick={() => onChange({ [key]: choice.value } as Partial<PilotOptions>)}
-              className={`rounded-full px-3 py-1 text-xs lowercase tracking-wide border transition-colors duration-2 ease-paper ${
-                active
-                  ? "bg-olive text-paper border-olive"
-                  : "bg-transparent text-ink border-ink/20 hover:border-ink/50"
-              }`}
-            >
-              {choice.label}
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
+  const choices: { value: PilotOptions["scale"]; label: string; hint: string }[] = [
+    { value: "gentle", label: "gentle", hint: "sparse · even sizes" },
+    { value: "varied", label: "varied", hint: "sparse · mixed sizes" },
+    { value: "bold", label: "bold", hint: "sparse · big statements" },
+    { value: "cols2", label: "2 columns", hint: "denser · staggered pairs" },
+    { value: "cols3", label: "3 columns", hint: "denser · trio rhythm" },
+    { value: "weave", label: "3 + stretch", hint: "trios · some span 2 cols" },
+  ];
 
   if (!open) {
     return (
@@ -65,21 +45,27 @@ const PilotControls = ({ options, onChange }: PilotControlsProps) => {
           hide
         </button>
       </div>
-      {group("gesture", "gesture", [
-        { value: "none", label: "none" },
-        { value: "squiggle", label: "squiggle" },
-        { value: "stitch", label: "stitch" },
-        { value: "stamp", label: "stamp" },
-      ])}
-      {group("scatter scale", "scale", [
-        { value: "gentle", label: "gentle" },
-        { value: "varied", label: "varied" },
-        { value: "bold", label: "bold" },
-      ])}
-      {group("corners", "corners", [
-        { value: "soft", label: "round" },
-        { value: "square", label: "square" },
-      ])}
+      <p className="u-label text-copper mb-1.5">scatter recipe</p>
+      <div className="flex flex-col gap-1.5">
+        {choices.map((choice) => {
+          const active = options.scale === choice.value;
+          return (
+            <button
+              key={choice.value}
+              type="button"
+              onClick={() => onChange({ scale: choice.value })}
+              className={`flex items-baseline justify-between rounded-full px-3 py-1.5 text-xs lowercase tracking-wide border transition-colors duration-2 ease-paper ${
+                active
+                  ? "bg-olive text-paper border-olive"
+                  : "bg-transparent text-ink border-ink/20 hover:border-ink/50"
+              }`}
+            >
+              <span>{choice.label}</span>
+              <span className={active ? "text-paper/70" : "text-ink/50"}>{choice.hint}</span>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 };

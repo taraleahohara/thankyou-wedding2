@@ -1,34 +1,28 @@
 import { useEffect, useState } from "react";
 
 /** Homestead pilot — the design options Tara can flip live in her browser.
- *  Locked by Tara (2026-07-13): hero = wash, galleries = scatter.
- *  Still in play: the gesture, the scatter's scale, and corner style.
+ *  Locked by Tara (2026-07-13): hero = wash, galleries = scatter,
+ *  no gesture divider, round corners.
+ *  Still in play: the scatter recipe (columns + how images scale over them).
  *  Pilot-only tooling: delete this folder when the direction is locked. */
 export interface PilotOptions {
-  /** The one hand-made move above the footer:
-   *  squiggle = the footer's hand-drawn wave, large, in polished copper
-   *  stitch   = a dashed copper leader line
-   *  stamp    = a passport-style chapter stamp, slightly tilted */
-  gesture: "none" | "squiggle" | "stitch" | "stamp";
-  /** How dramatic the scatter's size rhythm is */
-  scale: "gentle" | "varied" | "bold";
-  /** Image corners: soft (rounded) or square (sharp, gallery-print) */
-  corners: "soft" | "square";
+  /** Scatter recipes:
+   *  gentle / varied / bold = sparse editorial scatter (1–2 per row) at
+   *  increasing size drama; cols2 = a staggered two-column rhythm;
+   *  cols3 = a denser three-column rhythm; weave = three columns where
+   *  some images stretch across two of them. */
+  scale: "gentle" | "varied" | "bold" | "cols2" | "cols3" | "weave";
 }
 
 export const defaultPilotOptions: PilotOptions = {
-  gesture: "squiggle",
   scale: "varied",
-  corners: "soft",
 };
 
 const STORAGE_KEY = "homestead-pilot-options";
 
 const isValid = <K extends keyof PilotOptions>(key: K, value: unknown): value is PilotOptions[K] => {
   const allowed: Record<keyof PilotOptions, readonly string[]> = {
-    gesture: ["none", "squiggle", "stitch", "stamp"],
-    scale: ["gentle", "varied", "bold"],
-    corners: ["soft", "square"],
+    scale: ["gentle", "varied", "bold", "cols2", "cols3", "weave"],
   };
   return typeof value === "string" && allowed[key].includes(value);
 };
@@ -39,7 +33,7 @@ export function usePilotOptions(): [PilotOptions, (next: Partial<PilotOptions>) 
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored) as Partial<PilotOptions>;
-        // Drop stale keys/values from earlier pilot rounds (hero, gallery, tape…)
+        // Drop stale keys/values from earlier pilot rounds
         const next = { ...defaultPilotOptions };
         (Object.keys(next) as (keyof PilotOptions)[]).forEach((key) => {
           if (isValid(key, parsed[key])) next[key] = parsed[key] as never;

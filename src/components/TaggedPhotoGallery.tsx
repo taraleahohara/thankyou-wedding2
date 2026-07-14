@@ -38,14 +38,18 @@ interface TaggedPhotoGalleryProps {
   frame?: "shadow" | "hairline"; // Thumbnail frame: drop-shadow (default) or hairline border
   layout?: "columns" | "scatter"; // columns (default) = masonry; scatter = staggered editorial layout
   emphasizeTitle?: boolean; // Italicize the last word of the title ("mountains & nature")
-  scatterScale?: "gentle" | "varied" | "bold"; // How dramatic the scatter's size rhythm is
+  scatterScale?: ScatterScale; // Which scatter recipe (columns + size rhythm)
   corners?: "soft" | "square"; // Image corners: rounded (default) or sharp
 }
 
-// Scatter layouts: deterministic placement cycles on a 12-column grid —
+export type ScatterScale = "gentle" | "varied" | "bold" | "cols2" | "cols3" | "weave";
+
+// Scatter recipes: deterministic placement cycles on a 12-column grid —
 // varied widths, offsets and stagger, like a magazine spread. Index-based,
-// so the layout is stable across renders. Three scales of drama:
-const SCATTER_PATTERNS = {
+// so the layout is stable across renders.
+// gentle/varied/bold = sparse (1–2 per row) at increasing size drama;
+// cols2/cols3 = denser column rhythms; weave = 3 columns with stretches.
+const SCATTER_PATTERNS: Record<ScatterScale, readonly { start: number; span: number; top: number }[]> = {
   // gentle: near-uniform sizes, calm offsets — the quiet album read
   gentle: [
     { start: 1, span: 5, top: 0 },
@@ -72,6 +76,33 @@ const SCATTER_PATTERNS = {
     { start: 1, span: 4, top: 3 },
     { start: 8, span: 4, top: 4 },
     { start: 2, span: 10, top: 6 },
+  ],
+  // cols2: a staggered two-column rhythm — denser, still breathing
+  cols2: [
+    { start: 1, span: 5, top: 0 },
+    { start: 7, span: 6, top: 2 },
+    { start: 2, span: 6, top: 2.5 },
+    { start: 9, span: 4, top: 1.5 },
+    { start: 1, span: 6, top: 2 },
+    { start: 8, span: 5, top: 2.5 },
+  ],
+  // cols3: a three-column trio rhythm with a gentle vertical stagger
+  cols3: [
+    { start: 1, span: 4, top: 0 },
+    { start: 5, span: 4, top: 1.5 },
+    { start: 9, span: 4, top: 0.5 },
+    { start: 2, span: 4, top: 1 },
+    { start: 6, span: 4, top: 0 },
+    { start: 9, span: 4, top: 1.5 },
+  ],
+  // weave: three columns where some images stretch across two of them
+  weave: [
+    { start: 1, span: 8, top: 0 },
+    { start: 9, span: 4, top: 2 },
+    { start: 1, span: 4, top: 1.5 },
+    { start: 5, span: 8, top: 1 },
+    { start: 2, span: 5, top: 2 },
+    { start: 7, span: 6, top: 1.5 },
   ],
 } as const;
 
@@ -402,8 +433,10 @@ const TaggedPhotoGallery = ({
                 })}
               </div>
             ) : (
-              // Desktop scatter: 12-column grid, staggered magazine placement
-              <div className="grid grid-cols-12 gap-x-4">
+              // Desktop scatter: 12-column grid, staggered magazine placement.
+              // gap-y keeps rows apart in the denser recipes whose stagger
+              // offsets are small.
+              <div className="grid grid-cols-12 gap-x-4 gap-y-6">
                 {validPhotos.map((photo, index) => {
                   const pattern = SCATTER_PATTERNS[scatterScale];
                   const slot = pattern[index % pattern.length];
