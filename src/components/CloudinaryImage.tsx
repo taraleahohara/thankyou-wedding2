@@ -31,12 +31,23 @@ const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
   sizes,
   loading = 'lazy',
   width = 1000,
+  height,
   fetchpriority,
   style,
   onLoad,
   ...otherProps
 }) => {
   const isCloudinary = isCloudinaryUrl(src);
+
+  // When both intrinsic dimensions are known, reserve the aspect-ratio box
+  // up front. Without this, a lazy image has no height until it loads, so
+  // galleries above a scroll target expand *after* an anchor jump — landing
+  // you short of the section. `w-full h-auto` still drives the rendered
+  // size; this only holds the space while the pixels are in flight.
+  const reserveRatio =
+    height != null && Number(width) > 0 && Number(height) > 0
+      ? { aspectRatio: `${width} / ${height}` }
+      : {};
 
   // Non-Cloudinary images skip LQIP entirely and start "loaded".
   const [loaded, setLoaded] = useState(!isCloudinary);
@@ -74,7 +85,9 @@ const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
         className={className}
         loading={loading}
         decoding="async"
-        style={style}
+        width={width}
+        height={height}
+        style={{ ...reserveRatio, ...style }}
         onLoad={onLoad}
         {...fetchPriorityAttr}
         {...otherProps}
@@ -98,6 +111,7 @@ const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
   // blurred — a slow load reads as "placeholder", not "broken image".
   // No wrapper element, so layout is unchanged.
   const lqipStyle: React.CSSProperties = {
+    ...reserveRatio,
     ...(loaded
       ? {}
       : {
@@ -118,6 +132,8 @@ const CloudinaryImage: React.FC<CloudinaryImageProps> = ({
       sizes={sizes}
       loading={loading}
       decoding="async"
+      width={width}
+      height={height}
       style={lqipStyle}
       onLoad={handleLoad}
       {...fetchPriorityAttr}
