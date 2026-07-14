@@ -11,6 +11,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { getChapter } from "@/data/chapters";
 import { honeymoonPhotos } from "@/data/honeymoonPhotos";
 import PlateHero from "@/components/PlateHero";
+import FloatingGalleryNav from "@/components/FloatingGalleryNav";
 
 const chapter = getChapter("honeymoon")!;
 const auth = chapter.auth! as Extract<NonNullable<typeof chapter.auth>, { mode: "password" }>;
@@ -157,6 +158,12 @@ const Honeymoon = () => {
       </div>
 
       <SiteFooter />
+
+      {/* In-page nav — renders itself only when there are 2+ sections. */}
+      <FloatingGalleryNav
+        sections={chapter.sections!.map((s) => ({ id: s.id, label: s.title }))}
+        triggerLabel="jump to section"
+      />
     </div>
   );
 };

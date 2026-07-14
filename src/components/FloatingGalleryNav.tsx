@@ -20,13 +20,25 @@ const baseSections: Section[] = [
 ];
 
 interface FloatingGalleryNavProps {
+  /** Wedding-only shorthand: appends the "Your Moments" curated section
+   *  to the hardcoded wedding sections. Ignored when `sections` is given. */
   hasPersonalizedGallery?: boolean;
+  /** Explicit section list — any chapter with multiple gallery sections
+   *  passes its own `{ id, label }` list (e.g. honeymoon). */
+  sections?: Section[];
+  /** Text on the trigger button. Chapters in the archive (lowercase) voice
+   *  pass "jump to section"; the wedding keeps its Title Case default. */
+  triggerLabel?: string;
 }
 
-const FloatingGalleryNav = ({ hasPersonalizedGallery = false }: FloatingGalleryNavProps) => {
-  const sections = hasPersonalizedGallery 
+const FloatingGalleryNav = ({
+  hasPersonalizedGallery = false,
+  sections: sectionsProp,
+  triggerLabel = "Jump to Section",
+}: FloatingGalleryNavProps) => {
+  const sections = sectionsProp ?? (hasPersonalizedGallery
     ? [...baseSections, { id: "curated-for-you", label: "Your Moments" }]
-    : baseSections;
+    : baseSections);
   const [isVisible, setIsVisible] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -58,7 +70,8 @@ const FloatingGalleryNav = ({ hasPersonalizedGallery = false }: FloatingGalleryN
     }, 100);
   };
 
-  if (!isVisible) {
+  // Nothing to navigate with a single section (or none).
+  if (sections.length < 2 || !isVisible) {
     return null;
   }
 
@@ -80,7 +93,7 @@ const FloatingGalleryNav = ({ hasPersonalizedGallery = false }: FloatingGalleryN
             aria-label="Jump to section"
           >
             <List size={18} className="text-brand-alt" />
-            <span className="hidden sm:inline">Jump to Section</span>
+            <span className="hidden sm:inline">{triggerLabel}</span>
             <ChevronDown 
               size={16} 
               className={cn(
