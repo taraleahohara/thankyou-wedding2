@@ -141,16 +141,17 @@ const Wedding = () => {
   if (!isAuthenticated) {
     return (
       <div data-chapter={chapter.theme} className="min-h-screen bg-paper flex items-center justify-center px-6">
-        <Card className="max-w-md w-full bg-paper border-brand-alt/20 shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-3xl text-center text-ink">
+        <Card className="max-w-md w-full bg-parchment border-ink/10 shadow-none rounded-none">
+          <CardHeader className="text-center">
+            <p className="u-label text-copper mb-3">chapter 01 · the wedding</p>
+            <CardTitle className="text-4xl text-ink">
               the wedding gallery
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-ink">
+                <Label htmlFor="name" className="u-label text-muted-foreground">
                   name
                 </Label>
                 <Input
@@ -159,11 +160,11 @@ const Wedding = () => {
                   value={guestNameInput}
                   onChange={(e) => setGuestNameInput(e.target.value)}
                   placeholder="the name on your invite"
-                  className="bg-background"
+                  className="bg-background border-ink/15"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-ink">
+                <Label htmlFor="password" className="u-label text-muted-foreground">
                   password
                 </Label>
                 <Input
@@ -172,7 +173,7 @@ const Wedding = () => {
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
                   placeholder="the one from your invite"
-                  className="bg-background"
+                  className="bg-background border-ink/15"
                 />
               </div>
               {error && (
@@ -181,7 +182,7 @@ const Wedding = () => {
               <div className="space-y-2">
                 <Button
                   type="submit"
-                  className="w-full bg-brand text-paper hover:bg-brand/90"
+                  className="w-full bg-marigold text-ink hover:bg-marigold/90 rounded-full lowercase tracking-wide transition-colors duration-2 ease-paper"
                 >
                   come on in →
                 </Button>
@@ -192,7 +193,7 @@ const Wedding = () => {
                     e.preventDefault();
                     handleNotAGuest();
                   }}
-                  className="w-full text-brand-alt hover:text-brand-alt/80"
+                  className="w-full text-muted-foreground hover:text-ink lowercase tracking-wide"
                 >
                   i wasn't a guest
                 </Button>
