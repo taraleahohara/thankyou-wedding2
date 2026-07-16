@@ -83,7 +83,7 @@ const Wedding = () => {
 
     // Check password
     if (passwordInput !== chapterPassword) {
-      setError("Incorrect password");
+      setError("incorrect password");
       return;
     }
 
@@ -111,7 +111,7 @@ const Wedding = () => {
       setGuestNameInput("");
       setPasswordInput("");
     } else {
-      setError("We couldn't find a guest with that name. Please try again or select 'Not a Guest'");
+      setError("we couldn't find that name. try again, or choose 'i wasn't a guest'");
     }
   };
 
@@ -121,7 +121,7 @@ const Wedding = () => {
 
     // Check password
     if (passwordInput !== chapterPassword) {
-      setError("Incorrect password");
+      setError("incorrect password");
       return;
     }
 
@@ -144,46 +144,46 @@ const Wedding = () => {
         <Card className="max-w-md w-full bg-paper border-brand-alt/20 shadow-lg">
           <CardHeader>
             <CardTitle className="text-3xl text-center text-ink">
-              Welcome to Our Wedding Gallery
+              the wedding gallery
             </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="name" className="text-ink">
-                  Name
+                  name
                 </Label>
                 <Input
                   id="name"
                   type="text"
                   value={guestNameInput}
                   onChange={(e) => setGuestNameInput(e.target.value)}
-                  placeholder="Enter your name"
+                  placeholder="the name on your invite"
                   className="bg-background"
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="password" className="text-ink">
-                  Password
+                  password
                 </Label>
                 <Input
                   id="password"
                   type="password"
                   value={passwordInput}
                   onChange={(e) => setPasswordInput(e.target.value)}
-                  placeholder="Enter password"
+                  placeholder="the one from your invite"
                   className="bg-background"
                 />
               </div>
               {error && (
-                <p className="text-sm text-destructive text-center">{error}</p>
+                <p className="text-sm text-destructive text-center lowercase">{error}</p>
               )}
               <div className="space-y-2">
                 <Button
                   type="submit"
                   className="w-full bg-brand text-paper hover:bg-brand/90"
                 >
-                  Enter
+                  come on in →
                 </Button>
                 <Button
                   type="button"
@@ -194,7 +194,7 @@ const Wedding = () => {
                   }}
                   className="w-full text-brand-alt hover:text-brand-alt/80"
                 >
-                  I was not a guest
+                  i wasn't a guest
                 </Button>
               </div>
             </form>

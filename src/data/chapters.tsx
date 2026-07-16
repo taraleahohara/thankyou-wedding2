@@ -89,7 +89,7 @@ export const chapters: Chapter[] = [
       subtitle: "October 4th, 2025",
     },
     siteDescription:
-      "Tara built this website and personalized it just for you (her talents go far beyond spreadsheets!). Below you will find our favourite moments from the day, including photos that feature you! This site was lovingly built to share our joy with each guest who made our celebration unforgettable.",
+      "Tara built this website and personalized it just for you (her talents go far beyond spreadsheets!). Below you'll find our favourite moments from the day, including a few that feature you. We made it to share a little of our joy with the guests who made the day unforgettable.",
     ogImage: "https://res.cloudinary.com/dbr3xp0bx/image/upload/v1767394827/AP1-6.jpg",
     theme: "wedding",
     spine: "17 70% 42%",
@@ -100,10 +100,10 @@ export const chapters: Chapter[] = [
     },
     magicLink: "/wedding?guest=wedding-highlights",
     sections: [
-      { id: "before-ceremony", title: "Before the Ceremony", tag: "before-ceremony" },
-      { id: "ceremony", title: "The Ceremony", tag: "ceremony" },
-      { id: "brunch", title: "Brunch", tag: "brunch" },
-      { id: "after-party", title: "After Party", tag: "after-party" },
+      { id: "before-ceremony", title: "before the ceremony", tag: "before-ceremony" },
+      { id: "ceremony", title: "the ceremony", tag: "ceremony" },
+      { id: "brunch", title: "brunch", tag: "brunch" },
+      { id: "after-party", title: "after party", tag: "after-party" },
     ],
     relatedChapterIds: ["honeymoon"],
   },
