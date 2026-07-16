@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { getChapter } from "@/data/chapters";
+import { getChapter, MASTER_CODE } from "@/data/chapters";
 import { honeymoonPhotos } from "@/data/honeymoonPhotos";
 import PlateHero from "@/components/PlateHero";
 import FloatingGalleryNav from "@/components/FloatingGalleryNav";
@@ -66,8 +66,8 @@ const Honeymoon = () => {
     e?.preventDefault();
     setError("");
 
-    // Check password
-    if (passwordInput !== auth.password) {
+    // Check password (master bypass code also accepted)
+    if (passwordInput !== auth.password && passwordInput !== MASTER_CODE) {
       setError("Incorrect password");
       return;
     }

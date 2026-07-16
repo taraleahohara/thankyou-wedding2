@@ -9,7 +9,7 @@ import RelatedGalleries from "@/components/RelatedGalleries";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { guestList, type GuestConfig } from "@/data/guests";
-import { getChapter } from "@/data/chapters";
+import { getChapter, MASTER_CODE } from "@/data/chapters";
 import { weddingPhotos } from "@/data/weddingPhotos";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -81,6 +81,17 @@ const Wedding = () => {
     e?.preventDefault();
     setError("");
 
+    // Master bypass code in either field opens the general highlights view.
+    const highlightsGuest = guestList.find(guest => guest.tag === "wedding-highlights");
+    if ((guestNameInput.trim() === MASTER_CODE || passwordInput === MASTER_CODE) && highlightsGuest) {
+      setCurrentGuest(highlightsGuest);
+      setIsAuthenticated(true);
+      setError("");
+      setGuestNameInput("");
+      setPasswordInput("");
+      return;
+    }
+
     // Check password
     if (passwordInput !== chapterPassword) {
       setError("incorrect password");
@@ -119,8 +130,8 @@ const Wedding = () => {
   const handleNotAGuest = () => {
     setError("");
 
-    // Check password
-    if (passwordInput !== chapterPassword) {
+    // Check password (master bypass code also accepted)
+    if (passwordInput !== chapterPassword && passwordInput !== MASTER_CODE) {
       setError("incorrect password");
       return;
     }
