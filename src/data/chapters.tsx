@@ -124,7 +124,7 @@ export const chapters: Chapter[] = [
       subtitle: "Our Honeymoon",
     },
     siteDescription:
-      "This gallery is a glimpse into our honeymoon in Sri Lanka — a journey shaped by history, nature, wildlife, and moments of quiet rest. We moved slowly through ancient cities, misty mountains, and sunlit coastlines, letting each place set its own rhythm. These photos capture the places we explored, the spaces we stayed, and the feeling of beginning this next chapter together.",
+      "Our honeymoon took us through Sri Lanka, a journey shaped by history, nature, wildlife, and moments of quiet rest. We moved slowly through ancient cities, misty mountains, and sunlit coastlines, letting each place set its own rhythm. These photos capture the places we explored, the spaces we stayed, and the feeling of beginning this next chapter together.",
     ogImage: "https://res.cloudinary.com/dbr3xp0bx/image/upload/v1767633211/IMG_3498_bsco2c.jpg",
     theme: "honeymoon",
     spine: "14 57% 51%",
@@ -142,7 +142,7 @@ export const chapters: Chapter[] = [
         tag: "culture",
         description: (
           <>
-            <strong>Sri Lanka's Cultural Triangle</strong> lies in the center of the island and represents its historic and spiritual heart, shaped by ancient kings, monks, and remarkable engineering. Here, centuries-old cities, temples, reservoirs, and rock fortresses still define the landscape today. During our time in the region, we explored the ruined capital of <strong>Polonnaruwa</strong>, climbed the iconic <strong>Sigiriya Lion Rock Fortress</strong>, wandered through the cave shrines of <strong>Dambulla Cave Temple</strong>, and finished in <strong>Kandy</strong> at the sacred <strong>Temple of the Sacred Tooth</strong>.
+            <strong>Sri Lanka's Cultural Triangle</strong> sits at the center of the island and is its historic and spiritual heart, shaped by ancient kings, monks, and remarkable engineering. Centuries-old cities, temples, reservoirs, and rock fortresses still define the landscape today. We explored the ruined capital of <strong>Polonnaruwa</strong>, climbed <strong>Sigiriya Lion Rock Fortress</strong>, wandered the cave shrines of <strong>Dambulla Cave Temple</strong>, and finished in <strong>Kandy</strong> at the <strong>Temple of the Sacred Tooth</strong>.
           </>
         ),
         allowDownload: false,
@@ -154,7 +154,7 @@ export const chapters: Chapter[] = [
         tag: "nature",
         description: (
           <>
-            Sri Lanka's mountains and wild south offered a striking contrast to the ancient cities - cooler air, lush hills, and some of the island's richest wildlife. We slowed down in the tea country around <strong>Ella</strong>, wandering past waterfalls and the iconic Nine Arch Bridge, before heading south to encounter elephants at the Elephant Transit Home and on safari in <strong>Udawalawe National Park</strong>. We also visited the quiet stone presence of Buduruwagala Temple and finished deep in the rainforest, birding in <strong>Sinharaja Rainforest</strong>.
+            The mountains and wild south were a striking contrast to the ancient cities, with cooler air, lush hills, and some of the island's richest wildlife. We slowed down in the tea country around <strong>Ella</strong>, wandering past waterfalls and the Nine Arch Bridge, then headed south to meet the elephants at the Elephant Transit Home and on safari in <strong>Udawalawe National Park</strong>. We visited the quiet stone carvings of Buduruwagala Temple and finished deep in the rainforest, birding in <strong>Sinharaja</strong>.
           </>
         ),
         allowDownload: false,
@@ -166,7 +166,7 @@ export const chapters: Chapter[] = [
         tag: "beach",
         description: (
           <>
-            Our journey ended gently along Sri Lanka's southern coast, a brief pause devoted to rest and reflection. We spent slow days on the sand at <strong>Mirissa Beach</strong> and <strong>Ahangama</strong>, and explored the historic streets of <strong>Galle Fort</strong>.
+            Our journey ended gently along the southern coast, a brief pause for rest and reflection. We spent slow days on the sand at <strong>Mirissa Beach</strong> and <strong>Ahangama</strong>, and wandered the historic streets of <strong>Galle Fort</strong>.
           </>
         ),
         allowDownload: false,
@@ -178,7 +178,7 @@ export const chapters: Chapter[] = [
         tag: "hotels",
         description: (
           <>
-            A huge part of our honeymoon was the places we chose to slow down and simply be. We treated ourselves to hotels that felt calm, beautiful, and deeply connected to their surroundings — spaces that set the tone for the trip and gave us room to relax, reflect, and celebrate. From the iconic architecture of <strong>Heritance Kandalama</strong> to cozy hideaways like <strong>Tea Cabins</strong>, rainforest retreats such as <strong>Sinharaja Kurulu Ella Eco Resort</strong>, and indulgent coastal stays at <strong>Malabar Hill</strong> and <strong>The Find</strong>, these spaces were as much a part of our journey as the places we explored — and a big reason the trip felt so special.
+            A huge part of the honeymoon was the places we stayed. We treated ourselves to hotels that felt calm, beautiful, and connected to their surroundings, from the architecture of <strong>Heritance Kandalama</strong> to the cozy <strong>Tea Cabins</strong>, the rainforest retreat of <strong>Sinharaja Kurulu Ella Eco Resort</strong>, and indulgent coastal stays at <strong>Malabar Hill</strong> and <strong>The Find</strong>. They were as much a part of the trip as the places we explored, and a big reason it felt so special.
           </>
         ),
         allowDownload: false,
