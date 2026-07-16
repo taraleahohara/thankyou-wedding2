@@ -8,7 +8,8 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "normalize-captions": "node scripts/normalizeCaptions.js honeymoon"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.7",
