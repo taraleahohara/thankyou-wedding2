@@ -21,7 +21,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "12th century capital Polonnaruwa - former palace"
+    "caption": "12th century capital Polonnaruwa, former palace"
   },
   {
     "id": "photo-3",
@@ -31,7 +31,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "12th century capital Polonnaruwa - swimming pool"
+    "caption": "12th century capital Polonnaruwa, swimming pool"
   },
   {
     "id": "photo-4",
@@ -51,7 +51,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "12th century capital Polonnaruwa - Temple"
+    "caption": "12th century capital Polonnaruwa, Temple"
   },
   {
     "id": "photo-6",
@@ -71,7 +71,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "12th century capital Polonnaruwa - Gal Vihara temple (our favourite temple)"
+    "caption": "12th century capital Polonnaruwa, Gal Vihara temple (our favourite temple)"
   },
   {
     "id": "photo-8",
@@ -81,7 +81,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "12th century capital Polonnaruwa - Gal Vihara temple (our favourite temple)"
+    "caption": "12th century capital Polonnaruwa, Gal Vihara temple (our favourite temple)"
   },
   {
     "id": "photo-9",
@@ -91,7 +91,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Heritance Kandalama - Dambulla"
+    "caption": "Heritance Kandalama, Dambulla"
   },
   {
     "id": "photo-10",
@@ -101,7 +101,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Heritance Kandalama - Dambulla"
+    "caption": "Heritance Kandalama, Dambulla"
   },
   {
     "id": "photo-11",
@@ -111,7 +111,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Heritance Kandalama - Dambulla. Our balcony monkeys"
+    "caption": "Heritance Kandalama, Dambulla. Our balcony monkeys"
   },
   {
     "id": "photo-12",
@@ -121,7 +121,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Heritance Kandalama - Dambulla. Our balcony monkeys"
+    "caption": "Heritance Kandalama, Dambulla. Our balcony monkeys"
   },
   {
     "id": "photo-13",
@@ -131,7 +131,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Heritance Kandalama - Dambulla. Our balcony monkeys"
+    "caption": "Heritance Kandalama, Dambulla. Our balcony monkeys"
   },
   {
     "id": "photo-14",
@@ -141,7 +141,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Heritance Kandalama - Dambulla. Our balcony monkeys"
+    "caption": "Heritance Kandalama, Dambulla. Our balcony monkeys"
   },
   {
     "id": "photo-15",
@@ -151,7 +151,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Heritance Kandalama - Dambulla. Our balcony monkeys"
+    "caption": "Heritance Kandalama, Dambulla. Our balcony monkeys"
   },
   {
     "id": "photo-16",
@@ -161,7 +161,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Ancient water  reservoir created for irrigation (12th century)"
+    "caption": "Ancient water reservoir created for irrigation (12th century)"
   },
   {
     "id": "photo-17",
@@ -171,7 +171,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Ancient water  reservoir created for irrigation (12th century)"
+    "caption": "Ancient water reservoir created for irrigation (12th century)"
   },
   {
     "id": "photo-18",
@@ -191,7 +191,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Museum at Sigiriya Lion Rock Fortress - kids drawing of the fortress we were about to climb"
+    "caption": "Museum at Sigiriya Lion Rock Fortress, kids drawing of the fortress we were about to climb"
   },
   {
     "id": "photo-20",
@@ -211,7 +211,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Sigiriya Lion Rock Fortress & it's gardens"
+    "caption": "Sigiriya Lion Rock Fortress and its gardens"
   },
   {
     "id": "photo-22",
@@ -241,7 +241,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Sigiriya Lion Rock Fortress - and the many people climbing up"
+    "caption": "Sigiriya Lion Rock Fortress, and the many people climbing up"
   },
   {
     "id": "photo-25",
@@ -251,7 +251,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Sigiriya Lion Rock Fortress - at the top"
+    "caption": "Sigiriya Lion Rock Fortress, at the top"
   },
   {
     "id": "photo-26",
@@ -261,7 +261,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Sigiriya Lion Rock Fortress - swimming pool at the top"
+    "caption": "Sigiriya Lion Rock Fortress, swimming pool at the top"
   },
   {
     "id": "photo-27",
@@ -271,7 +271,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Sigiriya Lion Rock Fortress - dog"
+    "caption": "Sigiriya Lion Rock Fortress, dog"
   },
   {
     "id": "photo-28",
@@ -279,7 +279,7 @@ export const honeymoonPhotos = [
     "width": 5712,
     "height": 4284,
     "tags": [],
-    "caption": "Heritance Kandalama - Dambulla. Infinity pool"
+    "caption": "Heritance Kandalama, Dambulla. Infinity pool"
   },
   {
     "id": "photo-29",
@@ -289,7 +289,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Heritance Kandalama - Dambulla. Natural rock bottom pool"
+    "caption": "Heritance Kandalama, Dambulla. Natural rock bottom pool"
   },
   {
     "id": "photo-30",
@@ -299,7 +299,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Heritance Kandalama - Dambulla."
+    "caption": "Heritance Kandalama, Dambulla."
   },
   {
     "id": "photo-31",
@@ -309,7 +309,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Heritance Kandalama - Dambulla. Baaaabies"
+    "caption": "Heritance Kandalama, Dambulla. Baaaabies"
   },
   {
     "id": "photo-32",
@@ -339,7 +339,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Dambulla Cave Temple - entrance into the cave"
+    "caption": "Dambulla Cave Temple, entrance into the cave"
   },
   {
     "id": "photo-35",
@@ -349,7 +349,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Dambulla Cave Temple - Dan really loved this pillow"
+    "caption": "Dambulla Cave Temple, Dan really loved this pillow"
   },
   {
     "id": "photo-36",
@@ -369,7 +369,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Temple of the Sacred Tooth - Kandy"
+    "caption": "Temple of the Sacred Tooth, Kandy"
   },
   {
     "id": "photo-38",
@@ -379,7 +379,7 @@ export const honeymoonPhotos = [
     "tags": [
       "culture"
     ],
-    "caption": "Temple of the Sacred tooth - giving Buddha and his tooth an offering"
+    "caption": "Temple of the Sacred Tooth, giving Buddha and his tooth an offering"
   },
   {
     "id": "photo-39",
@@ -389,7 +389,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Tea Cabins - Ella"
+    "caption": "Tea Cabins, Ella"
   },
   {
     "id": "photo-40",
@@ -399,7 +399,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Tea Cabins - Ella"
+    "caption": "Tea Cabins, Ella"
   },
   {
     "id": "photo-41",
@@ -409,7 +409,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "9 arches bridge, Ella"
+    "caption": "Nine Arch Bridge, Ella"
   },
   {
     "id": "photo-42",
@@ -419,7 +419,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "9 arches bridge, Ella"
+    "caption": "Nine Arch Bridge, Ella"
   },
   {
     "id": "photo-43",
@@ -429,7 +429,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "9 arches bridge, Ella"
+    "caption": "Nine Arch Bridge, Ella"
   },
   {
     "id": "photo-44",
@@ -459,7 +459,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Buduruwagala Temple - 51ft statue of Buddha (look how small Dan looks)"
+    "caption": "Buduruwagala Temple, 51ft statue of Buddha (look how small Dan looks)"
   },
   {
     "id": "photo-47",
@@ -479,7 +479,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Elephant Transit Home - Baby Elephants"
+    "caption": "Elephant Transit Home, Baby Elephants"
   },
   {
     "id": "photo-49",
@@ -489,7 +489,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Elephant Transit Home -  They care for orphaned elephant calves until they can be returned to the wild"
+    "caption": "Elephant Transit Home. They care for orphaned elephant calves until they can be returned to the wild"
   },
   {
     "id": "photo-50",
@@ -499,7 +499,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Tara's favourite dog of the trip"
+    "caption": "Udawalawe National Park, Tara's favourite dog of the trip"
   },
   {
     "id": "photo-51",
@@ -509,7 +509,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Sri Lankan Elephant"
+    "caption": "Udawalawe National Park, Sri Lankan Elephant"
   },
   {
     "id": "photo-52",
@@ -519,7 +519,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Sri Lankan Elephant"
+    "caption": "Udawalawe National Park, Sri Lankan Elephant"
   },
   {
     "id": "photo-53",
@@ -529,7 +529,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Sri Lankan Elephant"
+    "caption": "Udawalawe National Park, Sri Lankan Elephant"
   },
   {
     "id": "photo-54",
@@ -539,7 +539,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Sri Lankan Elephants"
+    "caption": "Udawalawe National Park, Sri Lankan Elephants"
   },
   {
     "id": "photo-55",
@@ -549,7 +549,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Peacock"
+    "caption": "Udawalawe National Park, Peacock"
   },
   {
     "id": "photo-56",
@@ -559,7 +559,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Sri Lankan Elephants"
+    "caption": "Udawalawe National Park, Sri Lankan Elephants"
   },
   {
     "id": "photo-57",
@@ -579,7 +579,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Sri Lankan Elephant"
+    "caption": "Udawalawe National Park, Sri Lankan Elephant"
   },
   {
     "id": "photo-59",
@@ -589,7 +589,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Sri Lankan Elephant"
+    "caption": "Udawalawe National Park, Sri Lankan Elephant"
   },
   {
     "id": "photo-60",
@@ -599,7 +599,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - this young elephant was very curious about Dan"
+    "caption": "Udawalawe National Park, this young elephant was very curious about Dan"
   },
   {
     "id": "photo-61",
@@ -609,7 +609,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - this young elephant was very curious about Dan"
+    "caption": "Udawalawe National Park, this young elephant was very curious about Dan"
   },
   {
     "id": "photo-62",
@@ -619,7 +619,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Blue Tailed Bee Eater"
+    "caption": "Udawalawe National Park, Blue Tailed Bee Eater"
   },
   {
     "id": "photo-63",
@@ -629,7 +629,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Spotted Deer"
+    "caption": "Udawalawe National Park, Spotted Deer"
   },
   {
     "id": "photo-64",
@@ -639,7 +639,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Udawalawe National Park - Spotted Deer"
+    "caption": "Udawalawe National Park, Spotted Deer"
   },
   {
     "id": "photo-65",
@@ -649,7 +649,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Dan receiving 'fish foot thearpy' at our hotel"
+    "caption": "Dan receiving 'fish foot therapy' at our hotel"
   },
   {
     "id": "photo-66",
@@ -659,7 +659,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Sinharaja Rainforest Birding Tour - note the leech socks"
+    "caption": "Sinharaja Rainforest Birding Tour, note the leech socks"
   },
   {
     "id": "photo-67",
@@ -669,7 +669,7 @@ export const honeymoonPhotos = [
     "tags": [
       "nature"
     ],
-    "caption": "Sinharaja Rainforest Birding Tour - note the leech socks"
+    "caption": "Sinharaja Rainforest Birding Tour, note the leech socks"
   },
   {
     "id": "photo-68",
@@ -699,7 +699,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Malabar Hill - Weligama"
+    "caption": "Malabar Hill, Weligama"
   },
   {
     "id": "photo-71",
@@ -709,7 +709,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Malabar Hill - Weligama. Tara ate this entire congratulations cake herself."
+    "caption": "Malabar Hill, Weligama. Tara ate this entire congratulations cake herself."
   },
   {
     "id": "photo-72",
@@ -719,7 +719,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Malabar Hill - Weligama"
+    "caption": "Malabar Hill, Weligama"
   },
   {
     "id": "photo-73",
@@ -729,7 +729,7 @@ export const honeymoonPhotos = [
     "tags": [
       "beach"
     ],
-    "caption": "Mirisa Beach"
+    "caption": "Mirissa Beach"
   },
   {
     "id": "photo-74",
@@ -739,7 +739,7 @@ export const honeymoonPhotos = [
     "tags": [
       "beach"
     ],
-    "caption": "Mirisa Beach"
+    "caption": "Mirissa Beach"
   },
   {
     "id": "photo-75",
@@ -749,7 +749,7 @@ export const honeymoonPhotos = [
     "tags": [
       "beach"
     ],
-    "caption": "Wetlands walk near our hotel - moments before it started to rain buckets"
+    "caption": "Wetlands walk near our hotel, moments before it started to rain buckets"
   },
   {
     "id": "photo-76",
@@ -759,7 +759,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "Malabar Hill - Weligama"
+    "caption": "Malabar Hill, Weligama"
   },
   {
     "id": "photo-77",
@@ -769,7 +769,7 @@ export const honeymoonPhotos = [
     "tags": [
       "beach"
     ],
-    "caption": "Delicious rambutan fruit - similar to lychee"
+    "caption": "Delicious rambutan fruit, similar to lychee"
   },
   {
     "id": "photo-78",
@@ -779,7 +779,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "The Find - Ahangama"
+    "caption": "The Find, Ahangama"
   },
   {
     "id": "photo-79",
@@ -789,7 +789,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "The Find - Ahangama"
+    "caption": "The Find, Ahangama"
   },
   {
     "id": "photo-80",
@@ -799,7 +799,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "The Find - Ahangama"
+    "caption": "The Find, Ahangama"
   },
   {
     "id": "photo-81",
@@ -809,7 +809,7 @@ export const honeymoonPhotos = [
     "tags": [
       "hotels"
     ],
-    "caption": "The Find - Ahangama"
+    "caption": "The Find, Ahangama"
   },
   {
     "id": "photo-82",
