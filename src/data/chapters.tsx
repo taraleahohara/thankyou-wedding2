@@ -2,6 +2,14 @@ import type { ReactNode } from "react";
 import { getImageUrl } from "@/lib/cloudinary";
 import weddingHeaderImage from "@/assets/headerimage.jpg";
 
+/**
+ * Master bypass code: typing this into any gate field opens the gallery
+ * without the real password. A convenience skeleton key (for the times a
+ * password is forgotten) — these gates are a curtain, not a lock, so this
+ * weakens no real security.
+ */
+export const MASTER_CODE = "8272";
+
 /** One gallery section within a chapter page. */
 export interface GallerySectionConfig {
   /** DOM id for section navigation */
