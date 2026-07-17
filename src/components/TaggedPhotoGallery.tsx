@@ -304,10 +304,14 @@ const TaggedPhotoGallery = ({
   }
 
   // One photo cell — image, hover overlay, caption — shared by both layouts.
+  // withCaption lets the scatter layout show captions on only the feature
+  // (wide) photos, for a curated, hand-placed feel rather than a caption
+  // under every shot. Defaults true so the masonry layout is unaffected.
   const renderPhoto = (
     photo: Photo,
     loadingStrategy: "eager" | "lazy",
     captionAlign: "center" | "left",
+    withCaption: boolean = true,
   ) => {
     const originalIndex = photoIndexById.get(photo.id) ?? 0;
 
@@ -336,7 +340,7 @@ const TaggedPhotoGallery = ({
       </div>
     );
 
-    const caption = showCaption && photo.caption && (
+    const caption = showCaption && withCaption && photo.caption && (
       <div
         className={
           captionAlign === "left"
@@ -427,7 +431,7 @@ const TaggedPhotoGallery = ({
                       className="relative group"
                       style={{ width: slot.width, alignSelf: slot.align }}
                     >
-                      {renderPhoto(photo, index < 2 ? "eager" : "lazy", "left")}
+                      {renderPhoto(photo, index < 2 ? "eager" : "lazy", "left", slot.width === "100%")}
                     </div>
                   );
                 })}
@@ -449,7 +453,7 @@ const TaggedPhotoGallery = ({
                         marginTop: `${slot.top}rem`,
                       }}
                     >
-                      {renderPhoto(photo, index < 2 ? "eager" : "lazy", "left")}
+                      {renderPhoto(photo, index < 2 ? "eager" : "lazy", "left", slot.span >= 7)}
                     </div>
                   );
                 })}
