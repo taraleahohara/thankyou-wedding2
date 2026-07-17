@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Allura&family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Allura&family=Caveat:wght@400..700&family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -144,6 +144,37 @@ All colors MUST be HSL.
        on the wash always uses ink. */
     --wash: 23 61% 88%;
   }
+
+  /* Pets chapter theme — the neutral archive shell wearing house olive as
+     its spine ("the living chapter"). Handwriting (Caveat) is this chapter's
+     signature the way Allura is the wedding's: annotations only, never body. */
+  [data-chapter="pets"] {
+    --background: 39 48% 94%;
+    --foreground: 24 22% 16%;
+    --card: 39 48% 94%;
+    --card-foreground: 24 22% 16%;
+    --popover: 39 48% 94%;
+    --popover-foreground: 24 22% 16%;
+    --primary: 74 36% 31%;
+    --primary-foreground: 39 48% 94%;
+    --secondary: 74 28% 40%;
+    --secondary-foreground: 39 48% 94%;
+    --muted: 38 40% 90%;
+    --muted-foreground: 26 20% 40%;
+    --accent: 36 42% 87%;
+    --accent-foreground: 24 22% 16%;
+    --border: 34 30% 85%;
+    --input: 34 30% 85%;
+    --ring: 74 36% 31%;
+    --paper: 39 48% 94%;
+    --ink: 24 22% 16%;
+    --brand: 74 36% 31%;
+    --brand-alt: 74 22% 38%;
+    /* Plate wash — a pale sage the collection's wells sit on. */
+    --wash: 71 30% 88%;
+    /* The hand: Caveat, used for annotations, captions and doodle labels. */
+    --font-hand: 'Caveat', cursive;
+  }
 }
 
 @layer base {
@@ -185,5 +216,36 @@ All colors MUST be HSL.
 
   .font-display {
     font-family: var(--font-display);
+  }
+
+  /* The pets chapter's handwriting — annotations and captions only. */
+  .font-hand {
+    font-family: var(--font-hand, 'Caveat', cursive);
+  }
+
+  /* Hand-drawn wobbly border (frame option a / the creature cards):
+     the uneven-radius trick, doubled with a faint offset second stroke
+     so it reads as sketched rather than rounded. */
+  .sketchbox {
+    position: relative;
+    border: 1.6px solid hsl(var(--ink));
+    border-radius: 255px 18px 225px 18px / 18px 225px 18px 255px;
+  }
+  .sketchbox::before {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border: 1.2px solid hsl(var(--ink));
+    opacity: 0.35;
+    border-radius: 18px 255px 18px 225px / 225px 18px 255px 18px;
+    transform: rotate(-0.4deg);
+    pointer-events: none;
+  }
+
+  /* Small hand-drawn chip (filter pills, upload button) — same wobble,
+     tighter radii so it survives at pill size. */
+  .sketchchip {
+    border: 1.4px solid hsl(var(--ink));
+    border-radius: 165px 12px 155px 12px / 12px 155px 12px 165px;
   }
 }

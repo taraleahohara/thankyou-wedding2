@@ -66,7 +66,7 @@ export interface Chapter {
   /** Client-side og:image / twitter:image URL */
   ogImage?: string;
   /** Theme key applied as data-chapter on the page root */
-  theme?: "wedding" | "honeymoon";
+  theme?: "wedding" | "honeymoon" | "pets";
   /** Homestead spine colour (HSL channels) — the chapter's book-spine hue,
    *  worn on homepage/related cards as the label rule + hover border.
    *  Wedding keeps its own rust; pets (the living chapter) wears house olive. */
@@ -196,12 +196,14 @@ export const chapters: Chapter[] = [
   },
   {
     id: "pets",
-    path: "#",
+    path: "/pets",
     title: "pets",
     date: "ongoing",
     spine: "74 36% 31%",
+    theme: "pets",
+    pageTitle: "Phoebe & Penny — Our Creatures",
     card: {
-      description: "Our furry family members.",
+      description: "The permanent collection of our creatures.",
       image: getImageUrl("/images/before/AMY_8989_phoebe.jpg"),
     },
   },
