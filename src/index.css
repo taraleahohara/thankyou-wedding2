@@ -55,11 +55,14 @@ All colors MUST be HSL.
        Tier-1 signature primaries + tier-0 parchment live at :root because
        they are house colours — fixed sitewide, never rotated per chapter.
        Chapter scopes only re-declare their own plate (spine + wash).
-       Contrast notes (vs ivory paper): olive 5.1 AA, copper 5.0 AA,
+       Contrast notes (vs ivory paper): olive 5.1 AA, copper 5.5 AA,
        marigold takes ink type at 7.1 AAA. Copper-bright is ornament only. */
     --parchment: 42 76% 97%;      /* cards, wells (#FDF9F0) */
     --olive: 74 36% 31%;          /* structure: buttons, nav, active (#5E6B33) */
-    --copper: 24 60% 38%;         /* voice: links, eyebrows, small rules (#9C5527) */
+    --copper: 24 60% 36%;         /* voice: links, eyebrows, small rules (#935125).
+       Lightness tuned down from 38% (was 5.05 AA on paper, 4.28 on honeymoon's
+       wash) so the PlateHero eyebrow also clears AA on the pale wash: now
+       ~4.63:1 on honeymoon wash, ~5.47:1 on paper. */
     --copper-bright: 26 63% 47%;  /* ornament only, never text (#C26F2E) */
     --marigold: 36 88% 59%;       /* the pop: one loud CTA per page (#F2A93B) */
     --wash: 38 40% 90%;           /* plate wash fallback; chapters set their own */
@@ -109,7 +112,9 @@ All colors MUST be HSL.
        structure, and the hero wash is a pale rust-cream. */
     --parchment: 38 80% 93%;
     --olive: 50 36% 29%;
-    --copper: 17 70% 42%;
+    --copper: 17 70% 37%;         /* darkened from 42%: rust eyebrow was
+       under AA on both the wash (3.87:1) and even the wedding's own cream
+       paper (4.35:1); now ~5.3:1 on wash, ~5.9:1 on paper. */
     --copper-bright: 20 65% 48%;
     --wash: 27 70% 86%;
     --ornament: hsl(17 70% 42% / 0.8);
