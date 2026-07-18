@@ -206,7 +206,7 @@ const FeaturedShelf = ({ photos }: FeaturedShelfProps) => {
 
   return (
     <section
-      aria-label="On display — featured photos"
+      aria-label="On display, featured photos"
       className="relative left-1/2 -translate-x-1/2 w-screen mt-12"
     >
       <TornEdge />

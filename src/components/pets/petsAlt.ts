@@ -7,5 +7,5 @@ export function petPhotoAlt(photo: PetPhoto, index: number): string {
   const hasPenny = tags.includes("penny");
   const who =
     hasPhoebe && hasPenny ? "Phoebe and Penny" : hasPhoebe ? "Phoebe" : hasPenny ? "Penny" : "The creatures";
-  return `${who} — collection photo ${index + 1}`;
+  return `${who}, collection photo ${index + 1}`;
 }

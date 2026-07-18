@@ -72,7 +72,7 @@ export const devPetsPhotos: PetPhoto[] = [
     width: 1600,
     height: 1067,
     tags: ["phoebe"],
-    caption: "not tagged feature — feed only",
+    caption: "not tagged feature, feed only",
     createdAt: "2026-04-20T00:00:00Z",
   },
   {

@@ -119,7 +119,7 @@ const AddToCollection = ({ onUploaded }: AddToCollectionProps) => {
     if (!idToken || files.length === 0) return;
     const tags = [...(tagPhoebe ? ["phoebe"] : []), ...(tagPenny ? ["penny"] : [])];
     if (tags.length === 0) {
-      toast.error("Pick who's in the photos — phoebe, penny, or both.");
+      toast.error("Pick who's in the photos: phoebe, penny, or both.");
       return;
     }
 
@@ -135,7 +135,7 @@ const AddToCollection = ({ onUploaded }: AddToCollectionProps) => {
         // Token expired (Google ID tokens last ~1h) — sign in again.
         sessionStorage.removeItem(TOKEN_KEY);
         setIdToken(null);
-        toast.error("Your sign-in expired — sign in again and retry.");
+        toast.error("Your sign-in expired. Sign in again and retry.");
         return;
       }
       if (signResponse.status === 403) {
@@ -173,7 +173,7 @@ const AddToCollection = ({ onUploaded }: AddToCollectionProps) => {
           { method: "POST", body: form },
         );
         if (!uploadResponse.ok) {
-          toast.error(`"${file.name}" didn't make it — try that one again.`);
+          toast.error(`"${file.name}" didn't make it. Try that one again.`);
           continue;
         }
         const asset = (await uploadResponse.json()) as {
@@ -247,7 +247,7 @@ const AddToCollection = ({ onUploaded }: AddToCollectionProps) => {
 
             {!GOOGLE_CLIENT_ID ? (
               <p className="font-body text-ink/70 mt-3">
-                Uploads aren't switched on yet — the Google sign-in for this
+                Uploads aren't switched on yet. The Google sign-in for this
                 site still needs to be configured.
               </p>
             ) : !idToken ? (
@@ -261,12 +261,12 @@ const AddToCollection = ({ onUploaded }: AddToCollectionProps) => {
             ) : (
               <>
                 <p className="font-body text-ink/80 mt-3">
-                  Photos go straight into the collection — they'll be on the
+                  Photos go straight into the collection, and they'll be on the
                   page right away.
                 </p>
 
                 <div className="flex items-center gap-2.5 mt-5">
-                  <span className="u-label text-ink/60">who's in them —</span>
+                  <span className="u-label text-ink/60">who's in them</span>
                   <button
                     type="button"
                     onClick={() => setTagPhoebe((v) => !v)}

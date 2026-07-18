@@ -80,7 +80,7 @@ const PetsGallery = ({ photos, loading, unavailable, filterLabel }: PetsGalleryP
     return (
       <div className="py-20 text-center">
         <p className="font-hand text-2xl text-ink/60">
-          the collection is napping — check back in a moment.
+          the collection is napping, check back in a moment.
         </p>
       </div>
     );
@@ -90,7 +90,7 @@ const PetsGallery = ({ photos, loading, unavailable, filterLabel }: PetsGalleryP
     return (
       <div className="py-20 text-center flex flex-col items-center gap-4">
         <p className="font-hand text-2xl text-ink/60">
-          nothing filed under {filterLabel} yet — the first photos are on their way.
+          nothing filed under {filterLabel} yet, the first photos are on their way.
         </p>
         <FadingPawTrail className="w-36 h-auto" />
       </div>

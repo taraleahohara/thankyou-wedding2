@@ -201,7 +201,7 @@ export const chapters: Chapter[] = [
     date: "ongoing",
     spine: "74 36% 31%",
     theme: "pets",
-    pageTitle: "Phoebe & Penny — Our Creatures",
+    pageTitle: "Phoebe & Penny, Our Creatures",
     card: {
       description: "The permanent collection of our creatures.",
       image: getImageUrl("/images/before/AMY_8989_phoebe.jpg"),

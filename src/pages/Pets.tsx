@@ -31,7 +31,7 @@ const CREATURES: Creature[] = [
   {
     kind: "the cat",
     name: "Penny",
-    provenance: "from hoarder to lavish · est. 2021",
+    provenance: "from hoarder to bougie · est. 2021",
     facts: [
       "highly opinionated",
       "surveyor of the surrounding outdoors",
@@ -40,10 +40,10 @@ const CREATURES: Creature[] = [
     ],
     portrait: {
       src: "/images/pets/illustrated-penny.png",
-      alt: "Penny, an orange-and-white cat — illustrated portrait",
+      alt: "Penny, an orange-and-white cat, illustrated portrait",
       illustrated: true,
     },
-    footnote: "artist's impression — swaps for a photo the day she allows a proper sitting",
+    footnote: "artist's impression, swaps for a photo the day she allows a proper sitting",
   },
 ];
 
@@ -78,7 +78,7 @@ const Pets = () => {
           ...creature,
           portrait: {
             src: optimizeCloudinaryUrl(tagged.url, 300),
-            alt: `${creature.name} — portrait from the collection`,
+            alt: `${creature.name}, portrait from the collection`,
           },
           footnote: undefined,
         };
@@ -116,7 +116,7 @@ const Pets = () => {
       <main className="flex-1 w-full max-w-5xl mx-auto px-6">
         {/* Hero — the chapter opening with the creatures' stickers */}
         <section className="relative pt-12 md:pt-16 pb-2">
-          <p className="u-label text-copper mb-3">chapter three — the permanent collection</p>
+          <p className="u-label text-copper mb-3">chapter 03 · the permanent collection</p>
           <h1 className="font-display lowercase text-6xl md:text-8xl text-ink leading-none">
             pets
           </h1>
@@ -153,7 +153,7 @@ const Pets = () => {
 
         {/* Filed under — filters + the curators' upload */}
         <section className="mt-12 mb-10 border-y border-ink/10 py-4 flex flex-wrap items-center gap-x-4 gap-y-3">
-          <span className="u-label text-ink/60">filed under —</span>
+          <span className="u-label text-ink/60">filed under</span>
           {FILTERS.map(({ key, label }) => (
             <button
               key={key}
