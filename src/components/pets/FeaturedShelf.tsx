@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PhotoLightbox from "@/components/PhotoLightbox";
 import CloudinaryImage from "@/components/CloudinaryImage";
 import type { PetPhoto } from "@/hooks/usePetsPhotos";
@@ -11,13 +11,23 @@ import { petPhotoAlt } from "./petsAlt";
  *
  * A painted band of the chapter's sage wash with rough hand-torn edges.
  * Six honours (three of Phoebe, three of Penny, dealt at random each visit
- * from the photos tagged `feature`) stand on a hand-drawn shelf, slightly
- * crooked, captions hanging beneath the shelf line like little tags.
- * Whatever hangs here sits out of the feed below for the visit.
+ * from the photos tagged `feature`) stand on hand-drawn shelves, slightly
+ * crooked, captions hanging beneath the shelf lines like little tags.
+ * Desktop shows two shelves of three — big enough to actually see — and
+ * small screens get one taller, swipeable shelf. Whatever hangs here sits
+ * out of the feed below for the visit.
  */
 
-/** Frame heights cycle — mixed sizes so the shelf reads propped, not typeset. */
-const HEIGHTS = [150, 132, 163, 149, 140, 126] as const;
+// Desktop: two shelves of three. Heights vary within each shelf so the
+// frames read propped, not typeset.
+const SHELF_HEIGHTS = [
+  [232, 204, 248],
+  [212, 244, 196],
+] as const;
+
+// Mobile: one swipeable shelf, tall enough to read at phone width.
+const MOBILE_HEIGHTS = [190, 170, 200, 185, 195, 175] as const;
+
 const ROTATIONS = [-1.2, 1.4, -0.8, 1, -1.4, 0.8] as const;
 
 function shuffle<T>(input: T[]): T[] {
@@ -70,6 +80,89 @@ const TornEdge = ({ flip = false }: { flip?: boolean }) => (
   </svg>
 );
 
+/** The hand-drawn line a shelf's frames stand on, with support brackets. */
+const ShelfLine = () => (
+  <svg
+    viewBox="0 0 900 20"
+    preserveAspectRatio="none"
+    className="block w-full h-5 -mt-0.5"
+    aria-hidden="true"
+  >
+    <path
+      d="M6 6 C 200 4.5, 450 7, 894 5.5"
+      fill="none"
+      stroke="hsl(var(--ink))"
+      strokeWidth="2.2"
+      strokeLinecap="round"
+    />
+    <path
+      d="M60 7 l14 8 M846 7 l-14 8"
+      fill="none"
+      stroke="hsl(var(--ink))"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+interface ShelfRowProps {
+  photos: PetPhoto[];
+  /** Index of this row's first photo within the full deal. */
+  indexOffset: number;
+  /** Frame heights (px), cycled across the row. */
+  heights: readonly number[];
+  onSelect: (index: number) => void;
+}
+
+/** One shelf: a centered-or-scrolling row of frames standing on a line. */
+const ShelfRow = ({ photos, indexOffset, heights, onSelect }: ShelfRowProps) => (
+  <div className="overflow-x-auto -mx-6 px-6">
+    <div className="w-max min-w-full mx-auto">
+      <div className="flex items-end justify-center gap-5 md:gap-7 pt-4">
+        {photos.map((photo, rowIndex) => {
+          const index = indexOffset + rowIndex;
+          return (
+            <div
+              key={photo.id}
+              className="relative shrink-0"
+              style={{ transform: `rotate(${ROTATIONS[index % ROTATIONS.length]}deg)` }}
+            >
+              <SketchFrame variant={index % 2 === 0 ? "box" : "corners"}>
+                <button
+                  type="button"
+                  onClick={() => onSelect(index)}
+                  className="block cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
+                  aria-label={`View enlarged ${petPhotoAlt(photo, index)}`}
+                >
+                  <CloudinaryImage
+                    src={photo.url}
+                    alt={petPhotoAlt(photo, index)}
+                    width={photo.width}
+                    height={photo.height}
+                    loading={index < 3 ? "eager" : "lazy"}
+                    sizes="400px"
+                    className="block w-auto"
+                    style={{ height: heights[rowIndex % heights.length] }}
+                  />
+                </button>
+              </SketchFrame>
+              {photo.caption && (
+                <span
+                  className="font-hand text-base md:text-lg text-ink/70 absolute top-full left-1/2 -translate-x-1/2 w-max max-w-44 mt-3.5 text-center leading-tight"
+                  aria-hidden="true"
+                >
+                  {photo.caption}
+                </span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+      <ShelfLine />
+    </div>
+  </div>
+);
+
 interface FeaturedShelfProps {
   /** Already-dealt shelf photos, in display order. Renders nothing if empty. */
   photos: PetPhoto[];
@@ -77,6 +170,16 @@ interface FeaturedShelfProps {
 
 const FeaturedShelf = ({ photos }: FeaturedShelfProps) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const update = () => setIsDesktop(mq.matches);
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   const lightboxPhotos = useMemo(
     () =>
@@ -91,6 +194,15 @@ const FeaturedShelf = ({ photos }: FeaturedShelfProps) => {
   );
 
   if (photos.length === 0) return null;
+
+  // Two shelves of three on desktop; one taller swipeable shelf on mobile.
+  const shelves: { photos: PetPhoto[]; indexOffset: number; heights: readonly number[] }[] =
+    isDesktop
+      ? [
+          { photos: photos.slice(0, 3), indexOffset: 0, heights: SHELF_HEIGHTS[0] },
+          { photos: photos.slice(3, 6), indexOffset: 3, heights: SHELF_HEIGHTS[1] },
+        ].filter((shelf) => shelf.photos.length > 0)
+      : [{ photos, indexOffset: 0, heights: MOBILE_HEIGHTS }];
 
   return (
     <section
@@ -108,72 +220,16 @@ const FeaturedShelf = ({ photos }: FeaturedShelfProps) => {
             </span>
           </div>
 
-          {/* The shelf centers when it fits and scrolls sideways when it
-              doesn't (six landscape photos outgrow any container) — a shelf
-              extending off the page reads better than shrunken frames. */}
-          <div className="overflow-x-auto -mx-6 px-6">
-            <div className="w-max min-w-full mx-auto">
-              <div className="flex items-end justify-center gap-5 md:gap-6 pt-4">
-                {photos.map((photo, index) => (
-                  <div
-                    key={photo.id}
-                    className="relative shrink-0"
-                    style={{ transform: `rotate(${ROTATIONS[index % ROTATIONS.length]}deg)` }}
-                  >
-                    <SketchFrame variant={index % 2 === 0 ? "box" : "corners"}>
-                      <button
-                        type="button"
-                        onClick={() => setSelectedIndex(index)}
-                        className="block cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
-                        aria-label={`View enlarged ${petPhotoAlt(photo, index)}`}
-                      >
-                        <CloudinaryImage
-                          src={photo.url}
-                          alt={petPhotoAlt(photo, index)}
-                          width={photo.width}
-                          height={photo.height}
-                          loading={index < 3 ? "eager" : "lazy"}
-                          sizes="250px"
-                          className="block w-auto"
-                          style={{ height: HEIGHTS[index % HEIGHTS.length] }}
-                        />
-                      </button>
-                    </SketchFrame>
-                    {photo.caption && (
-                      <span
-                        className="font-hand text-base md:text-lg text-ink/70 absolute top-full left-1/2 -translate-x-1/2 w-max max-w-44 mt-3.5 text-center leading-tight"
-                        aria-hidden="true"
-                      >
-                        {photo.caption}
-                      </span>
-                    )}
-                  </div>
-                ))}
-              </div>
-              {/* The shelf line the frames stand on, with support brackets. */}
-              <svg
-                viewBox="0 0 900 20"
-                preserveAspectRatio="none"
-                className="block w-full h-5 -mt-0.5"
-                aria-hidden="true"
-              >
-                <path
-                  d="M6 6 C 200 4.5, 450 7, 894 5.5"
-                  fill="none"
-                  stroke="hsl(var(--ink))"
-                  strokeWidth="2.2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M60 7 l14 8 M846 7 l-14 8"
-                  fill="none"
-                  stroke="hsl(var(--ink))"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                />
-              </svg>
+          {shelves.map((shelf, shelfIndex) => (
+            <div key={shelfIndex} className={shelfIndex > 0 ? "mt-12" : undefined}>
+              <ShelfRow
+                photos={shelf.photos}
+                indexOffset={shelf.indexOffset}
+                heights={shelf.heights}
+                onSelect={setSelectedIndex}
+              />
             </div>
-          </div>
+          ))}
         </div>
       </div>
       <TornEdge flip />
