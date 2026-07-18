@@ -21,6 +21,12 @@ import { createHash } from "crypto";
 const CLOUD_NAME = (process.env.CLOUDINARY_CLOUD_NAME || "dbr3xp0bx").trim();
 const API_KEY = (process.env.CLOUDINARY_API_KEY || "795228952549794").trim();
 const PETS_FOLDER = (process.env.CLOUDINARY_PETS_FOLDER || "Pets").trim();
+// Public Client ID (the aud we pin sign-ins to) — committed as the default,
+// matching the frontend. Override with GOOGLE_CLIENT_ID if the client changes.
+const GOOGLE_CLIENT_ID = (
+  process.env.GOOGLE_CLIENT_ID ||
+  "545416424508-h6gdqun478ms464e16ebjn0i6rv9f3d1.apps.googleusercontent.com"
+).trim();
 
 /** Creature tags the client may request; anything else is dropped. */
 const ALLOWED_TAGS = ["phoebe", "penny"];
@@ -38,16 +44,15 @@ export default async function handler(
   }
 
   const secret = process.env.CLOUDINARY_API_SECRET?.trim();
-  const googleClientId = process.env.GOOGLE_CLIENT_ID?.trim();
   const allowlist = (process.env.PETS_UPLOADERS || "")
     .split(",")
     .map((email) => email.trim().toLowerCase())
     .filter(Boolean);
 
-  if (!secret || !googleClientId || allowlist.length === 0) {
+  if (!secret || allowlist.length === 0) {
     return res.status(500).json({
       error:
-        "Upload gate is not configured (CLOUDINARY_API_SECRET, GOOGLE_CLIENT_ID and PETS_UPLOADERS must be set)",
+        "Upload gate is not configured (CLOUDINARY_API_SECRET and PETS_UPLOADERS must be set)",
     });
   }
 
@@ -75,7 +80,7 @@ export default async function handler(
     return res.status(502).json({ error: "Could not reach Google to verify sign-in" });
   }
 
-  if (tokenInfo.aud !== googleClientId) {
+  if (tokenInfo.aud !== GOOGLE_CLIENT_ID) {
     return res.status(401).json({ error: "Sign-in came from an unrecognized app" });
   }
   const email = tokenInfo.email?.toLowerCase();

@@ -14,7 +14,13 @@ import { PawPrint } from "./doodles";
  * goes browser → Cloudinary directly; the API secret never reaches the client.
  */
 
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined;
+// A Google Web-application Client ID is public by design (it ships in every
+// frontend), so it's committed as the default here. This is the Waypoints
+// OAuth client, reused; override with VITE_GOOGLE_CLIENT_ID if ever needed.
+// The private half is the allowlist (PETS_UPLOADERS, server-side only).
+const GOOGLE_CLIENT_ID =
+  (import.meta.env.VITE_GOOGLE_CLIENT_ID as string | undefined) ||
+  "545416424508-h6gdqun478ms464e16ebjn0i6rv9f3d1.apps.googleusercontent.com";
 const TOKEN_KEY = "pets-curator-token";
 
 interface GoogleAccountsId {
