@@ -84,17 +84,21 @@ function usePerRow(): number {
   return perRow;
 }
 
-/** Rough hand-torn band edge; flip vertically for the bottom. */
+/**
+ * Rough hand-torn band edge — an irregular ripped-paper line (angular jags
+ * of varying height and spacing), not a smooth curve. The bottom edge is the
+ * same tear rotated 180° so it doesn't mirror the top.
+ */
 const TornEdge = ({ flip = false }: { flip?: boolean }) => (
   <svg
-    viewBox="0 0 1200 14"
+    viewBox="0 0 1200 20"
     preserveAspectRatio="none"
-    className="block w-full h-3.5"
-    style={flip ? { transform: "scaleY(-1)" } : undefined}
+    className="block w-full h-5"
+    style={flip ? { transform: "rotate(180deg)" } : undefined}
     aria-hidden="true"
   >
     <path
-      d="M0 13 C 90 5, 180 10, 290 7 C 400 4, 520 11, 640 8 C 760 5, 880 10, 1000 6 C 1080 4, 1150 9, 1200 7 L1200 14 L0 14 Z"
+      d="M0 20 L0 12 L38 15 L70 6 L104 13 L150 4 L188 14 L224 8 L266 16 L300 6 L342 12 L384 5 L426 15 L470 8 L512 17 L548 7 L590 13 L632 4 L676 15 L716 9 L760 16 L800 6 L842 13 L884 5 L928 15 L968 8 L1012 17 L1052 7 L1096 14 L1138 5 L1176 13 L1200 9 L1200 20 Z"
       fill="hsl(var(--wash))"
     />
   </svg>
