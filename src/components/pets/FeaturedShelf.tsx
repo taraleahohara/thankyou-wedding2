@@ -13,20 +13,11 @@ import { petPhotoAlt } from "./petsAlt";
  * Six honours (three of Phoebe, three of Penny, dealt at random each visit
  * from the photos tagged `feature`) stand on hand-drawn shelves, slightly
  * crooked, captions hanging beneath the shelf lines like little tags.
- * Desktop shows two shelves of three — big enough to actually see — and
- * small screens get one taller, swipeable shelf. Whatever hangs here sits
- * out of the feed below for the visit.
+ *
+ * The shelf reflows responsively — three across, then two, then a single
+ * stack on phones — so every honour always fits with no scrolling: photos
+ * fill their column and the band grows to hold them.
  */
-
-// Desktop: two shelves of three. Heights vary within each shelf so the
-// frames read propped, not typeset.
-const SHELF_HEIGHTS = [
-  [300, 268, 322],
-  [285, 318, 260],
-] as const;
-
-// Mobile: one swipeable shelf, tall enough to read at phone width.
-const MOBILE_HEIGHTS = [230, 205, 240, 220, 235, 210] as const;
 
 const ROTATIONS = [-1.2, 1.4, -0.8, 1, -1.4, 0.8] as const;
 
@@ -62,6 +53,35 @@ export function dealShelf(photos: PetPhoto[]): PetPhoto[] {
     if (penny[i]) interleaved.push(penny[i]);
   }
   return interleaved;
+}
+
+/** Split the deal into rows of `perRow` for the current breakpoint. */
+function chunk<T>(items: T[], size: number): T[][] {
+  const rows: T[][] = [];
+  for (let i = 0; i < items.length; i += size) rows.push(items.slice(i, i + size));
+  return rows;
+}
+
+/** Photos per shelf at the current width: 3 wide, then 2, then a single stack. */
+function usePerRow(): number {
+  const read = () => {
+    if (typeof window === "undefined") return 3;
+    if (window.matchMedia("(min-width: 1024px)").matches) return 3;
+    if (window.matchMedia("(min-width: 640px)").matches) return 2;
+    return 1;
+  };
+  const [perRow, setPerRow] = useState(read);
+  useEffect(() => {
+    const queries = [
+      window.matchMedia("(min-width: 1024px)"),
+      window.matchMedia("(min-width: 640px)"),
+    ];
+    const update = () => setPerRow(read());
+    queries.forEach((q) => q.addEventListener("change", update));
+    update();
+    return () => queries.forEach((q) => q.removeEventListener("change", update));
+  }, []);
+  return perRow;
 }
 
 /** Rough hand-torn band edge; flip vertically for the bottom. */
@@ -109,29 +129,39 @@ interface ShelfRowProps {
   photos: PetPhoto[];
   /** Index of this row's first photo within the full deal. */
   indexOffset: number;
-  /** Frame heights (px), cycled across the row. */
-  heights: readonly number[];
+  /** Columns to lay this row across (matches the breakpoint's perRow). */
+  perRow: number;
+  /** Priority-load the first shelf's photos. */
+  eager: boolean;
   onSelect: (index: number) => void;
 }
 
-/** One shelf: a centered-or-scrolling row of frames standing on a line. */
-const ShelfRow = ({ photos, indexOffset, heights, onSelect }: ShelfRowProps) => (
-  <div className="overflow-x-auto -mx-6 px-6">
-    <div className="w-max min-w-full mx-auto">
-      <div className="flex items-end justify-center gap-5 md:gap-7 pt-4">
+/**
+ * One shelf: a row of frames standing bottom-aligned on a drawn line, with
+ * a matching row of handwritten caption tags hanging beneath it. Both rows
+ * share the same column template, so captions sit under their photos.
+ */
+const ShelfRow = ({ photos, indexOffset, perRow, eager, onSelect }: ShelfRowProps) => {
+  const columns = { gridTemplateColumns: `repeat(${perRow}, minmax(0, 1fr))` };
+  const imageSizes = perRow === 1 ? "88vw" : perRow === 2 ? "44vw" : "30vw";
+  const hasAnyCaption = photos.some((photo) => photo.caption);
+
+  return (
+    <div>
+      <div className="grid items-end gap-4 md:gap-6 justify-items-center" style={columns}>
         {photos.map((photo, rowIndex) => {
           const index = indexOffset + rowIndex;
           return (
             <div
               key={photo.id}
-              className="relative shrink-0"
+              className="w-full max-w-sm min-w-0"
               style={{ transform: `rotate(${ROTATIONS[index % ROTATIONS.length]}deg)` }}
             >
               <SketchFrame variant={index % 2 === 0 ? "box" : "corners"}>
                 <button
                   type="button"
                   onClick={() => onSelect(index)}
-                  className="block cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
+                  className="block w-full cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
                   aria-label={`View enlarged ${petPhotoAlt(photo, index)}`}
                 >
                   <CloudinaryImage
@@ -139,29 +169,33 @@ const ShelfRow = ({ photos, indexOffset, heights, onSelect }: ShelfRowProps) => 
                     alt={petPhotoAlt(photo, index)}
                     width={photo.width}
                     height={photo.height}
-                    loading={index < 3 ? "eager" : "lazy"}
-                    sizes="500px"
-                    className="block w-auto"
-                    style={{ height: heights[rowIndex % heights.length] }}
+                    loading={eager ? "eager" : "lazy"}
+                    sizes={imageSizes}
+                    className="block w-full h-auto"
                   />
                 </button>
               </SketchFrame>
-              {photo.caption && (
-                <span
-                  className="font-hand text-base md:text-lg text-ink/70 absolute top-full left-1/2 -translate-x-1/2 w-max max-w-44 mt-3.5 text-center leading-tight"
-                  aria-hidden="true"
-                >
-                  {photo.caption}
-                </span>
-              )}
             </div>
           );
         })}
       </div>
       <ShelfLine />
+      {hasAnyCaption && (
+        <div className="grid gap-4 md:gap-6 mt-3 justify-items-center" style={columns}>
+          {photos.map((photo) => (
+            <span
+              key={photo.id}
+              className="font-hand text-base md:text-lg text-ink/70 text-center leading-tight px-1"
+              aria-hidden="true"
+            >
+              {photo.caption || ""}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
-  </div>
-);
+  );
+};
 
 interface FeaturedShelfProps {
   /** Already-dealt shelf photos, in display order. Renders nothing if empty. */
@@ -170,16 +204,7 @@ interface FeaturedShelfProps {
 
 const FeaturedShelf = ({ photos }: FeaturedShelfProps) => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
-
-  const [isDesktop, setIsDesktop] = useState(
-    () => typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches,
-  );
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
-    const update = () => setIsDesktop(mq.matches);
-    mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
-  }, []);
+  const perRow = usePerRow();
 
   const lightboxPhotos = useMemo(
     () =>
@@ -195,18 +220,11 @@ const FeaturedShelf = ({ photos }: FeaturedShelfProps) => {
 
   if (photos.length === 0) return null;
 
-  // Two shelves of three on desktop; one taller swipeable shelf on mobile.
-  const shelves: { photos: PetPhoto[]; indexOffset: number; heights: readonly number[] }[] =
-    isDesktop
-      ? [
-          { photos: photos.slice(0, 3), indexOffset: 0, heights: SHELF_HEIGHTS[0] },
-          { photos: photos.slice(3, 6), indexOffset: 3, heights: SHELF_HEIGHTS[1] },
-        ].filter((shelf) => shelf.photos.length > 0)
-      : [{ photos, indexOffset: 0, heights: MOBILE_HEIGHTS }];
+  const rows = chunk(photos, perRow);
 
   return (
     <section
-      aria-label="On display, featured photos"
+      aria-label="On display — featured photos"
       className="relative left-1/2 -translate-x-1/2 w-screen mt-12"
     >
       <TornEdge />
@@ -219,12 +237,13 @@ const FeaturedShelf = ({ photos }: FeaturedShelfProps) => {
             <AnnotArrow className="inline-block w-10 h-8 align-middle -ml-0.5 -scale-y-100 translate-y-3" />
           </span>
 
-          {shelves.map((shelf, shelfIndex) => (
-            <div key={shelfIndex} className={shelfIndex > 0 ? "mt-12" : undefined}>
+          {rows.map((row, rowIndex) => (
+            <div key={rowIndex} className={rowIndex > 0 ? "mt-10 md:mt-12" : "mt-3"}>
               <ShelfRow
-                photos={shelf.photos}
-                indexOffset={shelf.indexOffset}
-                heights={shelf.heights}
+                photos={row}
+                indexOffset={rowIndex * perRow}
+                perRow={perRow}
+                eager={rowIndex === 0}
                 onSelect={setSelectedIndex}
               />
             </div>
