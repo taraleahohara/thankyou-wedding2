@@ -4,6 +4,7 @@ import CloudinaryImage from "@/components/CloudinaryImage";
 import type { PetPhoto } from "@/hooks/usePetsPhotos";
 import SketchFrame from "./SketchFrame";
 import { PawTrailConnector, FadingPawTrail } from "./doodles";
+import { petPhotoAlt } from "./petsAlt";
 
 /**
  * The collection itself: a scatter of photos in the chosen frame mix —
@@ -34,15 +35,6 @@ const MOBILE_SLOTS = [
 
 const CONNECTOR_DOODLES = ["bone", "yarn", "none"] as const;
 
-function photoAlt(photo: PetPhoto, index: number): string {
-  const tags = photo.tags || [];
-  const hasPhoebe = tags.includes("phoebe");
-  const hasPenny = tags.includes("penny");
-  const who =
-    hasPhoebe && hasPenny ? "Phoebe and Penny" : hasPhoebe ? "Phoebe" : hasPenny ? "Penny" : "The creatures";
-  return `${who} — collection photo ${index + 1}`;
-}
-
 interface PetsGalleryProps {
   photos: PetPhoto[];
   loading: boolean;
@@ -69,7 +61,7 @@ const PetsGallery = ({ photos, loading, unavailable, filterLabel }: PetsGalleryP
       photos.map((photo, index) => ({
         id: photo.id,
         url: photo.url,
-        alt: photoAlt(photo, index),
+        alt: petPhotoAlt(photo, index),
         caption: photo.caption ?? null,
         downloadUrl: photo.url,
       })),
@@ -109,7 +101,7 @@ const PetsGallery = ({ photos, loading, unavailable, filterLabel }: PetsGalleryP
     const image = (
       <CloudinaryImage
         src={photo.url}
-        alt={photoAlt(photo, index)}
+        alt={petPhotoAlt(photo, index)}
         width={photo.width}
         height={photo.height}
         loading={index < 2 ? "eager" : "lazy"}
@@ -125,7 +117,7 @@ const PetsGallery = ({ photos, loading, unavailable, filterLabel }: PetsGalleryP
             type="button"
             onClick={() => setSelectedIndex(index)}
             className="block w-full cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-copper"
-            aria-label={`View enlarged ${photoAlt(photo, index)}`}
+            aria-label={`View enlarged ${petPhotoAlt(photo, index)}`}
           >
             {image}
           </button>

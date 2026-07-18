@@ -2,9 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import { getChapter } from "@/data/chapters";
-import { usePetsPhotos } from "@/hooks/usePetsPhotos";
+import { usePetsPhotos, type PetPhoto } from "@/hooks/usePetsPhotos";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 import CreatureCard, { type Creature } from "@/components/pets/CreatureCard";
 import PetsGallery from "@/components/pets/PetsGallery";
+import FeaturedShelf, { dealShelf } from "@/components/pets/FeaturedShelf";
 import AddToCollection from "@/components/pets/AddToCollection";
 import { AnnotArrow, DoodleDefs } from "@/components/pets/doodles";
 
@@ -62,13 +64,53 @@ const Pets = () => {
     document.title = chapter.pageTitle!;
   }, []);
 
+  // Cards borrow each creature's newest photo tagged `portrait` (the photo
+  // itself stays in the feed). Without one, the card keeps its built-in
+  // stand-in — Penny's "artist's impression" footnote only shows then.
+  const creatures = useMemo(
+    () =>
+      CREATURES.map((creature) => {
+        const key = creature.name.toLowerCase();
+        const tagged = photos.find(
+          (photo) => (photo.tags || []).includes("portrait") && (photo.tags || []).includes(key),
+        );
+        if (!tagged) return creature;
+        return {
+          ...creature,
+          portrait: {
+            src: optimizeCloudinaryUrl(tagged.url, 300),
+            alt: `${creature.name} — portrait from the collection`,
+          },
+          footnote: undefined,
+        };
+      }),
+    [photos],
+  );
+
+  // The featured shelf is dealt once per visit (three of each creature from
+  // the `feature` pool) and then frozen, so uploads don't reshuffle it.
+  const [shelf, setShelf] = useState<PetPhoto[]>([]);
+  useEffect(() => {
+    if (shelf.length === 0 && photos.length > 0) {
+      setShelf(dealShelf(photos));
+    }
+  }, [photos, shelf.length]);
+
+  // Whatever hangs on the shelf sits out of the feed for this visit.
+  const feedPhotos = useMemo(() => {
+    const shelfIds = new Set(shelf.map((photo) => photo.id));
+    return photos.filter((photo) => !shelfIds.has(photo.id));
+  }, [photos, shelf]);
+
   const filteredPhotos = useMemo(() => {
-    if (filter === "all") return photos;
-    return photos.filter((photo) => (photo.tags || []).includes(filter));
-  }, [photos, filter]);
+    if (filter === "all") return feedPhotos;
+    return feedPhotos.filter((photo) => (photo.tags || []).includes(filter));
+  }, [feedPhotos, filter]);
 
   return (
-    <div data-chapter={chapter.theme} className="min-h-screen bg-paper flex flex-col">
+    // overflow-x-clip guards the shelf's full-bleed w-screen band from
+    // creating a horizontal scrollbar (100vw includes the scrollbar width).
+    <div data-chapter={chapter.theme} className="min-h-screen bg-paper flex flex-col overflow-x-clip">
       <SiteHeader />
       <DoodleDefs />
 
@@ -102,10 +144,13 @@ const Pets = () => {
 
         {/* The residents */}
         <section className="grid md:grid-cols-2 gap-8 md:gap-9 mt-10">
-          {CREATURES.map((creature) => (
+          {creatures.map((creature) => (
             <CreatureCard key={creature.name} creature={creature} />
           ))}
         </section>
+
+        {/* On display — the featured shelf ("the mantel"), dealt per visit */}
+        <FeaturedShelf photos={shelf} />
 
         {/* Filed under — filters + the curators' upload */}
         <section className="mt-12 mb-10 border-y border-ink/10 py-4 flex flex-wrap items-center gap-x-4 gap-y-3">
