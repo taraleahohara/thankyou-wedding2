@@ -16,9 +16,11 @@
 
 import { createHash } from "crypto";
 
-const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || "dbr3xp0bx";
-const API_KEY = process.env.CLOUDINARY_API_KEY || "795228952549794";
-const PETS_FOLDER = process.env.CLOUDINARY_PETS_FOLDER || "Pets";
+// .trim() throughout: pasted Vercel env values commonly carry a trailing
+// newline, which would break the Cloudinary signature.
+const CLOUD_NAME = (process.env.CLOUDINARY_CLOUD_NAME || "dbr3xp0bx").trim();
+const API_KEY = (process.env.CLOUDINARY_API_KEY || "795228952549794").trim();
+const PETS_FOLDER = (process.env.CLOUDINARY_PETS_FOLDER || "Pets").trim();
 
 /** Creature tags the client may request; anything else is dropped. */
 const ALLOWED_TAGS = ["phoebe", "penny"];
@@ -35,8 +37,8 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const secret = process.env.CLOUDINARY_API_SECRET;
-  const googleClientId = process.env.GOOGLE_CLIENT_ID;
+  const secret = process.env.CLOUDINARY_API_SECRET?.trim();
+  const googleClientId = process.env.GOOGLE_CLIENT_ID?.trim();
   const allowlist = (process.env.PETS_UPLOADERS || "")
     .split(",")
     .map((email) => email.trim().toLowerCase())

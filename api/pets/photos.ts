@@ -10,9 +10,11 @@
  * Env: CLOUDINARY_API_SECRET (required; Vercel project settings).
  */
 
-const CLOUD_NAME = process.env.CLOUDINARY_CLOUD_NAME || "dbr3xp0bx";
-const API_KEY = process.env.CLOUDINARY_API_KEY || "795228952549794";
-const PETS_FOLDER = process.env.CLOUDINARY_PETS_FOLDER || "Pets";
+// .trim() throughout: pasted Vercel env values commonly carry a trailing
+// newline, which would break Cloudinary's basic-auth credential match.
+const CLOUD_NAME = (process.env.CLOUDINARY_CLOUD_NAME || "dbr3xp0bx").trim();
+const API_KEY = (process.env.CLOUDINARY_API_KEY || "795228952549794").trim();
+const PETS_FOLDER = (process.env.CLOUDINARY_PETS_FOLDER || "Pets").trim();
 
 interface CloudinarySearchResource {
   public_id: string;
@@ -36,7 +38,7 @@ export default async function handler(
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const secret = process.env.CLOUDINARY_API_SECRET;
+  const secret = process.env.CLOUDINARY_API_SECRET?.trim();
   if (!secret) {
     return res.status(500).json({ error: "CLOUDINARY_API_SECRET is not configured" });
   }
