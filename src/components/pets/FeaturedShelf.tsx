@@ -21,12 +21,12 @@ import { petPhotoAlt } from "./petsAlt";
 // Desktop: two shelves of three. Heights vary within each shelf so the
 // frames read propped, not typeset.
 const SHELF_HEIGHTS = [
-  [232, 204, 248],
-  [212, 244, 196],
+  [300, 268, 322],
+  [285, 318, 260],
 ] as const;
 
 // Mobile: one swipeable shelf, tall enough to read at phone width.
-const MOBILE_HEIGHTS = [190, 170, 200, 185, 195, 175] as const;
+const MOBILE_HEIGHTS = [230, 205, 240, 220, 235, 210] as const;
 
 const ROTATIONS = [-1.2, 1.4, -0.8, 1, -1.4, 0.8] as const;
 
@@ -140,7 +140,7 @@ const ShelfRow = ({ photos, indexOffset, heights, onSelect }: ShelfRowProps) => 
                     width={photo.width}
                     height={photo.height}
                     loading={index < 3 ? "eager" : "lazy"}
-                    sizes="400px"
+                    sizes="500px"
                     className="block w-auto"
                     style={{ height: heights[rowIndex % heights.length] }}
                   />
