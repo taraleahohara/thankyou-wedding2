@@ -74,6 +74,7 @@ const AddToCollection = ({ onUploaded }: AddToCollectionProps) => {
   const [files, setFiles] = useState<File[]>([]);
   const [tagPhoebe, setTagPhoebe] = useState(true);
   const [tagPenny, setTagPenny] = useState(false);
+  const [tagFeature, setTagFeature] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadedCount, setUploadedCount] = useState(0);
   const signInRef = useRef<HTMLDivElement>(null);
@@ -117,11 +118,12 @@ const AddToCollection = ({ onUploaded }: AddToCollectionProps) => {
 
   const handleUpload = async () => {
     if (!idToken || files.length === 0) return;
-    const tags = [...(tagPhoebe ? ["phoebe"] : []), ...(tagPenny ? ["penny"] : [])];
-    if (tags.length === 0) {
+    const subjects = [...(tagPhoebe ? ["phoebe"] : []), ...(tagPenny ? ["penny"] : [])];
+    if (subjects.length === 0) {
       toast.error("Pick who's in the photos: phoebe, penny, or both.");
       return;
     }
+    const tags = [...subjects, ...(tagFeature ? ["feature"] : [])];
 
     setUploading(true);
     setUploadedCount(0);
@@ -265,28 +267,46 @@ const AddToCollection = ({ onUploaded }: AddToCollectionProps) => {
                   page right away.
                 </p>
 
-                <div className="flex items-center gap-2.5 mt-5">
+                <div className="mt-5">
                   <span className="u-label text-ink/60">who's in them</span>
-                  <button
-                    type="button"
-                    onClick={() => setTagPhoebe((v) => !v)}
-                    aria-pressed={tagPhoebe}
-                    className={`sketchchip px-3.5 py-1 u-label tracking-[0.14em] transition-colors duration-1 ease-paper ${
-                      tagPhoebe ? "bg-olive border-olive text-paper" : "text-ink"
-                    }`}
-                  >
-                    phoebe
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setTagPenny((v) => !v)}
-                    aria-pressed={tagPenny}
-                    className={`sketchchip px-3.5 py-1 u-label tracking-[0.14em] transition-colors duration-1 ease-paper ${
-                      tagPenny ? "bg-olive border-olive text-paper" : "text-ink"
-                    }`}
-                  >
-                    penny
-                  </button>
+                  <div className="flex flex-wrap gap-2.5 mt-2">
+                    <button
+                      type="button"
+                      onClick={() => setTagPhoebe((v) => !v)}
+                      aria-pressed={tagPhoebe}
+                      className={`sketchchip px-3.5 py-1 u-label tracking-[0.14em] transition-colors duration-1 ease-paper ${
+                        tagPhoebe ? "bg-olive border-olive text-paper" : "text-ink"
+                      }`}
+                    >
+                      phoebe
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setTagPenny((v) => !v)}
+                      aria-pressed={tagPenny}
+                      className={`sketchchip px-3.5 py-1 u-label tracking-[0.14em] transition-colors duration-1 ease-paper ${
+                        tagPenny ? "bg-olive border-olive text-paper" : "text-ink"
+                      }`}
+                    >
+                      penny
+                    </button>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <span className="u-label text-ink/60">put it on the mantel</span>
+                  <div className="flex flex-wrap gap-2.5 mt-2">
+                    <button
+                      type="button"
+                      onClick={() => setTagFeature((v) => !v)}
+                      aria-pressed={tagFeature}
+                      className={`sketchchip px-3.5 py-1 u-label tracking-[0.14em] transition-colors duration-1 ease-paper ${
+                        tagFeature ? "bg-marigold border-marigold text-ink" : "text-ink"
+                      }`}
+                    >
+                      feature
+                    </button>
+                  </div>
                 </div>
 
                 <input

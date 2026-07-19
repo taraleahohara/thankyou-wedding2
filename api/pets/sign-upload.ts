@@ -28,8 +28,11 @@ const GOOGLE_CLIENT_ID = (
   "545416424508-h6gdqun478ms464e16ebjn0i6rv9f3d1.apps.googleusercontent.com"
 ).trim();
 
-/** Creature tags the client may request; anything else is dropped. */
-const ALLOWED_TAGS = ["phoebe", "penny"];
+/**
+ * Tags the client may request; anything else is dropped. "phoebe"/"penny" mark
+ * who's in the photo; "feature" puts it on the mantel shelf.
+ */
+const ALLOWED_TAGS = ["phoebe", "penny", "feature"];
 
 export default async function handler(
   req: { method?: string; body?: unknown },

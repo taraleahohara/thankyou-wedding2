@@ -25,7 +25,7 @@ export interface Creature {
 const CreatureCard = ({ creature }: { creature: Creature }) => (
   <div className="sketchbox bg-parchment/60 px-6 py-6 md:px-7">
     <p className="u-label text-brand">{creature.kind}</p>
-    <div className="flex items-center gap-5 mt-3">
+    <div className="flex items-center gap-4 sm:gap-5 mt-3">
       <SketchFrame variant="oval" className="shrink-0">
         <img
           src={creature.portrait.src}
@@ -40,16 +40,17 @@ const CreatureCard = ({ creature }: { creature: Creature }) => (
           }`}
         />
       </SketchFrame>
-      <div>
+      <div className="min-w-0">
         <p className="font-display text-3xl md:text-4xl text-ink leading-tight">
           {creature.name}
         </p>
         <p className="u-label text-ink/60 mt-1.5 tracking-[0.18em] text-[0.64rem]">
-          {/* Wrap only at the "·" separators, never inside a phrase. */}
+          {/* The lead phrase may wrap; short trailing tokens like "est. 2017"
+              stay whole so a date never breaks across two lines. */}
           {creature.provenance.split("·").map((part, i) => (
-            <span key={i}>
+            <span key={i} className={i > 0 ? "whitespace-nowrap" : undefined}>
               {i > 0 && " · "}
-              <span className="whitespace-nowrap">{part.trim()}</span>
+              {part.trim()}
             </span>
           ))}
         </p>
