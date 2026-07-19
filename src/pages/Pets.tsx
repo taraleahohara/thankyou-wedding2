@@ -116,30 +116,60 @@ const Pets = () => {
       <main className="flex-1 w-full max-w-5xl mx-auto px-6">
         {/* Hero — the chapter opening with the creatures' stickers */}
         <section className="relative pt-12 md:pt-16 pb-2">
-          <p className="u-label text-copper mb-3">chapter 03 · the permanent collection</p>
+          {/* relative z-10 lifts the label above the sticker blob's top edge
+              on mobile — copper on wash clears AA, so the tuck-under is safe. */}
+          <p className="u-label text-copper mb-3 relative z-10">chapter 03 · the permanent collection</p>
           <h1 className="font-display lowercase text-6xl md:text-8xl text-ink leading-none">
             pets
           </h1>
           {/* "our creatures" labels the drawn stickers: on desktop it sits
               below-left of them with the arrow sweeping up toward them; on
-              mobile (stickers hidden) it stays under the title as a flourish. */}
-          <p className="font-hand text-copper-bright text-2xl md:text-[1.7rem] inline-block -rotate-3 ml-16 mt-1 md:ml-0 md:mt-0 md:rotate-1 md:absolute md:top-20 md:right-56">
+              mobile it stays under the title, arrow reaching for the smaller
+              stickers in the corner. z-10 keeps the arrow tip above the blob. */}
+          <p className="font-hand text-copper-bright text-2xl md:text-[1.7rem] inline-block -rotate-3 ml-16 mt-1 md:ml-0 md:mt-0 md:rotate-1 relative md:absolute md:top-20 md:right-56 z-10">
             our creatures
             <AnnotArrow className="inline-block w-12 h-9 align-middle ml-0.5" />
           </p>
-          <p className="font-body text-lg text-ink/75 max-w-xl mt-4 leading-relaxed">
+          <p className="font-body text-lg text-ink/75 max-w-xl mt-4 leading-relaxed relative z-10">
             The two of them run this house; we just open the treat drawer.
             This is their album, and it grows every time they do something
             worth keeping.
           </p>
 
           {/* Sticker cutouts from the family portrait, leaning on the header */}
-          <div className="hidden md:flex absolute top-10 right-0 items-end gap-1" aria-hidden="true">
-            <div className="bg-parchment border border-ink/10 shadow-md p-2 pb-1 rotate-3">
-              <img src="/images/pets/illustrated-phoebe.png" alt="" width={84} className="block" />
+          <div className="flex absolute top-20 md:top-10 right-0 items-end gap-1" aria-hidden="true">
+            {/* The sage plate the stickers rest on — an irregular hand-cut
+                blob in the chapter's wash, same pigment as the shelf band. */}
+            {/* Bottom overhang is shallower on mobile so the ink outline
+                stays clear of the intro paragraph's first line. */}
+            <div className="absolute -top-4 -bottom-2 md:-bottom-6 -left-7 -right-5 -rotate-3">
+              {/* Inked twice like the sketch frames, at the sketchbox's exact
+                  weights (1.6 + 1.2 @ .35). non-scaling-stroke keeps the line
+                  weight even though the stretched viewBox scales unevenly. */}
+              <svg viewBox="0 0 200 160" preserveAspectRatio="none" className="w-full h-full text-ink">
+                <path
+                  d="M96 6 C 140 -4, 182 18, 192 54 C 201 88, 184 128, 142 148 C 104 166, 48 158, 22 128 C -2 100, 2 52, 30 26 C 52 6, 72 11, 96 6 Z"
+                  className="fill-wash"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <path
+                  d="M96 6 C 140 -4, 182 18, 192 54 C 201 88, 184 128, 142 148 C 104 166, 48 158, 22 128 C -2 100, 2 52, 30 26 C 52 6, 72 11, 96 6 Z"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  opacity="0.35"
+                  vectorEffect="non-scaling-stroke"
+                  transform="rotate(-3 100 80)"
+                />
+              </svg>
             </div>
-            <div className="bg-parchment border border-ink/10 shadow-md p-2 pb-1 -rotate-6 translate-y-2">
-              <img src="/images/pets/illustrated-penny.png" alt="" width={56} className="block" />
+            <div className="relative bg-parchment border border-ink/10 shadow-md p-2 pb-1 rotate-3">
+              <img src="/images/pets/illustrated-phoebe.png" alt="" width={84} className="block w-14 md:w-[84px]" />
+            </div>
+            <div className="relative bg-parchment border border-ink/10 shadow-md p-2 pb-1 -rotate-6 translate-y-2">
+              <img src="/images/pets/illustrated-penny.png" alt="" width={56} className="block w-10 md:w-[56px]" />
             </div>
           </div>
         </section>
